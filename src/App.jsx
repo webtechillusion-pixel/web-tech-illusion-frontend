@@ -24,7 +24,7 @@ function App() {
           <Route path="/project/:id" element={<ProjectDetail />} />
           <Route path="/team" element={<Team />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard/admin" element={<Dashboard />} />
         </Routes>
         <NotificationBanner />
       </div>
