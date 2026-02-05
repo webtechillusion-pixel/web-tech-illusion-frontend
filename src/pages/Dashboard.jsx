@@ -11,6 +11,7 @@ const Dashboard = () => {
   const [subscribers, setSubscribers] = useState([]);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_API_URL
 
   useEffect(() => {
     checkAuth();
@@ -18,9 +19,10 @@ const Dashboard = () => {
 
   const checkAuth = async () => {
     const token = localStorage.getItem('adminToken');
+    
     if (token) {
       try {
-        const response = await fetch('http://localhost:8000/api/auth/verify', {
+        const response = await fetch(`${API_BASE_URL}api/auth/verify`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (response.ok) {
@@ -39,7 +41,7 @@ const Dashboard = () => {
     setError('');
     
     try {
-      const response = await fetch('http://localhost:8000/api/auth/login', {
+      const response = await fetch(`${API_BASE_URL}api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(loginForm)
@@ -73,8 +75,8 @@ const Dashboard = () => {
 
     try {
       const [contactsRes, newsletterRes] = await Promise.all([
-        fetch('http://localhost:8000/api/contact', { headers }),
-        fetch('http://localhost:8000/api/newsletter', { headers })
+        fetch(`${API_BASE_URL}api/contact`, { headers }),
+        fetch(`${API_BASE_URL}api/newsletter`, { headers })
       ]);
 
       const contactsData = await contactsRes.json();
@@ -105,7 +107,7 @@ const Dashboard = () => {
     const token = localStorage.getItem('adminToken');
     
     try {
-      const response = await fetch(`http://localhost:8000/api/contact/${contactId}/status`, {
+      const response = await fetch(`${API_BASE_URL}api/contact/${contactId}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

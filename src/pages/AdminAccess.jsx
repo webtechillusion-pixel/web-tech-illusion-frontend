@@ -17,7 +17,7 @@ const AdminAccess = () => {
           
           <div className="space-y-4">
             <Link 
-              to="/dashboard" 
+              to="/dashboard/admin" 
               className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-4 px-6 rounded-xl font-semibold text-lg hover:opacity-90 transition-all duration-300 shadow-lg flex items-center justify-center space-x-2"
             >
               <i className="fas fa-tachometer-alt"></i>

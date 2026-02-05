@@ -5,6 +5,7 @@ const Footer = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const API_BASE_URL = import.meta.env.VITE_API_URL
 
   const handleNewsletterSubmit = async (e) => {
     e.preventDefault();
@@ -14,7 +15,7 @@ const Footer = () => {
     setMessage('');
 
     try {
-      const response = await fetch('http://localhost:8000/api/newsletter/subscribe', {
+      const response = await fetch(`${API_BASE_URL}api/newsletter/subscribe`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

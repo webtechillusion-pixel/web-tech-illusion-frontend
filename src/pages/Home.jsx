@@ -10,6 +10,7 @@ const Home = () => {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const API_BASE_URL = import.meta.env.VITE_API_URL
 
   // Request notification permission on component mount
   useState(() => {
@@ -32,7 +33,7 @@ const Home = () => {
     setMessage('');
 
     try {
-      const response = await fetch('http://localhost:8000/api/contact', {
+      const response = await fetch(`${API_BASE_URL}api/contact`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
