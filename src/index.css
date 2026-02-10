@@ -88,6 +88,48 @@
   animation: glow 3s ease-in-out infinite;
 }
 
+/* Mobile responsiveness improvements */
+@media (max-width: 640px) {
+  .hero-heading {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
+  
+  .hero-subheading {
+    font-size: 1.25rem;
+  }
+  
+  .dashboard-preview {
+    transform: scale(0.9);
+  }
+  
+  .floating-icons {
+    transform: scale(0.8);
+  }
+}
+
+/* Tablet responsiveness */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .hero-heading {
+    font-size: 3.5rem;
+  }
+  
+  .dashboard-preview {
+    transform: scale(0.95);
+  }
+}
+
+/* Large screens optimization */
+@media (min-width: 1920px) {
+  .hero-heading {
+    font-size: 5rem;
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
 /* Smooth transitions */
 * {
   transition: all 0.3s ease;
@@ -113,6 +155,15 @@
   }
   50% {
     background-position: 100% 50%;
+  }
+}
+
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 

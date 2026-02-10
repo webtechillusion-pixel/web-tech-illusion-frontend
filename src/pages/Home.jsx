@@ -1,7 +1,50 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import {
+  FiCode,
+  FiTrendingUp,
+  FiClock,
+  FiUsers,
+  FiCpu,
+  FiDatabase,
+  FiCloud,
+  FiSmartphone,
+  FiMonitor,
+  FiArrowRight,
+  FiPlay,
+  FiPhone,
+  FiMessageSquare,
+  FiMail,
+  FiMapPin,
+  FiTarget,
+  FiAward,
+  FiShield,
+  FiCheckCircle,
+  FiSend,
+  FiCalendar,
+  FiZap,
+  FiActivity,
+  FiShoppingCart,
+  FiHome,
+  FiBookOpen,
+  // FiPlane,
+  FiFileText,
+  FiNavigation,
+  FiSearch,
+  FiBarChart,
+  FiStar,
+  FiHeart,
+  FiSun,
+  FiGitBranch,
+  FiExternalLink,
+  FiGlobe,
+  FiLayers,
+  FiPackage,
+  FiTool
+} from 'react-icons/fi';
 import Footer from '../components/Footer';
 import NotificationService from '../services/NotificationService';
+import LazyLoad from '../components/LazyLoad';
 
 const Home = () => {
   const [consultationForm, setConsultationForm] = useState({
@@ -10,20 +53,8 @@ const Home = () => {
   });
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [scrollY, setScrollY] = useState(0);
   const API_BASE_URL = import.meta.env.VITE_API_URL
-
-  // Request notification permission on component mount
-  useState(() => {
-    const enableNotifications = async () => {
-      const granted = await NotificationService.requestPermission();
-      if (granted) {
-        setTimeout(() => {
-          NotificationService.showWelcomeNotification();
-        }, 2000);
-      }
-    };
-    enableNotifications();
-  }, []);
 
   const handleConsultationSubmit = async (e) => {
     e.preventDefault();
@@ -69,220 +100,361 @@ const Home = () => {
     // Clear message after 5 seconds
     setTimeout(() => setMessage(''), 5000);
   };
-  return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative min-h-screen bg-gradient-to-br from-gray-900 via-slate-800 to-gray-900 overflow-hidden">
-        {/* Professional Background Pattern */}
+return (
+    <div className="min-h-screen bg-white">
+      {/* Enhanced Hero Section */}
+      <section className="relative min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 overflow-hidden">
+        {/* Animated Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(59,130,246,0.1),transparent_50%)] opacity-60"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(59,130,246,0.05)_25%,rgba(59,130,246,0.05)_50%,transparent_50%,transparent_75%,rgba(59,130,246,0.05)_75%)] bg-[length:20px_20px]"></div>
-          <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.15),transparent_70%)] animate-pulse"></div>
+          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_30%,rgba(139,92,246,0.03)_30%,rgba(139,92,246,0.03)_60%,transparent_60%)] bg-[length:40px_40px] animate-float"></div>
+          <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl animate-glow"></div>
+          <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tr from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-transparent via-blue-500/5 to-transparent animate-spin-slow"></div>
         </div>
 
         <div className="relative z-10 flex items-center min-h-screen">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-20">
-            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
               {/* Left Content */}
-              <div className="text-center lg:text-left order-2 lg:order-1">
-                <div className="inline-flex items-center px-3 py-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full text-xs sm:text-sm font-medium text-blue-300 mb-6">
-                  <div className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></div>
-                  Available for Enterprise Projects
+              <div className="text-center lg:text-left order-2 lg:order-1 space-y-8">
+                <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full text-sm font-medium text-blue-300 mb-8 animate-fadeInUp hover:scale-105 transition-transform cursor-default">
+                  <div className="w-3 h-3 bg-green-400 rounded-full mr-3 animate-pulse"></div>
+                  <FiTarget className="w-5 h-5 mr-2" />
+                  Enterprise Digital Solutions
+                  <div className="w-3 h-3 bg-green-400 rounded-full ml-3 animate-pulse"></div>
                 </div>
+
+                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 leading-tight">
+                   Transform Your Business
+                   <span className="block bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent animate-gradient-shift">
+                     Digital Excellence
+                   </span>
+                 </h1>
+                 
+                 <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 animate-fadeInUp" style={{animationDelay: '0.3s'}}>
+                   <span className="bg-gradient-to-r from-white via-blue-200 to-cyan-200 bg-clip-text text-transparent">
+                     Web Tech Illusion
+                   </span>
+                 </div>
                 
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight">
-                  Enterprise-Grade
-                  <span className="block bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent">
-                    Digital Solutions
-                  </span>
-                </h1>
-                
-                <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-                  We architect and develop scalable web applications, mobile solutions, and digital platforms 
-                  that drive measurable business growth for global enterprises.
-                </p>
-                
-                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
-                  <Link 
-                    to="/contact" 
-                    className="group relative px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-semibold rounded-lg overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/25 text-center"
-                  >
-                    <span className="relative z-10">Start Your Project</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-cyan-700 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
-                  </Link>
-                  
-                  <Link 
-                    to="/projects" 
-                    className="px-6 py-3 sm:px-8 sm:py-4 border border-gray-600 text-gray-300 font-semibold rounded-lg hover:bg-gray-800 hover:border-gray-500 transition-all duration-300 text-center"
-                  >
-                    View Portfolio
-                  </Link>
-                </div>
-                
-                {/* Quick Navigation */}
-                <div className="flex flex-wrap gap-3 justify-center lg:justify-start text-sm">
-                  <Link to="/about" className="text-gray-400 hover:text-blue-400 transition-colors">About Us</Link>
-                  <span className="text-gray-600">•</span>
-                  <Link to="/services" className="text-gray-400 hover:text-blue-400 transition-colors">Services</Link>
-                  <span className="text-gray-600">•</span>
-                  <Link to="/team" className="text-gray-400 hover:text-blue-400 transition-colors">Our Team</Link>
-                  <span className="text-gray-600">•</span>
-                  <Link to="/contact" className="text-gray-400 hover:text-blue-400 transition-colors">Contact</Link>
-                </div>
-                
-                {/* Trust Indicators */}
-                <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-6 border-t border-gray-800">
-                  <div className="text-center lg:text-left">
-                    <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-1">3+</div>
-                    <div className="text-xs sm:text-sm text-gray-400 uppercase tracking-wide">Projects Delivered</div>
-                  </div>
-                  <div className="text-center lg:text-left">
-                    <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-1">100%</div>
-                    <div className="text-xs sm:text-sm text-gray-400 uppercase tracking-wide">Client Satisfaction</div>
-                  </div>
-                  <div className="text-center lg:text-left">
-                    <div className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-1">24/7</div>
-                    <div className="text-xs sm:text-sm text-gray-400 uppercase tracking-wide">Support</div>
-                  </div>
-                </div>
+                 <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed animate-fadeInUp" style={{animationDelay: '0.3s'}}>
+                   We architect and develop <span className="font-semibold text-blue-400 hover:text-blue-300 transition-colors">scalable digital solutions</span> that drive 
+                   <span className="font-semibold text-cyan-400 hover:text-cyan-300 transition-colors">measurable business growth</span> for global enterprises.
+                   <br className="hidden sm:block" />
+                   <span className="block mt-2 text-base sm:text-lg lg:text-xl opacity-90">🚀 1+ Years of Excellence | 10+ Projects Delivered | 10+ Happy Clients</span>
+                 </p>
+               
+                 <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8 animate-fadeInUp" style={{animationDelay: '0.2s'}}>
+                   <Link 
+                     to="/contact" 
+                     className="group relative bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg shadow-2xl hover:shadow-blue-500/50 transform hover:scale-105 transition-all duration-300 flex items-center overflow-hidden"
+                   >
+                     <FiCode className="w-5 h-5 mr-2" />
+                     <span className="relative z-10">Start Your Project</span>
+                     <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-cyan-700 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                     <FiArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform relative z-10" />
+                   </Link>
+                    
+                   <Link 
+                     to="/projects" 
+                     className="group bg-white/10 backdrop-blur-sm border border-white/30 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 hover:border-white hover:scale-105 transition-all duration-300 flex items-center"
+                   >
+                     <FiLayers className="w-5 h-5 mr-2" />
+                     View Portfolio
+                     <FiArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                   </Link>
+
+                   <a 
+                     href="tel:+917380497919"
+                     className="group bg-gradient-to-r from-green-600 to-teal-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg shadow-2xl hover:shadow-green-500/50 transform hover:scale-105 transition-all duration-300 flex items-center"
+                   >
+                     <FiPhone className="w-5 h-5 mr-2" />
+                     <span className="hidden sm:inline">Call Now</span>
+                     <span className="sm:hidden">Call</span>
+                   </a>
+                 </div>
+
+               {/* Enhanced Professional Stats */}
+               <div className="bg-gradient-to-r from-white/5 to-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 sm:p-8 animate-fadeInUp" style={{animationDelay: '0.6s'}}>
+                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+                   {[
+                     { value: '10+', label: 'Projects Delivered', icon: FiTrendingUp, color: 'text-green-400' },
+                     { value: '100%', label: 'Client Satisfaction', icon: FiStar, color: 'text-yellow-400' },
+                     { value: '24/7', label: 'Support Available', icon: FiClock, color: 'text-blue-400' },
+                     { value: '1+', label: 'Years Experience', icon: FiAward, color: 'text-purple-400' }
+                   ].map((stat, index) => (
+                     <div key={index} className="text-center lg:text-left group cursor-pointer">
+                       <div className="flex items-center justify-center lg:justify-start mb-2">
+                         <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{stat.value}</div>
+                         <stat.icon className={`w-5 h-5 ml-2 ${stat.color} opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-110`} />
+                       </div>
+                       <div className="text-xs sm:text-sm text-gray-400 uppercase tracking-wide font-medium">{stat.label}</div>
+                       <div className="mt-2 h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+                     </div>
+                   ))}
+                 </div>
+               </div>
+                 {/* Enhanced Quick Navigation */}
+                 <div className="flex flex-wrap gap-3 justify-center lg:justify-start mb-8 animate-fadeInUp" style={{animationDelay: '0.4s'}}>
+                   <Link to="/about" className="group bg-white/10 backdrop-blur-sm border border-white/20 text-gray-300 px-4 py-2 rounded-lg hover:bg-white/20 hover:text-white hover:border-white/40 hover:scale-105 transition-all duration-300 flex items-center text-sm font-medium">
+                     <FiUsers className="w-4 h-4 mr-2 group-hover:text-blue-400" />
+                     About Us
+                   </Link>
+                   <Link to="/services" className="group bg-white/10 backdrop-blur-sm border border-white/20 text-gray-300 px-4 py-2 rounded-lg hover:bg-white/20 hover:text-white hover:border-white/40 hover:scale-105 transition-all duration-300 flex items-center text-sm font-medium">
+                     <FiCpu className="w-4 h-4 mr-2 group-hover:text-blue-400" />
+                     Services
+                   </Link>
+                   <Link to="/projects" className="group bg-white/10 backdrop-blur-sm border border-white/20 text-gray-300 px-4 py-2 rounded-lg hover:bg-white/20 hover:text-white hover:border-white/40 hover:scale-105 transition-all duration-300 flex items-center text-sm font-medium">
+                     <FiLayers className="w-4 h-4 mr-2 group-hover:text-blue-400" />
+                     Projects
+                   </Link>
+                   <Link to="/team" className="group bg-white/10 backdrop-blur-sm border border-white/20 text-gray-300 px-4 py-2 rounded-lg hover:bg-white/20 hover:text-white hover:border-white/40 hover:scale-105 transition-all duration-300 flex items-center text-sm font-medium">
+                     <FiAward className="w-4 h-4 mr-2 group-hover:text-blue-400" />
+                     Our Team
+                   </Link>
+                   <Link to="/contact" className="group bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-cyan-700 hover:scale-105 transition-all duration-300 flex items-center text-sm font-medium shadow-lg">
+                     <FiMessageSquare className="w-4 h-4 mr-2" />
+                     Contact
+                   </Link>
+                 </div>
               </div>
               
-              {/* Right Content - Modern Dashboard Preview */}
-              <div className="relative order-1 lg:order-2 mb-8 lg:mb-0 mt-32 sm:mt-36 lg:mt-20">
-                <div className="relative bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-sm border border-gray-700/50 rounded-2xl p-4 sm:p-6 lg:p-8 shadow-2xl">
-                  {/* Mock Dashboard Header */}
-                  <div className="flex items-center justify-between mb-4 sm:mb-6">
-                    <div className="flex items-center space-x-2 sm:space-x-3">
-                      <div className="w-2 h-2 sm:w-3 sm:h-3 bg-red-500 rounded-full"></div>
-                      <div className="w-2 h-2 sm:w-3 sm:h-3 bg-yellow-500 rounded-full"></div>
-                      <div className="w-2 h-2 sm:w-3 sm:h-3 bg-green-500 rounded-full"></div>
-                    </div>
-                    <div className="text-xs text-gray-400 font-mono hidden sm:block">dashboard.illusion.dev</div>
-                  </div>
+{/* Enhanced Right Content - Professional Dashboard Preview */}
+               <div className="relative order-1 lg:order-2 mb-8 lg:mb-0 mt-20 sm:mt-24 lg:mt-0">
+                 <div className="relative bg-gradient-to-br from-slate-900/90 to-blue-900/90 backdrop-blur-xl border border-blue-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl animate-fadeInRight group hover:scale-105 transition-transform duration-500" style={{animationDelay: '0.2s'}}>
+                   {/* Enhanced Mock Dashboard Header */}
+                   <div className="flex items-center justify-between mb-6">
+                     <div className="flex items-center space-x-3">
+                       <div className="w-3 h-3 bg-red-500 rounded-full hover:scale-125 transition-transform cursor-pointer"></div>
+                       <div className="w-3 h-3 bg-yellow-500 rounded-full hover:scale-125 transition-transform cursor-pointer"></div>
+                       <div className="w-3 h-3 bg-green-500 rounded-full hover:scale-125 transition-transform cursor-pointer"></div>
+                     </div>
+                     <div className="text-xs text-gray-300 font-mono bg-black/30 px-3 py-1 rounded-full">webtech-illusion.dev</div>
+                   </div>
                   
-                  {/* Mock Dashboard Content */}
-                  <div className="space-y-3 sm:space-y-4">
-                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-lg">
-                      <div className="flex items-center space-x-2 sm:space-x-3">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                          </svg>
-                        </div>
-                        <div>
-                          <div className="text-white font-semibold text-sm sm:text-base">Revenue Growth</div>
-                          <div className="text-gray-400 text-xs sm:text-sm">+25% this quarter</div>
-                        </div>
-                      </div>
-                      <div className="text-green-400 font-bold text-lg sm:text-xl">₹2.5L</div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-green-500/10 to-teal-500/10 border border-green-500/20 rounded-lg">
-                      <div className="flex items-center space-x-2 sm:space-x-3">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center">
-                          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <div className="text-white font-semibold text-sm sm:text-base">Active Clients</div>
-                          <div className="text-gray-400 text-xs sm:text-sm">Monthly active</div>
-                        </div>
-                      </div>
-                      <div className="text-green-400 font-bold text-lg sm:text-xl">15+</div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-purple-500/10 to-pink-500/10 border border-purple-500/20 rounded-lg">
-                      <div className="flex items-center space-x-2 sm:space-x-3">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <div className="text-white font-semibold text-sm sm:text-base">Performance</div>
-                          <div className="text-gray-400 text-xs sm:text-sm">99.5% uptime</div>
-                        </div>
-                      </div>
-                      <div className="text-green-400 font-bold text-lg sm:text-xl">A+</div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-orange-500/10 to-red-500/10 border border-orange-500/20 rounded-lg">
-                      <div className="flex items-center space-x-2 sm:space-x-3">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
-                          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <div className="text-white font-semibold text-sm sm:text-base">Delivery Time</div>
-                          <div className="text-gray-400 text-xs sm:text-sm">Average completion</div>
-                        </div>
-                      </div>
-                      <div className="text-green-400 font-bold text-lg sm:text-xl">7 Days</div>
-                    </div>
-                    
-                    <div className="flex items-center justify-between p-3 sm:p-4 bg-gradient-to-r from-indigo-500/10 to-blue-500/10 border border-indigo-500/20 rounded-lg">
-                      <div className="flex items-center space-x-2 sm:space-x-3">
-                        <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center">
-                          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                          </svg>
-                        </div>
-                        <div>
-                          <div className="text-white font-semibold text-sm sm:text-base">Client Satisfaction</div>
-                          <div className="text-gray-400 text-xs sm:text-sm">Feedback rating</div>
-                        </div>
-                      </div>
-                      <div className="text-green-400 font-bold text-lg sm:text-xl">100%</div>
-                    </div>
-                  </div>
+                   {/* Enhanced Mock Dashboard Content with Professional Stats */}
+                   <div className="space-y-4">
+                     {[
+                       { 
+                         icon: FiTrendingUp, 
+                         gradient: 'from-blue-500 to-cyan-500', 
+                         bgGradient: 'from-blue-500/20 to-cyan-500/20', 
+                         border: 'border-blue-500/30',
+                         title: 'Revenue Growth', 
+                         subtitle: '+25% this quarter', 
+                         value: '₹2.5L', 
+                         valueColor: 'text-green-400'
+                       },
+                       { 
+                         icon: FiUsers, 
+                         gradient: 'from-green-500 to-teal-500', 
+                         bgGradient: 'from-green-500/20 to-teal-500/20', 
+                         border: 'border-green-500/30',
+                         title: 'Active Clients', 
+                         subtitle: 'Monthly active', 
+                         value: '50+', 
+                         valueColor: 'text-green-400'
+                       },
+                       { 
+                         icon: FiActivity, 
+                         gradient: 'from-purple-500 to-pink-500', 
+                         bgGradient: 'from-purple-500/20 to-pink-500/20', 
+                         border: 'border-purple-500/30',
+                         title: 'Performance', 
+                         subtitle: '99.5% uptime', 
+                         value: 'A+', 
+                         valueColor: 'text-green-400'
+                       },
+                       { 
+                         icon: FiClock, 
+                         gradient: 'from-orange-500 to-red-500', 
+                         bgGradient: 'from-orange-500/20 to-red-500/20', 
+                         border: 'border-orange-500/30',
+                         title: 'Avg Delivery', 
+                         subtitle: 'Project timeline', 
+                         value: '7 Days', 
+                         valueColor: 'text-green-400'
+                       },
+                       { 
+                         icon: FiStar, 
+                         gradient: 'from-indigo-500 to-blue-500', 
+                         bgGradient: 'from-indigo-500/20 to-blue-500/20', 
+                         border: 'border-indigo-500/30',
+                         title: 'Satisfaction', 
+                         subtitle: 'Client feedback', 
+                         value: '100%', 
+                         valueColor: 'text-green-400'
+                       }
+                     ].map((item, index) => (
+                       <div 
+                         key={index} 
+                         className={`flex items-center justify-between p-4 bg-gradient-to-r ${item.bgGradient} ${item.border} rounded-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer group`}
+                         style={{animationDelay: `${0.3 + index * 0.1}s`}}
+                       >
+                         <div className="flex items-center space-x-3">
+                           <div className={`w-10 h-10 bg-gradient-to-r ${item.gradient} rounded-lg flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
+                             <item.icon className="w-5 h-5 text-white" />
+                           </div>
+                           <div>
+                             <div className="text-white font-semibold text-sm">{item.title}</div>
+                             <div className="text-gray-400 text-xs">{item.subtitle}</div>
+                           </div>
+                         </div>
+                         <div className={`font-bold text-lg ${item.valueColor} group-hover:scale-110 transition-transform`}>{item.value}</div>
+                       </div>
+                     ))}
+                   </div>
                   
-                  {/* Floating Elements */}
-                  <div className="absolute -top-2 -right-2 sm:-top-4 sm:-right-4 w-12 h-12 sm:w-20 sm:h-20 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-full blur-xl animate-pulse"></div>
-                  <div className="absolute -bottom-2 -left-2 sm:-bottom-4 sm:-left-4 w-10 h-10 sm:w-16 sm:h-16 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-xl animate-pulse" style={{animationDelay: '1s'}}></div>
-                </div>
-                
-                {/* Floating Tech Icons */}
-                <div className="absolute -top-4 -left-4 sm:-top-8 sm:-left-8 w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg animate-float">
-                  <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M14.23 12.004a2.236 2.236 0 0 1-2.235 2.236 2.236 2.236 0 0 1-2.236-2.236 2.236 2.236 0 0 1 2.235-2.236 2.236 2.236 0 0 1 2.236 2.236zm2.648-10.69c-1.346 0-3.107.96-4.888 2.622-1.78-1.653-3.542-2.602-4.887-2.602-.41 0-.783.093-1.106.278-1.375.793-1.683 3.264-.973 6.365C1.98 8.917 0 10.42 0 12.004c0 1.59 1.99 3.097 5.043 4.03-.704 3.113-.39 5.588.988 6.38.32.187.69.275 1.102.275 1.345 0 3.107-.96 4.888-2.624 1.78 1.654 3.542 2.603 4.887 2.603.41 0 .783-.09 1.106-.275 1.374-.792 1.683-3.263.973-6.365C22.02 15.096 24 13.59 24 12.004c0-1.59-1.99-3.097-5.043-4.032.704-3.11.39-5.587-.988-6.38-.318-.184-.688-.277-1.092-.278zm-.005 1.09v.006c.225 0 .406.044.558.127.666.382.955 1.835.73 3.704-.054.46-.142.945-.25 1.44-.96-.236-2.006-.417-3.107-.534-.66-.905-1.345-1.727-2.035-2.447 1.592-1.48 3.087-2.292 4.105-2.295zm-9.77.02c1.012 0 2.514.808 4.11 2.28-.686.72-1.37 1.537-2.02 2.442-1.107.117-2.154.298-3.113.538-.112-.49-.195-.964-.254-1.42-.23-1.868.054-3.32.714-3.707.19-.09.4-.127.563-.132zm4.882 3.05c.455.468.91.992 1.36 1.564-.44-.02-.89-.034-1.36-.034-.47 0-.92.014-1.36.034.44-.572.895-1.096 1.36-1.564zM12 8.1c.74 0 1.477.034 2.202.093.406.582.802 1.203 1.183 1.86.372.64.71 1.29 1.018 1.946-.308.655-.646 1.31-1.013 1.95-.38.66-.773 1.288-1.18 1.87-.728.063-1.466.098-2.21.098-.74 0-1.477-.035-2.202-.093-.406-.582-.802-1.204-1.183-1.86-.372-.64-.71-1.29-1.018-1.946.303-.657.646-1.313 1.013-1.954.38-.66.773-1.286 1.18-1.868.728-.064 1.466-.098 2.21-.098zm-3.635.254c-.24.377-.48.763-.704 1.16-.225.39-.435.782-.635 1.174-.265-.656-.49-1.31-.676-1.947.64-.15 1.315-.283 2.015-.386zm7.26 0c.695.103 1.365.23 2.006.387-.18.632-.405 1.282-.66 1.933-.2-.39-.41-.783-.64-1.174-.225-.392-.465-.774-.705-1.146zm3.063.675c.484.15.944.317 1.375.498 1.732.74 2.852 1.708 2.852 2.476-.005.768-1.125 1.74-2.857 2.475-.42.18-.88.342-1.355.493-.28-.958-.646-1.956-1.1-2.98.45-1.017.81-2.01 1.085-2.964zm-13.395.004c.278.96.645 1.957 1.1 2.98-.45 1.017-.812 2.01-1.086 2.964-.484-.15-.944-.318-1.37-.5-1.732-.737-2.852-1.706-2.852-2.474 0-.768 1.12-1.742 2.852-2.476.42-.18.88-.342 1.356-.494zm11.678 4.28c.265.657.49 1.312.676 1.948-.64.157-1.316.29-2.016.39.24-.375.48-.762.705-1.158.225-.39.435-.788.636-1.18zm-9.945.02c.2.392.41.783.64 1.175.23.39.465.772.705 1.143-.695-.102-1.365-.23-2.006-.386.18-.63.406-1.282.66-1.933zM17.92 16.32c.112.493.2.968.254 1.423.23 1.868-.054 3.32-.714 3.708-.147.09-.338.128-.563.128-1.012 0-2.514-.807-4.11-2.28.686-.72 1.37-1.536 2.02-2.44 1.107-.118 2.154-.3 3.113-.54zm-11.83.01c.96.234 2.006.415 3.107.532.66.905 1.345 1.727 2.035 2.446-1.595 1.483-3.092 2.295-4.11 2.295-.22-.005-.406-.05-.553-.132-.666-.38-.955-1.834-.73-3.703.054-.46.142-.944.25-1.438zm4.56.64c.44.02.89.034 1.36.034.47 0 .92-.014 1.36-.034-.44.572-.895 1.095-1.36 1.56-.465-.467-.92-.992-1.36-1.56z"/>
-                  </svg>
-                </div>
-                <div className="absolute -bottom-4 -right-4 sm:-bottom-8 sm:-right-8 w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-r from-green-600 to-teal-600 rounded-xl flex items-center justify-center shadow-lg animate-float" style={{animationDelay: '1s'}}>
-                  <svg className="w-6 h-6 sm:w-8 sm:h-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L2.46,6.68C2.376,6.729,2.322,6.825,2.322,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.570,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z"/>
-                  </svg>
-                </div>
-              </div>
+                   {/* Enhanced Floating Elements */}
+                   <div className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 rounded-full blur-2xl animate-pulse"></div>
+                   <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-full blur-xl animate-pulse" style={{animationDelay: '1s'}}></div>
+                   
+                   {/* Professional Badge */}
+                   <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-500 to-teal-500 text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg animate-bounce">
+                     LIVE DASHBOARD
+                   </div>
+                 </div>
+                 
+                 {/* Enhanced Floating Tech Icons */}
+                 <div className="absolute -top-6 -left-6 w-14 h-14 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-2xl animate-float hover:scale-110 transition-transform cursor-pointer">
+                   <FiCode className="w-7 h-7 text-white" />
+                 </div>
+                 <div className="absolute top-1/3 -right-8 w-12 h-12 bg-gradient-to-r from-green-600 to-teal-600 rounded-xl flex items-center justify-center shadow-2xl animate-float hover:scale-110 transition-transform cursor-pointer" style={{animationDelay: '0.5s'}}>
+                   <FiDatabase className="w-6 h-6 text-white" />
+                 </div>
+                 <div className="absolute bottom-1/3 -left-8 w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-2xl animate-float hover:scale-110 transition-transform cursor-pointer" style={{animationDelay: '1.5s'}}>
+                   <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                     <path d="M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L2.46,6.68C2.376,6.729,2.322,6.825,2.322,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.570,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z"/>
+                   </svg>
+                 </div>
+                 <div className="absolute -bottom-8 -right-6 w-16 h-16 bg-gradient-to-r from-orange-600 to-red-600 rounded-xl flex items-center justify-center shadow-2xl animate-float hover:scale-110 transition-transform cursor-pointer" style={{animationDelay: '2s'}}>
+                   <FiZap className="w-8 h-8 text-white" />
+                 </div>
+               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Professional Consultation Section */}
-      <section className="py-24 bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden">
-        {/* Background Elements */}
+      {/* Spacing Section */}
+      <div className="h-16 sm:h-20 lg:h-24 bg-gradient-to-b from-slate-900 to-white"></div>
+
+      {/* Professional Video/Testimonial Section */}
+      <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-blue-100/30 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-80 h-80 bg-cyan-100/20 rounded-full blur-3xl"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.1),transparent_70%)]"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16 animate-fadeInUp">
+            <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full text-sm font-medium text-blue-300 mb-6">
+              <FiStar className="w-4 h-4 mr-2" />
+              Client Success Stories
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              What Our <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Clients Say</span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Don't just take our word for it. Here's what businesses like yours have achieved with our solutions.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Rahul Sharma",
+                company: "TechStart Solutions",
+                content: "Web Tech Illusion transformed our online presence completely. Their attention to detail and innovative approach helped us increase our conversions by 300%.",
+                rating: 5,
+                gradient: "from-blue-600 to-cyan-600",
+                project: "E-Commerce Platform"
+              },
+              {
+                name: "Priya Patel",
+                company: "Digital Marketing Pro",
+                content: "Professional, timely, and exceeded our expectations. Their team understood our vision perfectly and delivered a stunning website that represents our brand.",
+                rating: 5,
+                gradient: "from-green-600 to-teal-600",
+                project: "Corporate Website"
+              },
+              {
+                name: "Amit Kumar",
+                company: "Innovation Labs",
+                content: "The best development team we've worked with. They turned our complex requirements into a seamless, user-friendly application. Highly recommended!",
+                rating: 5,
+                gradient: "from-purple-600 to-pink-600",
+                project: "Web Application"
+              }
+            ].map((testimonial, index) => (
+              <div 
+                key={index} 
+                className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:bg-white/15 hover:scale-105 transition-all duration-500 animate-fadeInUp"
+                style={{animationDelay: `${index * 0.1}s`}}
+              >
+                <div className="flex items-center mb-6">
+                  <div className="w-12 h-12 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                    {testimonial.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-white font-bold text-lg">{testimonial.name}</h4>
+                    <p className="text-blue-300 text-sm">{testimonial.company}</p>
+                    <p className="text-gray-400 text-xs">{testimonial.project}</p>
+                  </div>
+                </div>
+                
+                <div className="flex mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <FiStar key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                  ))}
+                </div>
+                
+                <p className="text-gray-300 leading-relaxed italic">"{testimonial.content}"</p>
+                
+                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${testimonial.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-2xl`}></div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="text-center mt-12">
+            <Link 
+              to="/projects" 
+              className="inline-flex items-center bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+            >
+              View All Case Studies
+              <FiArrowRight className="w-5 h-5 ml-2" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Spacing Section */}
+      <div className="h-12 sm:h-16 lg:h-20 bg-gradient-to-b from-slate-900 to-white"></div>
+
+      {/* Enhanced Professional Consultation Section */}
+      <section className="py-24 bg-white relative overflow-hidden">
+        {/* Enhanced Background Elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-blue-100/30 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute bottom-20 right-20 w-80 h-80 bg-cyan-100/20 rounded-full blur-3xl animate-float" style={{animationDelay: '1s'}}></div>
+          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(59,130,246,0.02)_25%,rgba(59,130,246,0.02)_50%,transparent_50%,transparent_75%,rgba(59,130,246,0.02)_75%)] bg-[length:60px_60px]"></div>
         </div>
         
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Left Content */}
+            {/* Enhanced Left Content */}
             <div className="animate-fadeInLeft">
-              <div className="inline-flex items-center px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-medium text-blue-700 mb-6">
-                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-100 to-cyan-100 border border-blue-300 rounded-full text-sm font-semibold text-blue-800 mb-8 hover:scale-105 transition-transform">
+                <svg className="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 Free Strategy Session
+                <div className="ml-2 px-2 py-1 bg-red-500 text-white text-xs rounded-full animate-pulse">LIMITED</div>
               </div>
               
               <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6 leading-tight">
                 Transform Your Business with
-                <span className="block bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+                <span className="block bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent animate-gradient-shift">
                   Expert Consultation
                 </span>
               </h2>
@@ -292,23 +464,27 @@ const Home = () => {
                 Discover untapped opportunities to accelerate your business growth.
               </p>
               
-              {/* Benefits List */}
-              <div className="space-y-4 mb-8">
-                {[
-                  "Comprehensive digital audit & analysis",
-                  "Custom strategy roadmap for your business",
-                  "Technology recommendations & cost estimates",
-                  "Competitive analysis & market insights"
-                ].map((benefit, index) => (
-                  <div key={index} className="flex items-center space-x-3">
-                    <div className="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                      <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
+              {/* Enhanced Benefits List */}
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 mb-8 border border-gray-200 shadow-lg">
+                <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                  <FiTarget className="w-5 h-5 mr-2 text-blue-600" />
+                  What You'll Get:
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {[
+                    { icon: FiSearch, text: "Comprehensive digital audit & analysis", color: "text-blue-600" },
+                    { icon: FiNavigation, text: "Custom strategy roadmap for your business", color: "text-green-600" },
+                    { icon: FiCpu, text: "Technology recommendations & cost estimates", color: "text-purple-600" },
+                    { icon: FiBarChart, text: "Competitive analysis & market insights", color: "text-orange-600" }
+                  ].map((item, index) => (
+                    <div key={index} className="flex items-center space-x-3 group">
+                      <div className={`w-8 h-8 bg-white border border-gray-200 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform`}>
+                        <item.icon className={`w-4 h-4 ${item.color}`} />
+                      </div>
+                      <span className="text-gray-700 text-sm font-medium">{item.text}</span>
                     </div>
-                    <span className="text-gray-700 font-medium">{benefit}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
               
               {/* Trust Indicators */}
@@ -355,7 +531,7 @@ const Home = () => {
                       onChange={(e) => setConsultationForm({...consultationForm, name: e.target.value})}
                       placeholder="Enter your full name"
                       required
-                      className="w-full px-3 sm:px-4 py-3 sm:py-4 border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 text-gray-900 placeholder-gray-500 bg-gray-50 focus:bg-white text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-3 sm:py-4 border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 text-gray-900 placeholder-gray-500 bg-white text-sm sm:text-base"
                     />
                   </div>
                   
@@ -367,7 +543,7 @@ const Home = () => {
                       onChange={(e) => setConsultationForm({...consultationForm, phone: e.target.value})}
                       placeholder="Enter Your Mobile"
                       required
-                      className="w-full px-3 sm:px-4 py-3 sm:py-4 border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 text-gray-900 placeholder-gray-500 bg-gray-50 focus:bg-white text-sm sm:text-base"
+                      className="w-full px-3 sm:px-4 py-3 sm:py-4 border-2 border-gray-200 rounded-lg sm:rounded-xl focus:border-blue-500 focus:outline-none transition-all duration-300 text-gray-900 placeholder-gray-500 bg-white text-sm sm:text-base"
                     />
                   </div>
                   
@@ -443,6 +619,9 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Spacing Section */}
+      <div className="h-16 sm:h-20 lg:h-24 bg-gradient-to-b from-blue-50 to-white"></div>
+
       {/* Featured Services Section */}
       <section className="py-20 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -460,7 +639,7 @@ const Home = () => {
           </div>
           
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <div className="group bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 animate-fadeInUp">
+            <div className="group bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 animate-fadeInUp">
               <div className="h-2 bg-gradient-to-r from-blue-500 to-cyan-500"></div>
               <div className="p-8">
                 <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mb-4 mx-auto">
@@ -495,7 +674,7 @@ const Home = () => {
               </div>
             </div>
             
-            <div className="group bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 animate-fadeInUp" style={{animationDelay: '0.2s'}}>
+            <div className="group bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 animate-fadeInUp" style={{animationDelay: '0.2s'}}>
               <div className="h-2 bg-gradient-to-r from-green-500 to-teal-500"></div>
               <div className="p-8">
                 <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-500 rounded-2xl flex items-center justify-center mb-4 mx-auto">
@@ -531,7 +710,7 @@ const Home = () => {
               </div>
             </div>
             
-            <div className="group bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 animate-fadeInUp" style={{animationDelay: '0.4s'}}>
+            <div className="group bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 animate-fadeInUp" style={{animationDelay: '0.4s'}}>
               <div className="h-2 bg-gradient-to-r from-purple-500 to-pink-500"></div>
               <div className="p-8">
                 <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mb-4 mx-auto">
@@ -562,22 +741,17 @@ const Home = () => {
                   className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-300 text-center block"
                 >
                   Get Quote
-                </Link>
+</Link>
               </div>
             </div>
           </div>
-          
-          <div className="text-center">
-            <Link to="/services" className="inline-flex items-center bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105">
-              View All Services
-              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
-          </div>
         </div>
       </section>
-      <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50 relative overflow-hidden">
+
+      {/* Spacing Section */}
+      <div className="h-12 sm:h-16 lg:h-20 bg-gradient-to-b from-white to-white"></div>
+      
+      <section className="py-20 bg-white relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-64 h-64 bg-blue-100/20 rounded-full blur-3xl"></div>
           <div className="absolute bottom-20 right-20 w-80 h-80 bg-cyan-100/15 rounded-full blur-3xl"></div>
@@ -658,11 +832,152 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Spacing Section */}
+      <div className="h-16 sm:h-20 lg:h-24 bg-gradient-to-b from-white to-slate-900"></div>
+
+      {/* Comprehensive Navigation Section */}
+      <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 relative overflow-hidden">
+        {/* Animated Background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.1),transparent_70%)] animate-pulse"></div>
+          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(59,130,246,0.02)_25%,rgba(59,130,246,0.02)_50%,transparent_50%,transparent_75%,rgba(59,130,246,0.02)_75%)] bg-[length:80px_80px]"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16 animate-fadeInUp">
+            <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full text-sm font-medium text-blue-300 mb-8">
+              <FiGlobe className="w-5 h-5 mr-2" />
+              Explore Our Digital Ecosystem
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Navigate Through Our
+              <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                Complete Solution Suite
+              </span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-4xl mx-auto">
+              Every aspect of your digital transformation journey, carefully crafted and interconnected.
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                to: "/",
+                icon: FiHome,
+                title: "Home",
+                description: "Welcome to digital excellence",
+                gradient: "from-blue-600 to-cyan-600",
+                features: ["Hero Dashboard", "Quick Stats", "Live Projects", "Consultation Form"],
+                isCurrent: true
+              },
+              {
+                to: "/about",
+                icon: FiUsers,
+                title: "About Us",
+                description: "Discover our story and mission",
+                gradient: "from-purple-600 to-pink-600",
+                features: ["Company History", "Core Values", "Team Members", "Success Metrics"]
+              },
+              {
+                to: "/services",
+                icon: FiCpu,
+                title: "Services",
+                description: "Comprehensive digital solutions",
+                gradient: "from-green-600 to-teal-600",
+                features: ["Web Development", "Mobile Apps", "E-Commerce", "Digital Marketing"]
+              },
+              {
+                to: "/projects",
+                icon: FiLayers,
+                title: "Projects",
+                description: "Our portfolio of success",
+                gradient: "from-orange-600 to-red-600",
+                features: ["Case Studies", "Live Demos", "Client Testimonials", "Success Stories"]
+              },
+              {
+                to: "/team",
+                icon: FiAward,
+                title: "Our Team",
+                description: "Meet the experts behind excellence",
+                gradient: "from-indigo-600 to-blue-600",
+                features: ["Developer Profiles", "Expertise Areas", "Certifications", "Team Collaboration"]
+              },
+              {
+                to: "/contact",
+                icon: FiMessageSquare,
+                title: "Contact",
+                description: "Start your journey with us",
+                gradient: "from-cyan-600 to-blue-600",
+                features: ["Get Quote", "Schedule Meeting", "Support Center", "Office Locations"]
+              }
+            ].map((page, index) => (
+              <Link 
+                key={index}
+                to={page.to}
+                className={`group relative bg-gradient-to-br ${page.gradient} p-1 rounded-2xl hover:scale-105 transition-all duration-500 animate-fadeInUp ${
+                  page.isCurrent ? 'ring-4 ring-white/30 shadow-2xl' : ''
+                }`}
+                style={{animationDelay: `${index * 0.1}s`}}
+              >
+                <div className="bg-slate-900 rounded-2xl p-6 h-full">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className={`w-16 h-16 bg-gradient-to-br ${page.gradient} rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
+                      <page.icon className="w-8 h-8 text-white" />
+                    </div>
+                    {page.isCurrent && (
+                      <div className="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full animate-pulse">
+                        CURRENT
+                      </div>
+                    )}
+                  </div>
+                  
+                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors">{page.title}</h3>
+                  <p className="text-gray-400 mb-4">{page.description}</p>
+                  
+                  <div className="space-y-2 mb-4">
+                    {page.features.map((feature, idx) => (
+                      <div key={idx} className="flex items-center text-sm text-gray-500 group-hover:text-gray-300 transition-colors">
+                        <FiCheckCircle className="w-3 h-3 mr-2 text-green-500 flex-shrink-0" />
+                        {feature}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="flex items-center text-blue-400 font-semibold text-sm group-hover:text-blue-300 transition-colors">
+                    Explore {page.title}
+                    <FiArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+          
+          <div className="text-center mt-12">
+            <p className="text-gray-400 mb-6">
+              <FiExternalLink className="inline w-4 h-4 mr-2" />
+              Seamless navigation between all our digital solutions
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              {["Home", "About", "Services", "Projects", "Team", "Contact"].map((page, index) => (
+                <Link
+                  key={index}
+                  to={`/${page.toLowerCase() === 'home' ? '' : page.toLowerCase()}`}
+                  className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white hover:bg-white/20 transition-all duration-300 text-sm"
+                >
+                  {page}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Technology Stack */}
       <section className="py-20 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 animate-fadeInUp">
-            <div className="inline-flex items-center px-4 py-2 bg-gray-50 border border-gray-200 rounded-full text-sm font-medium text-gray-700 mb-6">
+            <div className="inline-flex items-center px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-medium text-blue-700 mb-6">
               <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z" />
               </svg>
@@ -683,7 +998,7 @@ const Home = () => {
               { name: 'Tailwind', color: 'from-cyan-400 to-cyan-600', icon: <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12.001,4.8c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 C13.666,10.618,15.027,12,18.001,12c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C16.337,6.182,14.976,4.8,12.001,4.8z M6.001,12c-3.2,0-5.2,1.6-6,4.8c1.2-1.6,2.6-2.2,4.2-1.8c0.913,0.228,1.565,0.89,2.288,1.624 c1.177,1.194,2.538,2.576,5.512,2.576c3.2,0,5.2-1.6,6-4.8c-1.2,1.6-2.6,2.2-4.2,1.8c-0.913-0.228-1.565-0.89-2.288-1.624 C10.337,13.382,8.976,12,6.001,12z"/></svg> },
               { name: 'Express', color: 'from-gray-600 to-gray-800', icon: <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M24 18.588a1.529 1.529 0 01-1.895-.72l-3.45-4.771-.5-.667-4.003 5.444a1.466 1.466 0 01-1.802.708l5.158-6.92-4.798-6.251a1.595 1.595 0 011.9.666l3.576 4.83 3.596-4.81a1.435 1.435 0 011.788-.668L21.708 7.9l-2.522 3.283a.666.666 0 000 .994l4.804 6.412zM.002 11.576l.42-2.075c1.154-4.103 5.858-5.81 9.094-3.27 1.895 1.489 2.368 3.597 2.275 5.973H1.116C.943 16.447 4.005 19.009 7.92 17.7a4.078 4.078 0 002.582-2.876c.207-.666.548-.78 1.174-.588a5.417 5.417 0 01-2.589 3.957c-2.864 1.607-6.509.018-7.978-2.442a6.602 6.602 0 01-1.107-4.175zm8.457-2.242c-.715-1.34-3.225-1.34-3.94 0a1.732 1.732 0 00-.120.51H8.58c-.055-.172-.088-.343-.121-.51z"/></svg> }
             ].map((tech, index) => (
-              <div key={tech.name} className="group text-center animate-fadeInUp bg-gradient-to-br from-gray-50 to-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-gray-200" style={{animationDelay: `${index * 0.1}s`}}>
+              <div key={tech.name} className="group text-center animate-fadeInUp bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200" style={{animationDelay: `${index * 0.1}s`}}>
                 <div className={`w-16 h-16 bg-gradient-to-r ${tech.color} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                   {tech.icon}
                 </div>
@@ -843,7 +1158,7 @@ const Home = () => {
                 rating: 5
               }
             ].map((testimonial, index) => (
-              <div key={index} className="group bg-gradient-to-br from-gray-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 animate-fadeInUp" style={{animationDelay: `${index * 0.1}s`}}>
+              <div key={index} className="group bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 border border-gray-100 animate-fadeInUp" style={{animationDelay: `${index * 0.1}s`}}>
                 <div className="flex mb-6">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
@@ -879,7 +1194,7 @@ const Home = () => {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 bg-gradient-to-br from-slate-100 via-white to-blue-50 text-gray-800 relative overflow-hidden">
+      <section className="py-20 bg-white text-gray-800 relative overflow-hidden">
         <div className="max-w-5xl mx-auto text-center px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="animate-fadeInUp">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900">
