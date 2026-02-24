@@ -27,7 +27,6 @@ import {
   FiShoppingCart,
   FiHome,
   FiBookOpen,
-  // FiPlane,
   FiFileText,
   FiNavigation,
   FiSearch,
@@ -45,6 +44,51 @@ import {
 import Footer from '../components/Footer';
 import NotificationService from '../services/NotificationService';
 import LazyLoad from '../components/LazyLoad';
+
+const Counter = ({ end, duration = 2000, suffix = '' }) => {
+  const [count, setCount] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isVisible) {
+          setIsVisible(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime;
+    const startValue = 0;
+    const endValue = parseInt(end);
+
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      setCount(Math.floor(progress * (endValue - startValue) + startValue));
+      
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      }
+    };
+
+    requestAnimationFrame(step);
+  }, [isVisible, end, duration]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+};
 
 const Home = () => {
   const [consultationForm, setConsultationForm] = useState({
@@ -102,272 +146,166 @@ const Home = () => {
   };
 return (
     <div className="min-h-screen bg-white">
-      {/* Enhanced Hero Section */}
-      <section className="relative min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 overflow-hidden">
-        {/* Animated Background */}
+      {/* Professional Hero Section */}
+      <section className="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
+        {/* Clean Professional Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.15),transparent_70%)] animate-pulse"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_30%,rgba(139,92,246,0.03)_30%,rgba(139,92,246,0.03)_60%,transparent_60%)] bg-[length:40px_40px] animate-float"></div>
-          <div className="absolute top-0 left-0 w-96 h-96 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-full blur-3xl animate-glow"></div>
-          <div className="absolute bottom-0 right-0 w-80 h-80 bg-gradient-to-tr from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-r from-transparent via-blue-500/5 to-transparent animate-spin-slow"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(59,130,246,0.15),transparent_50%)]"></div>
+          <div className="absolute inset-0 bg-[radial_gradient(ellipse_at_bottom_left,rgba(139,92,246,0.1),transparent_50%)]"></div>
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
         </div>
 
         <div className="relative z-10 flex items-center min-h-screen">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-            <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               {/* Left Content */}
-              <div className="text-center lg:text-left order-2 lg:order-1 space-y-8">
-                <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full text-sm font-medium text-blue-300 mb-8 animate-fadeInUp hover:scale-105 transition-transform cursor-default">
-                  <div className="w-3 h-3 bg-green-400 rounded-full mr-3 animate-pulse"></div>
-                  <FiTarget className="w-5 h-5 mr-2" />
-                  Enterprise Digital Solutions
-                  <div className="w-3 h-3 bg-green-400 rounded-full ml-3 animate-pulse"></div>
+              <div className="text-center lg:text-left order-2 lg:order-1 space-y-6 lg:space-y-8">
+                <div className="inline-flex items-center px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-sm font-medium text-blue-400 mb-4">
+                  <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                  Trusted by  <Counter end={10} suffix="+" /> Businesses
+                </div>
+                
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                  Build Your
+                  <span className="block bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                    Digital Future
+                  </span>
+                </h1>
+                
+                <p className="text-base sm:text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                  We create stunning websites and web applications that help businesses grow. 
+                  From concept to launch, we bring your vision to life with modern technology.
+                </p>
+                
+                {/* Stats Row */}
+                <div className="flex flex-wrap justify-center lg:justify-start gap-6 py-4">
+                  {[
+                    { value: 10, label: 'Projects', suffix: '+' },
+                    { value: 10, label: 'Clients', suffix: '+' },
+                    { value: 1, label: 'Years', suffix: '+' },
+                    { value: 100, label: 'Satisfaction', suffix: '%' }
+                  ].map((stat, index) => (
+                    <div key={index} className="text-center">
+                      <div className="text-2xl sm:text-3xl font-bold text-white">
+                        <Counter end={stat.value} suffix={stat.suffix} />
+                      </div>
+                      <div className="text-xs sm:text-sm text-gray-400">{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
+                
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start pt-2">
+                  <Link 
+                    to="/contact" 
+                    className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 flex items-center justify-center"
+                  >
+                    Get Started
+                    <FiArrowRight className="w-5 h-5 ml-2" />
+                  </Link>
+                  <Link 
+                    to="/projects" 
+                    className="border border-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all duration-300 flex items-center justify-center"
+                  >
+                    View Work
+                  </Link>
+                  <a 
+                    href="tel:+917380497919"
+                    className="bg-green-600 text-white px-4 py-3 rounded-lg font-semibold hover:bg-green-700 transition-all duration-300 flex items-center justify-center"
+                  >
+                    <FiPhone className="w-5 h-5" />
+                  </a>
                 </div>
 
-                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 leading-tight">
-                   Transform Your Business
-                   <span className="block bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 bg-clip-text text-transparent animate-gradient-shift">
-                     Digital Excellence
-                   </span>
-                 </h1>
-                 
-                 <div className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 animate-fadeInUp" style={{animationDelay: '0.3s'}}>
-                   <span className="bg-gradient-to-r from-white via-blue-200 to-cyan-200 bg-clip-text text-transparent">
-                     Web Tech Illusion
-                   </span>
-                 </div>
-                
-                 <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed animate-fadeInUp" style={{animationDelay: '0.3s'}}>
-                   We architect and develop <span className="font-semibold text-blue-400 hover:text-blue-300 transition-colors">scalable digital solutions</span> that drive 
-                   <span className="font-semibold text-cyan-400 hover:text-cyan-300 transition-colors">measurable business growth</span> for global enterprises.
-                   <br className="hidden sm:block" />
-                   <span className="block mt-2 text-base sm:text-lg lg:text-xl opacity-90">🚀 1+ Years of Excellence | 10+ Projects Delivered | 10+ Happy Clients</span>
-                 </p>
-               
-                 <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8 animate-fadeInUp" style={{animationDelay: '0.2s'}}>
-                   <Link 
-                     to="/contact" 
-                     className="group relative bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg shadow-2xl hover:shadow-blue-500/50 transform hover:scale-105 transition-all duration-300 flex items-center overflow-hidden"
-                   >
-                     <FiCode className="w-5 h-5 mr-2" />
-                     <span className="relative z-10">Start Your Project</span>
-                     <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-cyan-700 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
-                     <FiArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform relative z-10" />
-                   </Link>
-                    
-                   <Link 
-                     to="/projects" 
-                     className="group bg-white/10 backdrop-blur-sm border border-white/30 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg hover:bg-white/20 hover:border-white hover:scale-105 transition-all duration-300 flex items-center"
-                   >
-                     <FiLayers className="w-5 h-5 mr-2" />
-                     View Portfolio
-                     <FiArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                   </Link>
-
-                   <a 
-                     href="tel:+917380497919"
-                     className="group bg-gradient-to-r from-green-600 to-teal-600 text-white px-4 sm:px-6 py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg shadow-2xl hover:shadow-green-500/50 transform hover:scale-105 transition-all duration-300 flex items-center"
-                   >
-                     <FiPhone className="w-5 h-5 mr-2" />
-                     <span className="hidden sm:inline">Call Now</span>
-                     <span className="sm:hidden">Call</span>
-                   </a>
-                 </div>
-
-               {/* Enhanced Professional Stats */}
-               <div className="bg-gradient-to-r from-white/5 to-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 sm:p-8 animate-fadeInUp" style={{animationDelay: '0.6s'}}>
-                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
-                   {[
-                     { value: '10+', label: 'Projects Delivered', icon: FiTrendingUp, color: 'text-green-400' },
-                     { value: '100%', label: 'Client Satisfaction', icon: FiStar, color: 'text-yellow-400' },
-                     { value: '24/7', label: 'Support Available', icon: FiClock, color: 'text-blue-400' },
-                     { value: '1+', label: 'Years Experience', icon: FiAward, color: 'text-purple-400' }
-                   ].map((stat, index) => (
-                     <div key={index} className="text-center lg:text-left group cursor-pointer">
-                       <div className="flex items-center justify-center lg:justify-start mb-2">
-                         <div className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white group-hover:scale-110 transition-transform duration-300">{stat.value}</div>
-                         <stat.icon className={`w-5 h-5 ml-2 ${stat.color} opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-110`} />
-                       </div>
-                       <div className="text-xs sm:text-sm text-gray-400 uppercase tracking-wide font-medium">{stat.label}</div>
-                       <div className="mt-2 h-0.5 bg-gradient-to-r from-transparent via-white/30 to-transparent transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
-                     </div>
-                   ))}
-                 </div>
-               </div>
-                 {/* Enhanced Quick Navigation */}
-                 <div className="flex flex-wrap gap-3 justify-center lg:justify-start mb-8 animate-fadeInUp" style={{animationDelay: '0.4s'}}>
-                   <Link to="/about" className="group bg-white/10 backdrop-blur-sm border border-white/20 text-gray-300 px-4 py-2 rounded-lg hover:bg-white/20 hover:text-white hover:border-white/40 hover:scale-105 transition-all duration-300 flex items-center text-sm font-medium">
-                     <FiUsers className="w-4 h-4 mr-2 group-hover:text-blue-400" />
-                     About Us
-                   </Link>
-                   <Link to="/services" className="group bg-white/10 backdrop-blur-sm border border-white/20 text-gray-300 px-4 py-2 rounded-lg hover:bg-white/20 hover:text-white hover:border-white/40 hover:scale-105 transition-all duration-300 flex items-center text-sm font-medium">
-                     <FiCpu className="w-4 h-4 mr-2 group-hover:text-blue-400" />
-                     Services
-                   </Link>
-                   <Link to="/projects" className="group bg-white/10 backdrop-blur-sm border border-white/20 text-gray-300 px-4 py-2 rounded-lg hover:bg-white/20 hover:text-white hover:border-white/40 hover:scale-105 transition-all duration-300 flex items-center text-sm font-medium">
-                     <FiLayers className="w-4 h-4 mr-2 group-hover:text-blue-400" />
-                     Projects
-                   </Link>
-                   <Link to="/team" className="group bg-white/10 backdrop-blur-sm border border-white/20 text-gray-300 px-4 py-2 rounded-lg hover:bg-white/20 hover:text-white hover:border-white/40 hover:scale-105 transition-all duration-300 flex items-center text-sm font-medium">
-                     <FiAward className="w-4 h-4 mr-2 group-hover:text-blue-400" />
-                     Our Team
-                   </Link>
-                   <Link to="/contact" className="group bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-2 rounded-lg hover:from-blue-700 hover:to-cyan-700 hover:scale-105 transition-all duration-300 flex items-center text-sm font-medium shadow-lg">
-                     <FiMessageSquare className="w-4 h-4 mr-2" />
-                     Contact
-                   </Link>
-                 </div>
+                {/* Quick Links */}
+                <div className="flex flex-wrap gap-2 justify-center lg:justify-start pt-2">
+                  <Link to="/about" className="text-gray-400 hover:text-white text-sm px-3 py-1">About</Link>
+                  <Link to="/services" className="text-gray-400 hover:text-white text-sm px-3 py-1">Services</Link>
+                  <Link to="/projects" className="text-gray-400 hover:text-white text-sm px-3 py-1">Projects</Link>
+                  <Link to="/contact" className="text-blue-400 hover:text-blue-300 text-sm px-3 py-1 font-medium">Contact</Link>
+                </div>
               </div>
               
-{/* Enhanced Right Content - Professional Dashboard Preview */}
-               <div className="relative order-1 lg:order-2 mb-8 lg:mb-0 mt-20 sm:mt-24 lg:mt-0">
-                 <div className="relative bg-gradient-to-br from-slate-900/90 to-blue-900/90 backdrop-blur-xl border border-blue-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl animate-fadeInRight group hover:scale-105 transition-transform duration-500" style={{animationDelay: '0.2s'}}>
-                   {/* Enhanced Mock Dashboard Header */}
-                   <div className="flex items-center justify-between mb-6">
-                     <div className="flex items-center space-x-3">
-                       <div className="w-3 h-3 bg-red-500 rounded-full hover:scale-125 transition-transform cursor-pointer"></div>
-                       <div className="w-3 h-3 bg-yellow-500 rounded-full hover:scale-125 transition-transform cursor-pointer"></div>
-                       <div className="w-3 h-3 bg-green-500 rounded-full hover:scale-125 transition-transform cursor-pointer"></div>
-                     </div>
-                     <div className="text-xs text-gray-300 font-mono bg-black/30 px-3 py-1 rounded-full">webtech-illusion.dev</div>
-                   </div>
+              {/* Right Content - Clean Dashboard Preview */}
+              <div className="relative order-1 lg:order-2 mt-8 lg:mt-0">
+                <div className="bg-slate-800/80 backdrop-blur-xl border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl">
+                  {/* Mock Window Header */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    </div>
+                    <div className="text-xs text-gray-400 font-mono">webtechillusion.com</div>
+                  </div>
                   
-                   {/* Enhanced Mock Dashboard Content with Professional Stats */}
-                   <div className="space-y-4">
-                     {[
-                       { 
-                         icon: FiTrendingUp, 
-                         gradient: 'from-blue-500 to-cyan-500', 
-                         bgGradient: 'from-blue-500/20 to-cyan-500/20', 
-                         border: 'border-blue-500/30',
-                         title: 'Revenue Growth', 
-                         subtitle: '+25% this quarter', 
-                         value: '₹2.5L', 
-                         valueColor: 'text-green-400'
-                       },
-                       { 
-                         icon: FiUsers, 
-                         gradient: 'from-green-500 to-teal-500', 
-                         bgGradient: 'from-green-500/20 to-teal-500/20', 
-                         border: 'border-green-500/30',
-                         title: 'Active Clients', 
-                         subtitle: 'Monthly active', 
-                         value: '50+', 
-                         valueColor: 'text-green-400'
-                       },
-                       { 
-                         icon: FiActivity, 
-                         gradient: 'from-purple-500 to-pink-500', 
-                         bgGradient: 'from-purple-500/20 to-pink-500/20', 
-                         border: 'border-purple-500/30',
-                         title: 'Performance', 
-                         subtitle: '99.5% uptime', 
-                         value: 'A+', 
-                         valueColor: 'text-green-400'
-                       },
-                       { 
-                         icon: FiClock, 
-                         gradient: 'from-orange-500 to-red-500', 
-                         bgGradient: 'from-orange-500/20 to-red-500/20', 
-                         border: 'border-orange-500/30',
-                         title: 'Avg Delivery', 
-                         subtitle: 'Project timeline', 
-                         value: '7 Days', 
-                         valueColor: 'text-green-400'
-                       },
-                       { 
-                         icon: FiStar, 
-                         gradient: 'from-indigo-500 to-blue-500', 
-                         bgGradient: 'from-indigo-500/20 to-blue-500/20', 
-                         border: 'border-indigo-500/30',
-                         title: 'Satisfaction', 
-                         subtitle: 'Client feedback', 
-                         value: '100%', 
-                         valueColor: 'text-green-400'
-                       }
-                     ].map((item, index) => (
-                       <div 
-                         key={index} 
-                         className={`flex items-center justify-between p-4 bg-gradient-to-r ${item.bgGradient} ${item.border} rounded-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer group`}
-                         style={{animationDelay: `${0.3 + index * 0.1}s`}}
-                       >
-                         <div className="flex items-center space-x-3">
-                           <div className={`w-10 h-10 bg-gradient-to-r ${item.gradient} rounded-lg flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
-                             <item.icon className="w-5 h-5 text-white" />
-                           </div>
-                           <div>
-                             <div className="text-white font-semibold text-sm">{item.title}</div>
-                             <div className="text-gray-400 text-xs">{item.subtitle}</div>
-                           </div>
-                         </div>
-                         <div className={`font-bold text-lg ${item.valueColor} group-hover:scale-110 transition-transform`}>{item.value}</div>
-                       </div>
-                     ))}
-                   </div>
+                  {/* Dashboard Cards */}
+                  <div className="grid grid-cols-2 gap-4">
+                    {[
+                      { title: 'Projects', value: 10, suffix: '+', color: 'blue' },
+                      { title: 'Clients', value: 10, suffix: '+', color: 'green' },
+                      { title: 'Rating', value: 5, suffix: '.0', color: 'yellow' },
+                      { title: 'Support', value: 24, suffix: '/7', color: 'purple' }
+                    ].map((item, index) => (
+                      <div key={index} className={`bg-slate-700/50 rounded-xl p-4 border border-slate-600`}>
+                        <div className={`text-xs text-${item.color}-400 uppercase mb-1`}>{item.title}</div>
+                        <div className="text-2xl font-bold text-white">
+                          <Counter end={item.value} suffix={item.suffix} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                   
-                   {/* Enhanced Floating Elements */}
-                   <div className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-r from-blue-500/30 to-cyan-500/30 rounded-full blur-2xl animate-pulse"></div>
-                   <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-full blur-xl animate-pulse" style={{animationDelay: '1s'}}></div>
-                   
-                   {/* Professional Badge */}
-                   <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-500 to-teal-500 text-white px-4 py-2 rounded-full text-xs font-bold shadow-lg animate-bounce">
-                     LIVE DASHBOARD
-                   </div>
-                 </div>
-                 
-                 {/* Enhanced Floating Tech Icons */}
-                 <div className="absolute -top-6 -left-6 w-14 h-14 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-2xl animate-float hover:scale-110 transition-transform cursor-pointer">
-                   <FiCode className="w-7 h-7 text-white" />
-                 </div>
-                 <div className="absolute top-1/3 -right-8 w-12 h-12 bg-gradient-to-r from-green-600 to-teal-600 rounded-xl flex items-center justify-center shadow-2xl animate-float hover:scale-110 transition-transform cursor-pointer" style={{animationDelay: '0.5s'}}>
-                   <FiDatabase className="w-6 h-6 text-white" />
-                 </div>
-                 <div className="absolute bottom-1/3 -left-8 w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-2xl animate-float hover:scale-110 transition-transform cursor-pointer" style={{animationDelay: '1.5s'}}>
-                   <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                     <path d="M11.998,24c-0.321,0-0.641-0.084-0.922-0.247l-2.936-1.737c-0.438-0.245-0.224-0.332-0.08-0.383 c0.585-0.203,0.703-0.25,1.328-0.604c0.065-0.037,0.151-0.023,0.218,0.017l2.256,1.339c0.082,0.045,0.197,0.045,0.272,0l8.795-5.076 c0.082-0.047,0.134-0.141,0.134-0.238V6.921c0-0.099-0.053-0.192-0.137-0.242l-8.791-5.072c-0.081-0.047-0.189-0.047-0.271,0 L2.46,6.68C2.376,6.729,2.322,6.825,2.322,6.921v10.15c0,0.097,0.054,0.189,0.139,0.235l2.409,1.392 c1.307,0.654,2.108-0.116,2.108-0.89V7.787c0-0.142,0.114-0.253,0.256-0.253h1.115c0.139,0,0.255,0.112,0.255,0.253v10.021 c0,1.745-0.95,2.745-2.604,2.745c-0.508,0-0.909,0-2.026-0.551L2.28,18.675c-0.57-0.329-0.922-0.945-0.922-1.604V6.921 c0-0.659,0.353-1.275,0.922-1.603l8.795-5.082c0.557-0.315,1.296-0.315,1.848,0l8.794,5.082c0.570,0.329,0.924,0.944,0.924,1.603 v10.15c0,0.659-0.354,1.273-0.924,1.604l-8.794,5.078C12.643,23.916,12.324,24,11.998,24z M19.099,13.993 c0-1.9-1.284-2.406-3.987-2.763c-2.731-0.361-3.009-0.548-3.009-1.187c0-0.528,0.235-1.233,2.258-1.233 c1.807,0,2.473,0.389,2.747,1.607c0.024,0.115,0.129,0.199,0.247,0.199h1.141c0.071,0,0.138-0.031,0.186-0.081 c0.048-0.054,0.074-0.123,0.067-0.196c-0.177-2.098-1.571-3.076-4.388-3.076c-2.508,0-4.004,1.058-4.004,2.833 c0,1.925,1.488,2.457,3.895,2.695c2.88,0.282,3.103,0.703,3.103,1.269c0,0.983-0.789,1.402-2.642,1.402 c-2.327,0-2.839-0.584-3.011-1.742c-0.02-0.124-0.126-0.215-0.253-0.215h-1.137c-0.141,0-0.254,0.112-0.254,0.253 c0,1.482,0.806,3.248,4.655,3.248C17.501,17.007,19.099,15.91,19.099,13.993z"/>
-                   </svg>
-                 </div>
-                 <div className="absolute -bottom-8 -right-6 w-16 h-16 bg-gradient-to-r from-orange-600 to-red-600 rounded-xl flex items-center justify-center shadow-2xl animate-float hover:scale-110 transition-transform cursor-pointer" style={{animationDelay: '2s'}}>
-                   <FiZap className="w-8 h-8 text-white" />
-                 </div>
-               </div>
+                  {/* Service Preview */}
+                  <div className="mt-4 p-4 bg-slate-700/30 rounded-xl border border-slate-600">
+                    <div className="text-sm text-gray-300 mb-2">Our Services</div>
+                    <div className="flex flex-wrap gap-2">
+                      {['Web Development', 'Mobile Apps', 'E-Commerce', 'UI/UX Design'].map((service, i) => (
+                        <span key={i} className="text-xs bg-slate-600 text-gray-300 px-2 py-1 rounded">{service}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                
+                {/* Floating Badge */}
+                <div className="absolute -bottom-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
+                  Available for Work
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Spacing Section */}
-      <div className="h-16 sm:h-20 lg:h-24 bg-gradient-to-b from-slate-900 to-white"></div>
-
-      {/* Professional Video/Testimonial Section */}
-      <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 relative overflow-hidden">
+      {/* Client Success Stories Section */}
+      <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(59,130,246,0.1),transparent_70%)]"></div>
+          <div className="absolute top-20 left-10 w-64 h-64 bg-blue-100/40 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-purple-100/30 rounded-full blur-3xl"></div>
         </div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16 animate-fadeInUp">
-            <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full text-sm font-medium text-blue-300 mb-6">
-              <FiStar className="w-4 h-4 mr-2" />
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-4 py-2 bg-blue-100 border border-blue-200 rounded-full text-sm font-semibold text-blue-700 mb-4">
+              <FiStar className="w-4 h-4 mr-2 text-yellow-500" />
               Client Success Stories
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              What Our <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">Clients Say</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              What Our <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Clients Say</span>
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Don't just take our word for it. Here's what businesses like yours have achieved with our solutions.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
             {[
               {
                 name: "Rahul Sharma",
                 company: "TechStart Solutions",
                 content: "Web Tech Illusion transformed our online presence completely. Their attention to detail and innovative approach helped us increase our conversions by 300%.",
                 rating: 5,
-                gradient: "from-blue-600 to-cyan-600",
+                gradient: "from-blue-500 to-cyan-500",
                 project: "E-Commerce Platform"
               },
               {
@@ -375,7 +313,7 @@ return (
                 company: "Digital Marketing Pro",
                 content: "Professional, timely, and exceeded our expectations. Their team understood our vision perfectly and delivered a stunning website that represents our brand.",
                 rating: 5,
-                gradient: "from-green-600 to-teal-600",
+                gradient: "from-green-500 to-teal-500",
                 project: "Corporate Website"
               },
               {
@@ -383,53 +321,50 @@ return (
                 company: "Innovation Labs",
                 content: "The best development team we've worked with. They turned our complex requirements into a seamless, user-friendly application. Highly recommended!",
                 rating: 5,
-                gradient: "from-purple-600 to-pink-600",
+                gradient: "from-purple-500 to-pink-500",
                 project: "Web Application"
               }
             ].map((testimonial, index) => (
               <div 
                 key={index} 
-                className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:bg-white/15 hover:scale-105 transition-all duration-500 animate-fadeInUp"
-                style={{animationDelay: `${index * 0.1}s`}}
+                className="bg-white rounded-2xl p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
-                <div className="flex items-center mb-6">
-                  <div className="w-12 h-12 bg-gradient-to-br from-gray-300 to-gray-500 rounded-full flex items-center justify-center text-white font-bold text-lg mr-4">
+                <div className="flex items-center mb-4">
+                  <div className={`w-12 h-12 bg-gradient-to-br ${testimonial.gradient} rounded-full flex items-center justify-center text-white font-bold text-lg mr-4`}>
                     {testimonial.name.split(' ').map(n => n[0]).join('')}
                   </div>
-                  <div className="flex-1">
-                    <h4 className="text-white font-bold text-lg">{testimonial.name}</h4>
-                    <p className="text-blue-300 text-sm">{testimonial.company}</p>
-                    <p className="text-gray-400 text-xs">{testimonial.project}</p>
+                  <div>
+                    <h4 className="text-gray-900 font-bold">{testimonial.name}</h4>
+                    <p className="text-blue-600 text-sm">{testimonial.company}</p>
                   </div>
                 </div>
                 
-                <div className="flex mb-4">
+                <div className="flex mb-3">
                   {[...Array(testimonial.rating)].map((_, i) => (
                     <FiStar key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                   ))}
                 </div>
                 
-                <p className="text-gray-300 leading-relaxed italic">"{testimonial.content}"</p>
+                <p className="text-gray-600 leading-relaxed text-sm lg:text-base">"{testimonial.content}"</p>
                 
-                <div className={`absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r ${testimonial.gradient} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 rounded-b-2xl`}></div>
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <span className="text-xs text-gray-500 font-medium">Project: {testimonial.project}</span>
+                </div>
               </div>
             ))}
           </div>
           
-          <div className="text-center mt-12">
+          <div className="text-center mt-10">
             <Link 
               to="/projects" 
-              className="inline-flex items-center bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              className="inline-flex items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
             >
-              View All Case Studies
+              View All Projects
               <FiArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </div>
         </div>
       </section>
-
-      {/* Spacing Section */}
-      <div className="h-12 sm:h-16 lg:h-20 bg-gradient-to-b from-slate-900 to-white"></div>
 
       {/* Enhanced Professional Consultation Section */}
       <section className="py-24 bg-white relative overflow-hidden">
@@ -832,140 +767,135 @@ return (
         </div>
       </section>
 
-      {/* Spacing Section */}
-      <div className="h-16 sm:h-20 lg:h-24 bg-gradient-to-b from-white to-slate-900"></div>
-
       {/* Comprehensive Navigation Section */}
-      <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 relative overflow-hidden">
-        {/* Animated Background */}
+      <section className="py-16 lg:py-24 bg-white relative overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.1),transparent_70%)] animate-pulse"></div>
-          <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(59,130,246,0.02)_25%,rgba(59,130,246,0.02)_50%,transparent_50%,transparent_75%,rgba(59,130,246,0.02)_75%)] bg-[length:80px_80px]"></div>
+          <div className="absolute top-10 right-10 w-64 h-64 bg-blue-50/50 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 left-10 w-80 h-80 bg-purple-50/50 rounded-full blur-3xl"></div>
         </div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center mb-16 animate-fadeInUp">
-            <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-500/20 to-purple-500/20 backdrop-blur-sm border border-blue-500/30 rounded-full text-sm font-medium text-blue-300 mb-8">
-              <FiGlobe className="w-5 h-5 mr-2" />
-              Explore Our Digital Ecosystem
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-semibold text-blue-700 mb-4">
+              <FiGlobe className="w-4 h-4 mr-2" />
+              Explore Our Services
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
               Navigate Through Our
-              <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Complete Solution Suite
               </span>
             </h2>
-            <p className="text-xl text-gray-300 max-w-4xl mx-auto">
+            <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto">
               Every aspect of your digital transformation journey, carefully crafted and interconnected.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 md:gap-6">
             {[
               {
                 to: "/",
                 icon: FiHome,
                 title: "Home",
                 description: "Welcome to digital excellence",
-                gradient: "from-blue-600 to-cyan-600",
-                features: ["Hero Dashboard", "Quick Stats", "Live Projects", "Consultation Form"],
+                gradient: "from-blue-500 to-cyan-500",
+                bgGradient: "from-blue-50 to-cyan-50",
+                hoverBg: "hover:bg-blue-50",
+                textColor: "text-blue-600",
                 isCurrent: true
               },
               {
                 to: "/about",
                 icon: FiUsers,
                 title: "About Us",
-                description: "Discover our story and mission",
-                gradient: "from-purple-600 to-pink-600",
-                features: ["Company History", "Core Values", "Team Members", "Success Metrics"]
+                description: "Discover our story",
+                gradient: "from-purple-500 to-pink-500",
+                bgGradient: "from-purple-50 to-pink-50",
+                hoverBg: "hover:bg-purple-50",
+                textColor: "text-purple-600"
               },
               {
                 to: "/services",
                 icon: FiCpu,
                 title: "Services",
-                description: "Comprehensive digital solutions",
-                gradient: "from-green-600 to-teal-600",
-                features: ["Web Development", "Mobile Apps", "E-Commerce", "Digital Marketing"]
+                description: "Digital solutions",
+                gradient: "from-green-500 to-teal-500",
+                bgGradient: "from-green-50 to-teal-50",
+                hoverBg: "hover:bg-green-50",
+                textColor: "text-green-600"
               },
               {
                 to: "/projects",
                 icon: FiLayers,
                 title: "Projects",
-                description: "Our portfolio of success",
-                gradient: "from-orange-600 to-red-600",
-                features: ["Case Studies", "Live Demos", "Client Testimonials", "Success Stories"]
+                description: "Our portfolio",
+                gradient: "from-orange-500 to-red-500",
+                bgGradient: "from-orange-50 to-red-50",
+                hoverBg: "hover:bg-orange-50",
+                textColor: "text-orange-600"
               },
               {
                 to: "/team",
                 icon: FiAward,
                 title: "Our Team",
-                description: "Meet the experts behind excellence",
-                gradient: "from-indigo-600 to-blue-600",
-                features: ["Developer Profiles", "Expertise Areas", "Certifications", "Team Collaboration"]
+                description: "Meet experts",
+                gradient: "from-indigo-500 to-blue-500",
+                bgGradient: "from-indigo-50 to-blue-50",
+                hoverBg: "hover:bg-indigo-50",
+                textColor: "text-indigo-600"
               },
               {
                 to: "/contact",
                 icon: FiMessageSquare,
                 title: "Contact",
-                description: "Start your journey with us",
-                gradient: "from-cyan-600 to-blue-600",
-                features: ["Get Quote", "Schedule Meeting", "Support Center", "Office Locations"]
+                description: "Start journey",
+                gradient: "from-cyan-500 to-blue-500",
+                bgGradient: "from-cyan-50 to-blue-50",
+                hoverBg: "hover:bg-cyan-50",
+                textColor: "text-cyan-600"
               }
             ].map((page, index) => (
               <Link 
                 key={index}
                 to={page.to}
-                className={`group relative bg-gradient-to-br ${page.gradient} p-1 rounded-2xl hover:scale-105 transition-all duration-500 animate-fadeInUp ${
-                  page.isCurrent ? 'ring-4 ring-white/30 shadow-2xl' : ''
-                }`}
-                style={{animationDelay: `${index * 0.1}s`}}
+                className={`group p-4 md:p-6 rounded-2xl border border-gray-100 bg-white shadow-sm hover:shadow-lg transition-all duration-300 ${page.isCurrent ? 'ring-2 ring-blue-500' : ''}`}
               >
-                <div className="bg-slate-900 rounded-2xl p-6 h-full">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className={`w-16 h-16 bg-gradient-to-br ${page.gradient} rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:rotate-6 transition-all duration-300`}>
-                      <page.icon className="w-8 h-8 text-white" />
-                    </div>
-                    {page.isCurrent && (
-                      <div className="px-3 py-1 bg-green-500 text-white text-xs font-bold rounded-full animate-pulse">
-                        CURRENT
-                      </div>
-                    )}
+                <div className="flex items-center justify-between mb-3">
+                  <div className={`w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br ${page.gradient} rounded-xl flex items-center justify-center shadow-md group-hover:scale-110 transition-transform duration-300`}>
+                    <page.icon className="w-6 h-6 md:w-7 md:h-7 text-white" />
                   </div>
-                  
-                  <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-blue-300 transition-colors">{page.title}</h3>
-                  <p className="text-gray-400 mb-4">{page.description}</p>
-                  
-                  <div className="space-y-2 mb-4">
-                    {page.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center text-sm text-gray-500 group-hover:text-gray-300 transition-colors">
-                        <FiCheckCircle className="w-3 h-3 mr-2 text-green-500 flex-shrink-0" />
-                        {feature}
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="flex items-center text-blue-400 font-semibold text-sm group-hover:text-blue-300 transition-colors">
-                    Explore {page.title}
-                    <FiArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                  </div>
+                  {page.isCurrent && (
+                    <span className="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
+                      Here
+                    </span>
+                  )}
                 </div>
+                
+                <h3 className="text-base md:text-lg font-bold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">
+                  {page.title}
+                </h3>
+                <p className="text-sm text-gray-500">{page.description}</p>
               </Link>
             ))}
           </div>
           
-          <div className="text-center mt-12">
-            <p className="text-gray-400 mb-6">
-              <FiExternalLink className="inline w-4 h-4 mr-2" />
-              Seamless navigation between all our digital solutions
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              {["Home", "About", "Services", "Projects", "Team", "Contact"].map((page, index) => (
+          <div className="text-center mt-10">
+            <p className="text-gray-500 mb-4 text-sm">Quick links</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {[
+                { name: "Home", to: "/" },
+                { name: "About", to: "/about" },
+                { name: "Services", to: "/services" },
+                { name: "Projects", to: "/projects" },
+                { name: "Team", to: "/team" },
+                { name: "Contact", to: "/contact" }
+              ].map((page, index) => (
                 <Link
                   key={index}
-                  to={`/${page.toLowerCase() === 'home' ? '' : page.toLowerCase()}`}
-                  className="px-4 py-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white hover:bg-white/20 transition-all duration-300 text-sm"
+                  to={page.to}
+                  className="px-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 hover:bg-blue-50 hover:border-blue-200 hover:text-blue-600 transition-all duration-300 text-sm font-medium"
                 >
-                  {page}
+                  {page.name}
                 </Link>
               ))}
             </div>
@@ -1101,20 +1031,28 @@ return (
             <p className="text-xl opacity-90 max-w-3xl mx-auto">Numbers that speak for our commitment to excellence and client satisfaction</p>
           </div>
           <div className="grid md:grid-cols-4 gap-12 text-center">
-            <div className="animate-fadeInUp bg-white/10 p-8 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
-              <div className="text-5xl md:text-6xl font-bold mb-4 animate-pulse-custom">3+</div>
+            <div className="bg-white/10 p-8 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
+              <div className="text-5xl md:text-6xl font-bold mb-4 text-white">
+                <Counter end={10} suffix="+" />
+              </div>
               <div className="text-xl opacity-90">Projects Delivered</div>
             </div>
-            <div className="animate-fadeInUp bg-white/10 p-8 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300" style={{animationDelay: '0.1s'}}>
-              <div className="text-5xl md:text-6xl font-bold mb-4 animate-pulse-custom" style={{animationDelay: '0.5s'}}>3+</div>
+            <div className="bg-white/10 p-8 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300" style={{animationDelay: '0.1s'}}>
+              <div className="text-5xl md:text-6xl font-bold mb-4 text-white" style={{animationDelay: '0.5s'}}>
+                <Counter end={10} suffix="+" />
+              </div>
               <div className="text-xl opacity-90">Happy Clients</div>
             </div>
-            <div className="animate-fadeInUp bg-white/10 p-8 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300" style={{animationDelay: '0.2s'}}>
-              <div className="text-5xl md:text-6xl font-bold mb-4 animate-pulse-custom" style={{animationDelay: '1s'}}>1+</div>
+            <div className="bg-white/10 p-8 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300" style={{animationDelay: '0.2s'}}>
+              <div className="text-5xl md:text-6xl font-bold mb-4 text-white" style={{animationDelay: '1s'}}>
+                <Counter end={1} suffix="+" />
+              </div>
               <div className="text-xl opacity-90">Years Experience</div>
             </div>
-            <div className="animate-fadeInUp bg-white/10 p-8 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300" style={{animationDelay: '0.3s'}}>
-              <div className="text-5xl md:text-6xl font-bold mb-4 animate-pulse-custom" style={{animationDelay: '1.5s'}}>100%</div>
+            <div className="bg-white/10 p-8 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300" style={{animationDelay: '0.3s'}}>
+              <div className="text-5xl md:text-6xl font-bold mb-4 text-white" style={{animationDelay: '1.5s'}}>
+                <Counter end={100} suffix="%" />
+              </div>
               <div className="text-xl opacity-90">Client Satisfaction</div>
             </div>
           </div>

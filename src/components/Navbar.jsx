@@ -1,142 +1,128 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import logo from '../assets/illusionlogo.jpeg';
+import { FiMenu, FiX, FiPhone } from 'react-icons/fi';
 
 const Navbar = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const isActive = (path) => location.pathname === path;
 
+  const navLinks = [
+    { path: '/', label: 'Home' },
+    { path: '/about', label: 'About' },
+    { path: '/services', label: 'Services' },
+    { path: '/projects', label: 'Projects' },
+  ];
+
   return (
-    <nav className="bg-white/95 backdrop-blur-md shadow-lg fixed w-full top-0 z-[9999] border-b border-gray-100">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      isScrolled 
+        ? 'bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100 py-2' 
+        : 'bg-white shadow-sm py-3'
+    }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 sm:h-18">
-          <div className="flex items-center">
-            <Link to="/" className="flex items-center space-x-3 group">
-              <div className="relative">
-                <img src={logo} alt="Illusion Logo" className="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 rounded-full object-cover shadow-md border-2 border-blue-100 group-hover:border-blue-300 transition-all duration-300" />
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-              <div>
-                <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Web Tech Illusion</span>
-              </div>
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-2 group">
+            <img 
+              src={logo} 
+              alt="Web Tech Illusion" 
+              className="h-14 w-14 sm:h-16 sm:w-16 rounded-full object-cover shadow-md border-2 border-blue-100 group-hover:border-blue-300 transition-all duration-300" 
+            />
+            <div className="hidden sm:block">
+              <span className="text-xl sm:text-2xl font-bold text-gray-900">Web Tech Illusion</span>
+              <p className="text-xs text-gray-500 -mt-0.5">Digital Solutions</p>
+            </div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden lg:flex items-center space-x-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive(link.path) 
+                    ? 'text-blue-600 bg-blue-50' 
+                    : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+
+          {/* CTA & Phone */}
+          <div className="hidden lg:flex items-center space-x-3">
+            <a 
+              href="tel:+917380497919"
+              className="flex items-center text-gray-600 hover:text-green-600 transition-colors"
+            >
+              <FiPhone className="w-4 h-4 mr-1" />
+              <span className="text-sm font-medium">+91 73804 97919</span>
+            </a>
+            <Link
+              to="/contact"
+              className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 text-white text-sm font-semibold rounded-lg hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-200 transform hover:scale-105"
+            >
+              Get Started
             </Link>
           </div>
-          
-          <div className="hidden md:block">
-            <div className="ml-6 flex items-center space-x-1">
-              <Link
-                to="/"
-                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                  isActive('/') 
-                    ? 'text-white bg-gradient-to-r from-blue-600 to-cyan-600 shadow-lg shadow-blue-500/25' 
-                    : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
-                }`}
-              >
-                Home
-              </Link>
-              <Link
-                to="/about"
-                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                  isActive('/about') 
-                    ? 'text-white bg-gradient-to-r from-blue-600 to-cyan-600 shadow-lg shadow-blue-500/25' 
-                    : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
-                }`}
-              >
-                About
-              </Link>
-              <Link
-                to="/services"
-                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                  isActive('/services') 
-                    ? 'text-white bg-gradient-to-r from-blue-600 to-cyan-600 shadow-lg shadow-blue-500/25' 
-                    : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
-                }`}
-              >
-                Services
-              </Link>
-              <Link
-                to="/projects"
-                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
-                  isActive('/projects') 
-                    ? 'text-white bg-gradient-to-r from-blue-600 to-cyan-600 shadow-lg shadow-blue-500/25' 
-                    : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
-                }`}
-              >
-                Projects
-              </Link>
-              <Link
-                to="/contact"
-                className="ml-4 px-6 py-2 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/25 transition-all duration-300 transform hover:scale-105"
-              >
-                Contact
-              </Link>
-            </div>
-          </div>
 
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600 transition-colors p-2 rounded-lg hover:bg-blue-50"
-            >
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {isMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
-          </div>
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="lg:hidden p-2 rounded-lg text-gray-600 hover:text-blue-600 hover:bg-blue-50 transition-colors"
+          >
+            {isMenuOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
+          </button>
         </div>
 
+        {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-white/95 backdrop-blur-md shadow-xl mt-2 mx-2 border border-gray-200 rounded-xl">
-              <Link
-                to="/"
-                onClick={() => setIsMenuOpen(false)}
-                className={`block px-4 py-3 rounded-lg text-base font-semibold transition-all duration-300 ${
-                  isActive('/') ? 'text-white bg-gradient-to-r from-blue-600 to-cyan-600' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
-                }`}
-              >
-                Home
-              </Link>
-              <Link
-                to="/about"
-                onClick={() => setIsMenuOpen(false)}
-                className={`block px-4 py-3 rounded-lg text-base font-semibold transition-all duration-300 ${
-                  isActive('/about') ? 'text-white bg-gradient-to-r from-blue-600 to-cyan-600' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
-                }`}
-              >
-                About
-              </Link>
-              <Link
-                to="/services"
-                onClick={() => setIsMenuOpen(false)}
-                className={`block px-4 py-3 rounded-lg text-base font-semibold transition-all duration-300 ${
-                  isActive('/services') ? 'text-white bg-gradient-to-r from-blue-600 to-cyan-600' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
-                }`}
-              >
-                Services
-              </Link>
-              <Link
-                to="/projects"
-                onClick={() => setIsMenuOpen(false)}
-                className={`block px-4 py-3 rounded-lg text-base font-semibold transition-all duration-300 ${
-                  isActive('/projects') ? 'text-white bg-gradient-to-r from-blue-600 to-cyan-600' : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
-                }`}
-              >
-                Projects
-              </Link>
-              <Link
-                to="/contact"
-                onClick={() => setIsMenuOpen(false)}
-                className="block px-4 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-semibold text-center mt-2"
-              >
-                Contact
-              </Link>
+          <div className="lg:hidden mt-3 pb-3 border-t border-gray-100 pt-3">
+            <div className="flex flex-col space-y-2">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setIsMenuOpen(false)}
+                  className={`px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${
+                    isActive(link.path) 
+                      ? 'text-white bg-gradient-to-r from-blue-600 to-cyan-600' 
+                      : 'text-gray-600 hover:text-blue-600 hover:bg-blue-50'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <div className="pt-2 space-y-2">
+                <a 
+                  href="tel:+917380497919"
+                  className="flex items-center justify-center px-4 py-3 border border-gray-200 rounded-lg text-gray-700 font-medium hover:bg-gray-50"
+                >
+                  <FiPhone className="w-5 h-5 mr-2" />
+                  +91 73804 97919
+                </a>
+                <Link
+                  to="/contact"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block text-center px-4 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-semibold"
+                >
+                  Get Started
+                </Link>
+              </div>
             </div>
           </div>
         )}

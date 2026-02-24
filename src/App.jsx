@@ -23,18 +23,20 @@ function App() {
     <Router>
       <div className="App">
         <Navbar />
-        <Suspense fallback={<LoadingSpinner size="lg" className="min-h-[50vh]" />}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/projects" element={<Projects />} />
-            <Route path="/project/:id" element={<ProjectDetail />} />
-            <Route path="/team" element={<Team />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/dashboard/admin" element={<Dashboard />} />
-          </Routes>
-        </Suspense>
+        <main className="pt-16">
+          <Suspense fallback={<LoadingSpinner size="lg" className="min-h-[50vh]" />}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/services" element={<Services />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/project/:id" element={<ProjectDetail />} />
+              <Route path="/team" element={<Team />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/dashboard/admin" element={<Dashboard />} />
+            </Routes>
+          </Suspense>
+        </main>
         <NotificationBanner />
       </div>
     </Router>
