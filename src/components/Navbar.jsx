@@ -40,9 +40,8 @@ const Navbar = () => {
               alt="Web Tech Illusion" 
               className="h-14 w-14 sm:h-16 sm:w-16 rounded-full object-cover shadow-md border-2 border-blue-100 group-hover:border-blue-300 transition-all duration-300" 
             />
-            <div className="hidden sm:block">
+            <div>
               <span className="text-xl sm:text-2xl font-bold text-gray-900">Web Tech Illusion</span>
-              <p className="text-xs text-gray-500 -mt-0.5">Digital Solutions</p>
             </div>
           </Link>
 
