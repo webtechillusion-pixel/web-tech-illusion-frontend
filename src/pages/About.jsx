@@ -39,8 +39,7 @@ import {
   FiArrowRight,
   FiExternalLink,
   FiShoppingCart,
-  FiFileText,
-  FiLightbulb
+  FiFileText
 } from 'react-icons/fi';
 import Footer from '../components/Footer';
 
@@ -132,7 +131,7 @@ return (
           <div className="flex flex-wrap justify-center gap-2 mb-8">
             {[
               { id: 'mission', label: 'Our Mission', icon: <FiTarget className="w-4 h-4" /> },
-              { id: 'vision', label: 'Our Vision', icon: <FiLightbulb className="w-4 h-4" /> },
+              { id: 'vision', label: 'Our Vision', icon: <FiZap className="w-4 h-4" /> },
               { id: 'values', label: 'Our Values', icon: <FiHeart className="w-4 h-4" /> }
             ].map((tab) => (
               <button
@@ -168,7 +167,7 @@ return (
               {activeTab === 'vision' && (
                 <>
                   <h3 className="text-xl sm:text-2xl font-bold text-gray-900 flex items-center">
-                    <FiLightbulb className="w-6 h-6 mr-2 text-yellow-500" />
+                    <FiZap className="w-6 h-6 mr-2 text-yellow-500" />
                     Our Vision
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
@@ -216,7 +215,7 @@ return (
                     )}
                     {activeTab === 'vision' && (
                       <>
-                        <FiLightbulb className="w-12 h-12 mx-auto mb-4 opacity-80" />
+                        <FiZap className="w-12 h-12 mx-auto mb-4 opacity-80" />
                         <div className="text-2xl font-bold">Innovation First</div>
                         <p className="text-sm opacity-90 mt-2">Leading the future of digital transformation</p>
                       </>
