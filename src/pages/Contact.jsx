@@ -259,7 +259,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">Office Address</h3>
-                      <p className="text-gray-600 text-base sm:text-lg leading-relaxed">Indiranagar ,MunsiPuliya <br />Lucknow, Uttar Pradesh 226010<br />India</p>
+                      <p className="text-gray-600 text-base sm:text-lg leading-relaxed"> 16/1033,Road,Sector 16 , Indira Nagar, Lucknow , Uttar Pradesh<br />Lucknow, Uttar Pradesh 226010<br />India</p>
                     </div>
                   </div>
                   
