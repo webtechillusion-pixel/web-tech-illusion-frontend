@@ -37,11 +37,11 @@ const Navbar = () => {
           <Link to="/" className="flex items-center space-x-2 group">
             <img 
               src={logo} 
-              alt="Web Tech Illusion" 
+              alt="WebTech Illusion" 
               className="h-14 w-14 sm:h-16 sm:w-16 rounded-full object-cover shadow-md border-2 border-blue-100 group-hover:border-blue-300 transition-all duration-300" 
             />
             <div>
-              <span className="text-xl sm:text-2xl font-bold text-gray-900">Web Tech Illusion</span>
+              <span className="text-xl sm:text-2xl font-bold text-gray-900">WebTech Illusion</span>
             </div>
           </Link>
 
