@@ -1,6 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import logo from '../assets/illusionlogo.jpeg';
+import logo from '../assets/WebTech Logo with BG.png';
 import { FiMenu, FiX, FiPhone } from 'react-icons/fi';
 
 const Navbar = () => {
@@ -23,6 +23,7 @@ const Navbar = () => {
     { path: '/about', label: 'About' },
     { path: '/services', label: 'Services' },
     { path: '/projects', label: 'Projects' },
+    { path: '/blog', label: 'Blog' },
   ];
 
   return (

@@ -162,9 +162,9 @@ return (
               <div className="text-center lg:text-left order-2 lg:order-1 space-y-6 lg:space-y-8">
                 <div className="inline-flex items-center px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-sm font-medium text-blue-400 mb-4">
                   <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                  Trusted by  <Counter end={10} suffix="+" /> Businesses
+                  Supporting Businesses in Achieving Excellence
                 </div>
-                
+
                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
                   Build Your
                   <span className="block bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
@@ -182,7 +182,6 @@ return (
                   {[
                     { value: 10, label: 'Projects', suffix: '+' },
                     { value: 10, label: 'Clients', suffix: '+' },
-                    { value: 1, label: 'Years', suffix: '+' },
                     { value: 100, label: 'Satisfaction', suffix: '%' }
                   ].map((stat, index) => (
                     <div key={index} className="text-center">
@@ -1030,7 +1029,7 @@ return (
             <h2 className="text-4xl md:text-5xl font-bold mb-6">Proven Track Record</h2>
             <p className="text-xl opacity-90 max-w-3xl mx-auto">Numbers that speak for our commitment to excellence and client satisfaction</p>
           </div>
-          <div className="grid md:grid-cols-4 gap-12 text-center">
+          <div className="grid md:grid-cols-3 gap-12 text-center">
             <div className="bg-white/10 p-8 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300">
               <div className="text-5xl md:text-6xl font-bold mb-4 text-white">
                 <Counter end={10} suffix="+" />
@@ -1042,12 +1041,6 @@ return (
                 <Counter end={10} suffix="+" />
               </div>
               <div className="text-xl opacity-90">Happy Clients</div>
-            </div>
-            <div className="bg-white/10 p-8 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300" style={{animationDelay: '0.2s'}}>
-              <div className="text-5xl md:text-6xl font-bold mb-4 text-white" style={{animationDelay: '1s'}}>
-                <Counter end={1} suffix="+" />
-              </div>
-              <div className="text-xl opacity-90">Years Experience</div>
             </div>
             <div className="bg-white/10 p-8 rounded-2xl backdrop-blur-sm hover:bg-white/20 transition-all duration-300" style={{animationDelay: '0.3s'}}>
               <div className="text-5xl md:text-6xl font-bold mb-4 text-white" style={{animationDelay: '1.5s'}}>
@@ -1181,7 +1174,7 @@ return (
                 </svg>
               </div>
               <h3 className="font-semibold mb-1 text-gray-900">Visit Us</h3>
-              <p className="text-gray-600 text-sm">Vibhuti Khand, Lucknow</p>
+              <p className="text-gray-600 text-sm">16/1033, Raod, Sector 16, Indira Nagar, Lucknow, Uttar Pradesh 226010</p>
             </div>
 
             <a href="https://g.page/webtech-illusion" target="_blank" rel="noopener noreferrer" className="text-center bg-white/50 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-gray-100 hover:border-green-300 hover:shadow-md transition-all duration-300 group">

@@ -77,9 +77,8 @@ return (
               </p>
               
               {/* Quick Stats */}
-              <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto mb-8">
+              <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto mb-8">
                 {[
-                  { value: '1+', label: 'Years' },
                   { value: '10+', label: 'Projects' },
                   { value: '10+', label: 'Clients' }
                 ].map((stat, index) => (

@@ -17,6 +17,7 @@ const Contact = lazy(() => import('./pages/Contact'));
 const Team = lazy(() => import('./pages/Team'));
 const Services = lazy(() => import('./pages/Services'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
+const Blog = lazy(() => import('./pages/Blog'));
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
               <Route path="/project/:id" element={<ProjectDetail />} />
               <Route path="/team" element={<Team />} />
               <Route path="/contact" element={<Contact />} />
+              <Route path="/blog" element={<Blog />} />
               <Route path="/dashboard/admin" element={<Dashboard />} />
             </Routes>
           </Suspense>

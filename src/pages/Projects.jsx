@@ -218,14 +218,6 @@ return (
                 <div className="w-16 h-0.5 bg-gradient-to-r from-green-500 to-teal-500 mx-auto opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
               </div>
               <div className="text-center group cursor-pointer">
-                <div className="text-3xl lg:text-4xl font-bold text-purple-600 mb-2 group-hover:scale-110 transition-transform">3+</div>
-                <div className="flex items-center justify-center text-gray-600 font-medium text-sm mb-1">
-                  <FiClock className="w-4 h-4 mr-1" />
-                  Years Experience
-                </div>
-                <div className="w-16 h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
-              </div>
-              <div className="text-center group cursor-pointer">
                 <div className="text-3xl lg:text-4xl font-bold text-orange-600 mb-2 group-hover:scale-110 transition-transform">100%</div>
                 <div className="flex items-center justify-center text-gray-600 font-medium text-sm mb-1">
                   <FiAward className="w-4 h-4 mr-1" />
