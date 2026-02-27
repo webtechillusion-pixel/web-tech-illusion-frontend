@@ -39,7 +39,8 @@ import {
   FiGlobe,
   FiLayers,
   FiPackage,
-  FiTool
+  FiTool,
+  FiHeadphones
 } from 'react-icons/fi';
 import Footer from '../components/Footer';
 import NotificationService from '../services/NotificationService';
@@ -276,8 +277,8 @@ return (
         </div>
       </section>
 
-      {/* Client Success Stories Section */}
-      <section className="py-20 bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden">
+      {/* Why Choose Us for Web Development */}
+      <section className="py-12 bg-gradient-to-br from-slate-50 via-white to-blue-50 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-64 h-64 bg-blue-100/40 rounded-full blur-3xl"></div>
           <div className="absolute bottom-20 right-10 w-80 h-80 bg-purple-100/30 rounded-full blur-3xl"></div>
@@ -286,79 +287,75 @@ return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12">
             <div className="inline-flex items-center px-4 py-2 bg-blue-100 border border-blue-200 rounded-full text-sm font-semibold text-blue-700 mb-4">
-              <FiStar className="w-4 h-4 mr-2 text-yellow-500" />
-              Client Success Stories
+              <FiCode className="w-4 h-4 mr-2" />
+              Web Development Services
             </div>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              What Our <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Clients Say</span>
+              Why Choose <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Our Web Solutions</span>
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Don't just take our word for it. Here's what businesses like yours have achieved with our solutions.
+              We build high-performance, scalable, and secure websites that help your business grow.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {[
               {
-                name: "Rahul Sharma",
-                company: "TechStart Solutions",
-                content: "Web Tech Illusion transformed our online presence completely. Their attention to detail and innovative approach helped us increase our conversions by 300%.",
-                rating: 5,
-                gradient: "from-blue-500 to-cyan-500",
-                project: "E-Commerce Platform"
+                icon: <FiCode className="w-8 h-8" />,
+                title: "Modern Technologies",
+                description: "We use the latest tech stacks like React, Node.js, and Next.js to build fast and scalable applications.",
+                gradient: "from-blue-500 to-cyan-500"
               },
               {
-                name: "Priya Patel",
-                company: "Digital Marketing Pro",
-                content: "Professional, timely, and exceeded our expectations. Their team understood our vision perfectly and delivered a stunning website that represents our brand.",
-                rating: 5,
-                gradient: "from-green-500 to-teal-500",
-                project: "Corporate Website"
+                icon: <FiMonitor className="w-8 h-8" />,
+                title: "Mobile Responsive",
+                description: "Every website we create looks stunning and works perfectly on all devices - phones, tablets, and desktops.",
+                gradient: "from-green-500 to-teal-500"
               },
               {
-                name: "Amit Kumar",
-                company: "Innovation Labs",
-                content: "The best development team we've worked with. They turned our complex requirements into a seamless, user-friendly application. Highly recommended!",
-                rating: 5,
-                gradient: "from-purple-500 to-pink-500",
-                project: "Web Application"
+                icon: <FiSearch className="w-8 h-8" />,
+                title: "SEO Optimized",
+                description: "Built-in SEO best practices help your website rank higher in search results and attract more organic traffic.",
+                gradient: "from-purple-500 to-pink-500"
+              },
+              {
+                icon: <FiZap className="w-8 h-8" />,
+                title: "Fast Loading Speed",
+                description: "Optimized code and images ensure your website loads quickly, keeping visitors engaged and improving user experience.",
+                gradient: "from-orange-500 to-red-500"
+              },
+              {
+                icon: <FiShield className="w-8 h-8" />,
+                title: "Secure & Reliable",
+                description: "Enterprise-grade security measures protect your data and your users from cyber threats.",
+                gradient: "from-indigo-500 to-blue-500"
+              },
+              {
+                icon: <FiHeadphones className="w-8 h-8" />,
+                title: "24/7 Support",
+                description: "Our dedicated support team is always available to help you with any issues or updates you need.",
+                gradient: "from-teal-500 to-green-500"
               }
-            ].map((testimonial, index) => (
+            ].map((feature, index) => (
               <div 
                 key={index} 
-                className="bg-white rounded-2xl p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+                className="bg-white rounded-2xl p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:-translate-y-1"
               >
-                <div className="flex items-center mb-4">
-                  <div className={`w-12 h-12 bg-gradient-to-br ${testimonial.gradient} rounded-full flex items-center justify-center text-white font-bold text-lg mr-4`}>
-                    {testimonial.name.split(' ').map(n => n[0]).join('')}
-                  </div>
-                  <div>
-                    <h4 className="text-gray-900 font-bold">{testimonial.name}</h4>
-                    <p className="text-blue-600 text-sm">{testimonial.company}</p>
-                  </div>
+                <div className={`w-14 h-14 bg-gradient-to-br ${feature.gradient} rounded-xl flex items-center justify-center text-white mb-4`}>
+                  {feature.icon}
                 </div>
-                
-                <div className="flex mb-3">
-                  {[...Array(testimonial.rating)].map((_, i) => (
-                    <FiStar key={i} className="w-4 h-4 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                
-                <p className="text-gray-600 leading-relaxed text-sm lg:text-base">"{testimonial.content}"</p>
-                
-                <div className="mt-4 pt-4 border-t border-gray-100">
-                  <span className="text-xs text-gray-500 font-medium">Project: {testimonial.project}</span>
-                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
               </div>
             ))}
           </div>
           
           <div className="text-center mt-10">
             <Link 
-              to="/projects" 
+              to="/services" 
               className="inline-flex items-center bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
             >
-              View All Projects
+              View All Services
               <FiArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </div>
@@ -366,7 +363,7 @@ return (
       </section>
 
       {/* Enhanced Professional Consultation Section */}
-      <section className="py-24 bg-white relative overflow-hidden">
+      <section className="py-16 bg-white relative overflow-hidden">
         {/* Enhanced Background Elements */}
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-72 h-72 bg-blue-100/30 rounded-full blur-3xl animate-float"></div>
@@ -557,7 +554,7 @@ return (
       <div className="h-16 sm:h-20 lg:h-24 bg-gradient-to-b from-blue-50 to-white"></div>
 
       {/* Featured Services Section */}
-      <section className="py-20 bg-white relative">
+      <section className="py-12 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 animate-fadeInUp">
             <div className="inline-flex items-center px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-medium text-blue-700 mb-6">
@@ -685,7 +682,7 @@ return (
       {/* Spacing Section */}
       <div className="h-12 sm:h-16 lg:h-20 bg-gradient-to-b from-white to-white"></div>
       
-      <section className="py-20 bg-white relative overflow-hidden">
+      <section className="py-12 bg-white relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-20 left-20 w-64 h-64 bg-blue-100/20 rounded-full blur-3xl"></div>
           <div className="absolute bottom-20 right-20 w-80 h-80 bg-cyan-100/15 rounded-full blur-3xl"></div>
@@ -767,7 +764,7 @@ return (
       </section>
 
       {/* Comprehensive Navigation Section */}
-      <section className="py-16 lg:py-24 bg-white relative overflow-hidden">
+      <section className="py-12 lg:py-16 bg-white relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-10 right-10 w-64 h-64 bg-blue-50/50 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 left-10 w-80 h-80 bg-purple-50/50 rounded-full blur-3xl"></div>
@@ -903,7 +900,7 @@ return (
       </section>
 
       {/* Technology Stack */}
-      <section className="py-20 bg-white relative">
+      <section className="py-12 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 animate-fadeInUp">
             <div className="inline-flex items-center px-4 py-2 bg-blue-50 border border-blue-200 rounded-full text-sm font-medium text-blue-700 mb-6">
@@ -948,7 +945,7 @@ return (
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 via-white to-cyan-50 relative overflow-hidden">
+      <section className="py-12 bg-gradient-to-br from-blue-50 via-white to-cyan-50 relative overflow-hidden">
         <div className="absolute inset-0">
           <div className="absolute top-10 right-10 w-72 h-72 bg-blue-100/20 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 left-10 w-80 h-80 bg-cyan-100/15 rounded-full blur-3xl"></div>
@@ -1022,7 +1019,7 @@ return (
       </section>
 
       {/* Stats Section */}
-      <section className="py-24 bg-gradient-to-r from-blue-600 to-teal-600 text-white relative">
+      <section className="py-16 bg-gradient-to-r from-blue-600 to-teal-600 text-white relative">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-16 animate-fadeInUp">
@@ -1053,7 +1050,7 @@ return (
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-white relative">
+      <section className="py-12 bg-white relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 animate-fadeInUp">
             <div className="inline-flex items-center px-4 py-2 bg-yellow-50 border border-yellow-200 rounded-full text-sm font-medium text-yellow-700 mb-6">
@@ -1125,7 +1122,7 @@ return (
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 bg-white text-gray-800 relative overflow-hidden">
+      <section className="py-12 bg-white text-gray-800 relative overflow-hidden">
         <div className="max-w-5xl mx-auto text-center px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="animate-fadeInUp">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 leading-tight text-gray-900">

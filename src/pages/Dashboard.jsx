@@ -6,10 +6,24 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('contacts');
   const [loginForm, setLoginForm] = useState({ email: '', password: '' });
-  const [stats, setStats] = useState({ totalContacts: 0, totalSubscribers: 0, newContacts: 0 });
+  const [stats, setStats] = useState({ totalContacts: 0, totalSubscribers: 0, newContacts: 0, totalBlogs: 0 });
   const [contacts, setContacts] = useState([]);
   const [subscribers, setSubscribers] = useState([]);
+  const [blogs, setBlogs] = useState([]);
   const [error, setError] = useState('');
+  const [showBlogModal, setShowBlogModal] = useState(false);
+  const [editingBlog, setEditingBlog] = useState(null);
+  const [blogForm, setBlogForm] = useState({
+    title: '',
+    excerpt: '',
+    content: '',
+    category: 'web-development',
+    author: '',
+    image: '',
+    readTime: '5 min read',
+    status: 'draft',
+    isFeatured: false
+  });
   const navigate = useNavigate();
   const API_BASE_URL = import.meta.env.VITE_API_URL
 
@@ -74,13 +88,15 @@ const Dashboard = () => {
     const headers = { 'Authorization': `Bearer ${token}` };
 
     try {
-      const [contactsRes, newsletterRes] = await Promise.all([
+      const [contactsRes, newsletterRes, blogsRes] = await Promise.all([
         fetch(`${API_BASE_URL}api/contact`, { headers }),
-        fetch(`${API_BASE_URL}api/newsletter`, { headers })
+        fetch(`${API_BASE_URL}api/newsletter`, { headers }),
+        fetch(`${API_BASE_URL}api/blog/admin/all`, { headers })
       ]);
 
       const contactsData = await contactsRes.json();
       const newsletterData = await newsletterRes.json();
+      const blogsData = await blogsRes.json();
 
       if (contactsData.success) {
         setContacts(contactsData.data);
@@ -98,9 +114,111 @@ const Dashboard = () => {
           totalSubscribers: newsletterData.pagination.totalRecords
         }));
       }
+
+      if (blogsData.success) {
+        setBlogs(blogsData.data);
+        setStats(prev => ({
+          ...prev,
+          totalBlogs: blogsData.pagination.totalRecords
+        }));
+      }
     } catch (error) {
       console.error('Error loading data:', error);
     }
+  };
+
+  const handleBlogSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const token = localStorage.getItem('adminToken');
+    
+    try {
+      const url = editingBlog 
+        ? `${API_BASE_URL}api/blog/${editingBlog._id}`
+        : `${API_BASE_URL}api/blog`;
+      
+      const method = editingBlog ? 'PUT' : 'POST';
+      
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(blogForm)
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        setShowBlogModal(false);
+        setEditingBlog(null);
+        setBlogForm({
+          title: '',
+          excerpt: '',
+          content: '',
+          category: 'web-development',
+          author: '',
+          image: '',
+          readTime: '5 min read',
+          status: 'draft',
+          isFeatured: false
+        });
+        loadData();
+      } else {
+        setError(data.message);
+      }
+    } catch (error) {
+      console.error('Error saving blog:', error);
+      setError('Failed to save blog');
+    }
+    
+    setLoading(false);
+  };
+
+  const handleEditBlog = (blog) => {
+    setEditingBlog(blog);
+    setBlogForm({
+      title: blog.title,
+      excerpt: blog.excerpt,
+      content: blog.content,
+      category: blog.category,
+      author: blog.author,
+      image: blog.image,
+      readTime: blog.readTime,
+      status: blog.status,
+      isFeatured: blog.isFeatured
+    });
+    setShowBlogModal(true);
+  };
+
+  const handleDeleteBlog = async (blogId) => {
+    if (!window.confirm('Are you sure you want to delete this blog?')) return;
+    
+    const token = localStorage.getItem('adminToken');
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}api/blog/${blogId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        loadData();
+      }
+    } catch (error) {
+      console.error('Error deleting blog:', error);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
   };
 
   const updateContactStatus = async (contactId, newStatus) => {
@@ -350,6 +468,17 @@ const Dashboard = () => {
                 <i className="fas fa-newspaper"></i>
                 <span>Newsletter</span>
               </button>
+              <button
+                onClick={() => setActiveTab('blogs')}
+                className={`py-4 px-8 border-b-2 font-semibold text-sm transition-all flex items-center space-x-2 ${
+                  activeTab === 'blogs'
+                    ? 'border-blue-500 text-blue-600 bg-white'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <i className="fas fa-blog"></i>
+                <span>Blogs</span>
+              </button>
             </nav>
           </div>
 
@@ -470,8 +599,265 @@ const Dashboard = () => {
               </div>
             </div>
           )}
+
+          {/* Blogs Tab */}
+          {activeTab === 'blogs' && (
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <i className="fas fa-blog mr-2 text-purple-600"></i>
+                  Blog Management
+                </h3>
+                <button
+                  onClick={() => {
+                    setEditingBlog(null);
+                    setBlogForm({
+                      title: '',
+                      excerpt: '',
+                      content: '',
+                      category: 'web-development',
+                      author: '',
+                      image: '',
+                      readTime: '5 min read',
+                      status: 'draft',
+                      isFeatured: false
+                    });
+                    setShowBlogModal(true);
+                  }}
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2 transition-colors"
+                >
+                  <i className="fas fa-plus"></i>
+                  <span>Add Blog</span>
+                </button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Blog</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Category</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {blogs.map((blog) => (
+                      <tr key={blog._id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="flex items-center">
+                            <img 
+                              src={blog.image} 
+                              alt={blog.title} 
+                              className="w-16 h-12 object-cover rounded-lg mr-3"
+                            />
+                            <div>
+                              <div className="text-sm font-semibold text-gray-900 line-clamp-1">{blog.title}</div>
+                              <div className="text-sm text-gray-500 line-clamp-1">{blog.excerpt}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                            {blog.category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            blog.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {blog.status === 'published' ? '🟢 Published' : '📝 Draft'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {formatDate(blog.createdAt)}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center space-x-2">
+                            <button
+                              onClick={() => handleEditBlog(blog)}
+                              className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                            >
+                              <i className="fas fa-edit"></i>
+                            </button>
+                            <button
+                              onClick={() => handleDeleteBlog(blog._id)}
+                              className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                            >
+                              <i className="fas fa-trash"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Blog Modal */}
+      {showBlogModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200">
+              <div className="flex justify-between items-center">
+                <h3 className="text-xl font-bold text-gray-900">
+                  {editingBlog ? 'Edit Blog' : 'Add New Blog'}
+                </h3>
+                <button
+                  onClick={() => {
+                    setShowBlogModal(false);
+                    setEditingBlog(null);
+                  }}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <i className="fas fa-times text-xl"></i>
+                </button>
+              </div>
+            </div>
+            <form onSubmit={handleBlogSubmit} className="p-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="md:col-span-2">
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    <i className="fas fa-heading mr-2"></i>Title
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={blogForm.title}
+                    onChange={(e) => setBlogForm({...blogForm, title: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="Enter blog title"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    <i className="fas fa-align-left mr-2"></i>Excerpt
+                  </label>
+                  <textarea
+                    required
+                    value={blogForm.excerpt}
+                    onChange={(e) => setBlogForm({...blogForm, excerpt: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="Enter short description"
+                    rows="2"
+                  ></textarea>
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    <i className="fas fa-paragraph mr-2"></i>Content
+                  </label>
+                  <textarea
+                    required
+                    value={blogForm.content}
+                    onChange={(e) => setBlogForm({...blogForm, content: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="Enter full content"
+                    rows="6"
+                  ></textarea>
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    <i className="fas fa-folder mr-2"></i>Category
+                  </label>
+                  <select
+                    value={blogForm.category}
+                    onChange={(e) => setBlogForm({...blogForm, category: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  >
+                    <option value="web-development">Web Development</option>
+                    <option value="ui-ux-design">UI/UX Design</option>
+                    <option value="digital-marketing">Digital Marketing</option>
+                    <option value="mobile-apps">Mobile Apps</option>
+                    <option value="technology">Technology</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    <i className="fas fa-user mr-2"></i>Author
+                  </label>
+                  <input
+                    type="text"
+                    value={blogForm.author}
+                    onChange={(e) => setBlogForm({...blogForm, author: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="Author name"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    <i className="fas fa-image mr-2"></i>Image URL
+                  </label>
+                  <input
+                    type="url"
+                    required
+                    value={blogForm.image}
+                    onChange={(e) => setBlogForm({...blogForm, image: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="https://example.com/image.jpg"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    <i className="fas fa-clock mr-2"></i>Read Time
+                  </label>
+                  <input
+                    type="text"
+                    value={blogForm.readTime}
+                    onChange={(e) => setBlogForm({...blogForm, readTime: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="5 min read"
+                  />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
+                    <i className="fas fa-toggle-on mr-2"></i>Status
+                  </label>
+                  <select
+                    value={blogForm.status}
+                    onChange={(e) => setBlogForm({...blogForm, status: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  >
+                    <option value="draft">Draft</option>
+                    <option value="published">Published</option>
+                  </select>
+                </div>
+              </div>
+              <div className="mt-6 flex justify-end space-x-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowBlogModal(false);
+                    setEditingBlog(null);
+                  }}
+                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:opacity-90 disabled:opacity-50 transition-all font-semibold"
+                >
+                  {loading ? (
+                    <span className="flex items-center">
+                      <i className="fas fa-spinner fa-spin mr-2"></i>Saving...
+                    </span>
+                  ) : (
+                    <span className="flex items-center">
+                      <i className="fas fa-save mr-2"></i>
+                      {editingBlog ? 'Update Blog' : 'Create Blog'}
+                    </span>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

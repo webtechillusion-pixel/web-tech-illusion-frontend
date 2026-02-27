@@ -1,11 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiSearch, FiCalendar, FiUser, FiArrowRight, FiTag, FiClock, FiEye, FiMessageCircle } from 'react-icons/fi';
 import Footer from '../components/Footer';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const categories = [
     { id: 'all', label: 'All Posts' },
@@ -16,111 +21,46 @@ const Blog = () => {
     { id: 'technology', label: 'Technology' },
   ];
 
-  const blogPosts = [
-    {
-      id: 1,
-      title: "10 Essential Web Development Best Practices for 2024",
-      excerpt: "Discover the latest web development trends and best practices that will help you build faster, more secure, and user-friendly websites.",
-      category: "web-development",
-      author: "WebTech Illusion Team",
-      date: "February 20, 2024",
-      readTime: "8 min read",
-      image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&q=80",
-      views: 1250,
-      comments: 15,
-    },
-    {
-      id: 2,
-      title: "How to Choose the Right Web Development Company in Lucknow",
-      excerpt: "A comprehensive guide to selecting the best web development partner for your business. Learn what to look for and questions to ask.",
-      category: "web-development",
-      author: "WebTech Illusion Team",
-      date: "February 18, 2024",
-      readTime: "6 min read",
-      image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80",
-      views: 980,
-      comments: 8,
-    },
-    {
-      id: 3,
-      title: "UI/UX Design Principles That Convert Visitors to Customers",
-      excerpt: "Learn how professional UI/UX design can significantly improve your website's conversion rate and user satisfaction.",
-      category: "ui-ux-design",
-      author: "WebTech Illusion Team",
-      date: "February 15, 2024",
-      readTime: "7 min read",
-      image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&q=80",
-      views: 1450,
-      comments: 22,
-    },
-    {
-      id: 4,
-      title: "Why Your Business Needs a Mobile App in 2024",
-      excerpt: "Explore the benefits of having a mobile app for your business and how it can help you reach more customers.",
-      category: "mobile-apps",
-      author: "WebTech Illusion Team",
-      date: "February 12, 2024",
-      readTime: "5 min read",
-      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&q=80",
-      views: 890,
-      comments: 11,
-    },
-    {
-      id: 5,
-      title: "Local SEO Tips for Lucknow Businesses",
-      excerpt: "Boost your local search rankings with these proven SEO strategies specifically designed for businesses in Lucknow.",
-      category: "digital-marketing",
-      author: "WebTech Illusion Team",
-      date: "February 10, 2024",
-      readTime: "9 min read",
-      image: "https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=800&q=80",
-      views: 1100,
-      comments: 18,
-    },
-    {
-      id: 6,
-      title: "The Future of Web Development: AI and Automation",
-      excerpt: "Explore how artificial intelligence and automation are revolutionizing the web development industry.",
-      category: "technology",
-      author: "WebTech Illusion Team",
-      date: "February 8, 2024",
-      readTime: "10 min read",
-      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&q=80",
-      views: 1680,
-      comments: 25,
-    },
-    {
-      id: 7,
-      title: "E-commerce Website Development: Complete Guide",
-      excerpt: "Everything you need to know about building a successful e-commerce website that drives sales and growth.",
-      category: "web-development",
-      author: "WebTech Illusion Team",
-      date: "February 5, 2024",
-      readTime: "12 min read",
-      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&q=80",
-      views: 2100,
-      comments: 32,
-    },
-    {
-      id: 8,
-      title: "Responsive Web Design: Why It Matters for Your Business",
-      excerpt: "Learn why responsive design is crucial for your online success and how it affects your search engine rankings.",
-      category: "ui-ux-design",
-      author: "WebTech Illusion Team",
-      date: "February 3, 2024",
-      readTime: "6 min read",
-      image: "https://images.unsplash.com/photo-1517134191118-9d595e4c8c2b?w=800&q=80",
-      views: 1350,
-      comments: 19,
-    },
-  ];
+  useEffect(() => {
+    fetchBlogs();
+  }, [selectedCategory, searchTerm]);
 
-  const filteredPosts = blogPosts.filter(post => {
-    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || post.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+  const fetchBlogs = async () => {
+    try {
+      setLoading(true);
+      const params = new URLSearchParams();
+      if (selectedCategory !== 'all') {
+        params.append('category', selectedCategory);
+      }
+      if (searchTerm) {
+        params.append('search', searchTerm);
+      }
+
+      const response = await fetch(`${API_BASE_URL}api/blog?${params}`);
+      const data = await response.json();
+
+      if (data.success) {
+        setBlogPosts(data.data);
+      } else {
+        setError('Failed to load blogs');
+      }
+    } catch (err) {
+      console.error('Error fetching blogs:', err);
+      setError('Failed to load blogs');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  const displayPosts = blogPosts;
 
   const getCategoryColor = (category) => {
     const colors = {
@@ -202,11 +142,27 @@ const Blog = () => {
 
           {/* Blog Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredPosts.map((post) => (
-              <article 
-                key={post.id} 
-                className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gray-100"
-              >
+            {loading ? (
+              [...Array(6)].map((_, i) => (
+                <div key={i} className="bg-white rounded-2xl overflow-hidden shadow-md animate-pulse">
+                  <div className="h-48 bg-gray-200"></div>
+                  <div className="p-6">
+                    <div className="h-6 bg-gray-200 rounded mb-3"></div>
+                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+                    <div className="flex justify-between">
+                      <div className="h-4 w-24 bg-gray-200 rounded"></div>
+                      <div className="h-4 w-24 bg-gray-200 rounded"></div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : displayPosts.length > 0 ? (
+              displayPosts.map((post) => (
+                <article 
+                  key={post._id} 
+                  className="group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 border border-gray-100"
+                >
                 {/* Image */}
                 <div className="relative h-48 overflow-hidden">
                   <img
@@ -238,7 +194,7 @@ const Blog = () => {
                     </div>
                     <div className="flex items-center">
                       <FiCalendar className="w-4 h-4 mr-1" />
-                      <span>{post.date}</span>
+                      <span>{formatDate(post.createdAt)}</span>
                     </div>
                   </div>
 
@@ -267,22 +223,20 @@ const Blog = () => {
                   </button>
                 </div>
               </article>
-            ))}
+            ))
+            ) : (
+              <div className="col-span-full text-center py-16">
+                <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FiSearch className="w-8 h-8 text-gray-400" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">No articles found</h3>
+                <p className="text-gray-600">Try adjusting your search or filter to find what you're looking for.</p>
+              </div>
+            )}
           </div>
 
-          {/* No Results */}
-          {filteredPosts.length === 0 && (
-            <div className="text-center py-16">
-              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <FiSearch className="w-8 h-8 text-gray-400" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">No articles found</h3>
-              <p className="text-gray-600">Try adjusting your search or filter to find what you're looking for.</p>
-            </div>
-          )}
-
           {/* Load More */}
-          {filteredPosts.length > 0 && (
+          {!loading && displayPosts.length > 0 && (
             <div className="text-center mt-12">
               <button className="px-8 py-3 bg-white border-2 border-blue-600 text-blue-600 rounded-full font-semibold hover:bg-blue-600 hover:text-white transition-all duration-300 shadow-lg hover:shadow-xl">
                 Load More Articles
