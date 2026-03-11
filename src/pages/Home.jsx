@@ -148,12 +148,18 @@ const Home = () => {
 return (
     <div className="min-h-screen bg-white">
       {/* Professional Hero Section */}
-      <section className="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
-        {/* Clean Professional Background */}
+      <section className="relative min-h-screen bg-gradient-to-br from-slate-900 via-slate-900 to-slate-800 overflow-hidden">
+        {/* Animated Background */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(59,130,246,0.15),transparent_50%)]"></div>
-          <div className="absolute inset-0 bg-[radial_gradient(ellipse_at_bottom_left,rgba(139,92,246,0.1),transparent_50%)]"></div>
-          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
+          <div className="absolute top-0 -left-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
+          <div className="absolute top-0 -right-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
+          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(59,130,246,0.08),transparent_50%)]"></div>
+          <div className="absolute inset-0 bg-[radial_gradient(ellipse_at_bottom_left,rgba(139,92,246,0.06),transparent_50%)]"></div>
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/20 to-transparent"></div>
+          {/* Grid Pattern */}
+          <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:50px_50px]"></div>
         </div>
 
         <div className="relative z-10 flex items-center min-h-screen">
@@ -161,118 +167,188 @@ return (
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               {/* Left Content */}
               <div className="text-center lg:text-left order-2 lg:order-1 space-y-6 lg:space-y-8">
-                <div className="inline-flex items-center px-4 py-2 bg-blue-500/10 border border-blue-500/20 rounded-full text-sm font-medium text-blue-400 mb-4">
-                  <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                  Supporting Businesses in Achieving Excellence
+                <div className="inline-flex items-center px-5 py-2.5 bg-white/5 border border-white/10 backdrop-blur-md rounded-full text-sm font-medium text-blue-400 mb-4 group hover:bg-white/10 transition-all duration-300">
+                  <span className="relative flex h-2 w-2 mr-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                  </span>
+                  <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent font-semibold">Available for Projects</span>
                 </div>
 
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
-                  Build Your
-                  <span className="block bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                    Digital Future
+                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-[1.1] tracking-tight">
+                  <span className="block text-gray-300">Crafting</span>
+                  <span className="block mt-2 bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-400 bg-clip-text text-transparent animate-gradient bg-300%">
+                    Digital Excellence
                   </span>
                 </h1>
                 
-                <p className="text-base sm:text-lg text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                  We create stunning websites and web applications that help businesses grow. 
-                  From concept to launch, we bring your vision to life with modern technology.
+                <p className="text-lg sm:text-xl text-gray-400 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                  <span className="text-white font-medium">WebTech Illusion</span> transforms your ideas into stunning digital experiences. 
+                  We build modern, scalable, and high-performance websites that drive real business growth.
                 </p>
                 
                 {/* Stats Row */}
-                <div className="flex flex-wrap justify-center lg:justify-start gap-6 py-4">
+                <div className="flex flex-wrap justify-center lg:justify-start gap-8 py-4">
                   {[
-                    { value: 10, label: 'Projects', suffix: '+' },
-                    { value: 10, label: 'Clients', suffix: '+' },
-                    { value: 100, label: 'Satisfaction', suffix: '%' }
+                    { value: 10, label: 'Projects Completed', suffix: '+', icon: '🚀' },
+                    { value: 10, label: 'Happy Clients', suffix: '+', icon: '⭐' },
+                    { value: 100, label: 'Success Rate', suffix: '%', icon: '💎' }
                   ].map((stat, index) => (
-                    <div key={index} className="text-center">
-                      <div className="text-2xl sm:text-3xl font-bold text-white">
+                    <div key={index} className="relative group">
+                      <div className="text-3xl sm:text-4xl font-bold text-white flex items-center gap-2">
+                        <span className="text-lg">{stat.icon}</span>
                         <Counter end={stat.value} suffix={stat.suffix} />
                       </div>
-                      <div className="text-xs sm:text-sm text-gray-400">{stat.label}</div>
+                      <div className="text-sm text-gray-500 mt-1 group-hover:text-cyan-400 transition-colors">{stat.label}</div>
+                      <div className="absolute -bottom-2 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 group-hover:w-full transition-all duration-500"></div>
                     </div>
                   ))}
                 </div>
                 
                 {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start pt-2">
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start pt-4">
                   <Link 
                     to="/contact" 
-                    className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-700 transition-all duration-300 flex items-center justify-center"
+                    className="group relative bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)]"
                   >
-                    Get Started
-                    <FiArrowRight className="w-5 h-5 ml-2" />
+                    <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-cyan-600 group-hover:scale-x-110 group-hover:scale-y-100 transition-transform duration-500 origin-left"></span>
+                    <span className="relative flex items-center justify-center gap-2">
+                      Start Your Project
+                      <FiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </span>
                   </Link>
                   <Link 
                     to="/projects" 
-                    className="border border-gray-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all duration-300 flex items-center justify-center"
+                    className="group relative border border-white/20 text-white px-8 py-4 rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:border-white/40 hover:bg-white/5"
                   >
-                    View Work
+                    <span className="relative flex items-center justify-center gap-2">
+                      <FiMonitor className="w-5 h-5" />
+                      View Our Work
+                    </span>
                   </Link>
                   <a 
                     href="tel:+917380497919"
-                    className="bg-green-600 text-white px-4 py-3 rounded-lg font-semibold hover:bg-green-700 transition-all duration-300 flex items-center justify-center"
+                    className="group relative bg-green-600 text-white px-5 py-4 rounded-xl font-semibold transition-all duration-300 hover:bg-green-500 hover:shadow-[0_0_30px_-10px_rgba(34,197,94,0.5)]"
                   >
-                    <FiPhone className="w-5 h-5" />
+                    <span className="relative flex items-center justify-center">
+                      <FiPhone className="w-5 h-5" />
+                    </span>
                   </a>
                 </div>
 
-                {/* Quick Links */}
-                <div className="flex flex-wrap gap-2 justify-center lg:justify-start pt-2">
-                  <Link to="/about" className="text-gray-400 hover:text-white text-sm px-3 py-1">About</Link>
-                  <Link to="/services" className="text-gray-400 hover:text-white text-sm px-3 py-1">Services</Link>
-                  <Link to="/projects" className="text-gray-400 hover:text-white text-sm px-3 py-1">Projects</Link>
-                  <Link to="/contact" className="text-blue-400 hover:text-blue-300 text-sm px-3 py-1 font-medium">Contact</Link>
+                {/* Trust Badges */}
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-6 pt-4">
+                  <div className="flex items-center gap-2 text-gray-500">
+                    <FiCheckCircle className="text-green-500" />
+                    <span className="text-sm">Free Consultation</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-500">
+                    <FiCheckCircle className="text-green-500" />
+                    <span className="text-sm">24/7 Support</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-gray-500">
+                    <FiCheckCircle className="text-green-500" />
+                    <span className="text-sm">Money Back Guarantee</span>
+                  </div>
                 </div>
               </div>
               
-              {/* Right Content - Clean Dashboard Preview */}
+              {/* Right Content - Animated Dashboard */}
               <div className="relative order-1 lg:order-2 mt-8 lg:mt-0">
-                <div className="bg-slate-800/80 backdrop-blur-xl border border-slate-700 rounded-2xl p-6 sm:p-8 shadow-2xl">
-                  {/* Mock Window Header */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                      <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    </div>
-                    <div className="text-xs text-gray-400 font-mono">webtechillusion.com</div>
-                  </div>
+                <div className="relative">
+                  {/* Glow Effect */}
+                  <div className="absolute -inset-4 bg-gradient-to-r from-blue-600 via-cyan-500 to-purple-600 rounded-3xl blur-2xl opacity-30 animate-pulse"></div>
                   
-                  {/* Dashboard Cards */}
-                  <div className="grid grid-cols-2 gap-4">
-                    {[
-                      { title: 'Projects', value: 10, suffix: '+', color: 'blue' },
-                      { title: 'Clients', value: 10, suffix: '+', color: 'green' },
-                      { title: 'Rating', value: 5, suffix: '.0', color: 'yellow' },
-                      { title: 'Support', value: 24, suffix: '/7', color: 'purple' }
-                    ].map((item, index) => (
-                      <div key={index} className={`bg-slate-700/50 rounded-xl p-4 border border-slate-600`}>
-                        <div className={`text-xs text-${item.color}-400 uppercase mb-1`}>{item.title}</div>
-                        <div className="text-2xl font-bold text-white">
-                          <Counter end={item.value} suffix={item.suffix} />
+                  <div className="relative bg-slate-800/90 backdrop-blur-2xl border border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl">
+                    {/* Mock Window Header */}
+                    <div className="flex items-center justify-between mb-6">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-gray-400 font-mono">
+                        <FiGlobe className="w-3 h-3" />
+                        webtechillusion.com
+                      </div>
+                    </div>
+                    
+                    {/* Hero Image Placeholder */}
+                    <div className="relative h-32 sm:h-40 mb-6 rounded-xl overflow-hidden bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-white/5">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
+                          <FiCode className="w-8 h-8 text-white" />
                         </div>
                       </div>
-                    ))}
-                  </div>
-                  
-                  {/* Service Preview */}
-                  <div className="mt-4 p-4 bg-slate-700/30 rounded-xl border border-slate-600">
-                    <div className="text-sm text-gray-300 mb-2">Our Services</div>
-                    <div className="flex flex-wrap gap-2">
-                      {['Web Development', 'Mobile Apps', 'E-Commerce', 'UI/UX Design'].map((service, i) => (
-                        <span key={i} className="text-xs bg-slate-600 text-gray-300 px-2 py-1 rounded">{service}</span>
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                          <div className="h-full w-3/4 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full animate-pulse"></div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {/* Dashboard Cards */}
+                    <div className="grid grid-cols-2 gap-4">
+                      {[
+                        { title: 'Total Projects', value: 10, suffix: '+', color: 'blue', trend: '+25%' },
+                        { title: 'Clients', value: 10, suffix: '+', color: 'green', trend: '+15%' },
+                        { title: 'Rating', value: 5, suffix: '.0', color: 'yellow', trend: '⭐' },
+                        { title: 'Support', value: 24, suffix: '/7', color: 'purple', trend: 'Active' }
+                      ].map((item, index) => (
+                        <div key={index} className="bg-slate-700/40 rounded-xl p-4 border border-white/5 hover:border-white/20 transition-all duration-300 group/card">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className={`text-xs font-semibold uppercase tracking-wider text-${item.color}-400`}>{item.title}</div>
+                            <div className="text-xs text-gray-500">{item.trend}</div>
+                          </div>
+                          <div className="text-2xl font-bold text-white flex items-baseline">
+                            <Counter end={item.value} suffix={item.suffix} />
+                          </div>
+                        </div>
                       ))}
                     </div>
+                    
+                    {/* Service Tags */}
+                    <div className="mt-4 p-4 bg-slate-700/30 rounded-xl border border-white/5">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="text-sm text-gray-300 font-medium">Our Expertise</div>
+                        <div className="text-xs text-cyan-400">View All →</div>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {['Web Development', 'Mobile Apps', 'E-Commerce', 'UI/UX Design'].map((service, i) => (
+                          <span key={i} className="text-xs bg-gradient-to-r from-blue-500/20 to-cyan-500/20 text-blue-300 px-3 py-1.5 rounded-lg border border-blue-500/20">{service}</span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-                
-                {/* Floating Badge */}
-                <div className="absolute -bottom-4 -right-4 bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                  Available for Work
+                  
+                  {/* Floating Elements */}
+                  <a 
+                    href="tel:+917380497919"
+                    className="cursor-pointer absolute -top-6 -right-6 bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-lg animate-bounce hover:shadow-[0_0_30px_-10px_rgba(34,197,94,0.5)] transition-shadow" 
+                    style={{animationDuration: '3s'}}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                      Let's Talk
+                    </span>
+                  </a>
+                  
+                  <div className="absolute -bottom-4 -left-6 bg-white/10 backdrop-blur-md border border-white/20 text-white px-4 py-2 rounded-xl text-sm font-medium shadow-lg">
+                    <span className="flex items-center gap-2">
+                      <FiAward className="text-yellow-400" />
+                      Award Winning
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+        
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-1">
+            <div className="w-1.5 h-3 bg-gradient-to-b from-white to-white/50 rounded-full animate-pulse"></div>
           </div>
         </div>
       </section>
