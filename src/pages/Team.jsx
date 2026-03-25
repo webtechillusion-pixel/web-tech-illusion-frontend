@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 
 const Team = () => {
@@ -55,57 +56,15 @@ const Team = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 relative overflow-hidden">
-      <section className="pt-20 sm:pt-28 pb-16 sm:pb-20 relative overflow-hidden">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 right-20 w-80 h-80 bg-blue-100 rounded-full filter blur-3xl opacity-30"></div>
-          <div className="absolute bottom-20 left-20 w-96 h-96 bg-slate-100 rounded-full filter blur-3xl opacity-40"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-gray-100 rounded-full filter blur-3xl opacity-20"></div>
-        </div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 py-20">
-          <div className="text-center">
-            <div className="inline-flex items-center px-6 py-3 rounded-full bg-blue-50 border border-blue-200 mb-8 animate-fadeInUp">
-              <span className="text-blue-700 font-semibold text-sm uppercase tracking-wider">Meet Our Team</span>
-            </div>
-            
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-900 mb-8 animate-fadeInUp leading-tight" style={{animationDelay: '0.2s'}}>
-              Our Professional
-              <span className="block text-blue-600">
-                Development Team
-              </span>
-            </h1>
-            
-            <p className="text-xl sm:text-2xl text-gray-600 mb-12 max-w-4xl mx-auto animate-fadeInUp leading-relaxed" style={{animationDelay: '0.4s'}}>
-              Meet the experienced developers behind Illusion's success. 
-              <span className="font-semibold text-blue-600"> Expertise, creativity, and dedication</span> combined.
-            </p>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto mb-16 animate-fadeInUp" style={{animationDelay: '0.6s'}}>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">22+</div>
-                <p className="text-gray-600 font-medium text-sm">Years Experience</p>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">50+</div>
-                <p className="text-gray-600 font-medium text-sm">Technologies</p>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">200+</div>
-                <p className="text-gray-600 font-medium text-sm">Projects</p>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">100%</div>
-                <p className="text-gray-600 font-medium text-sm">Satisfaction</p>
-              </div>
-            </div>
-            
-            <div className="animate-fadeInUp" style={{animationDelay: '0.8s'}}>
-              <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-300">
-                Meet The Team
-              </button>
-            </div>
-          </div>
+    <div className="min-h-screen bg-white">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+            Our <span className="text-blue-600">Team</span>
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Meet the experienced developers behind WebTech Illusion's success.
+          </p>
         </div>
       </section>
 
@@ -181,21 +140,17 @@ const Team = () => {
         </div>
       </section>
 
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl p-12 border border-gray-200 shadow-lg">
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">
-              Want to Join Our <span className="text-blue-600">Professional Team?</span>
-            </h2>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed max-w-2xl mx-auto">
-              We're always looking for talented developers who share our passion for creating 
-              <span className="font-semibold text-blue-600"> exceptional digital experiences</span>.
-            </p>
-            
-            <button className="bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-300">
-              Join Our Team
-            </button>
-          </div>
+      <section className="py-24 bg-gray-50">
+        <div className="max-w-4xl mx-auto text-center px-6 lg:px-8">
+          <h2 className="text-4xl font-bold text-gray-900 mb-6">
+            Want to Join Our <span className="text-blue-600">Team?</span>
+          </h2>
+          <p className="text-xl text-gray-600 mb-10">
+            We're always looking for talented developers. Check our open positions.
+          </p>
+          <Link to="/careers" className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-all">
+            View Openings
+          </Link>
         </div>
       </section>
 

@@ -1,14 +1,11 @@
-/* Custom styles for the app */
 .App {
   min-height: 100vh;
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
