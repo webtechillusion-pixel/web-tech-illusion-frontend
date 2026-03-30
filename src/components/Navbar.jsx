@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMenu, FiX, FiPhone, FiChevronDown } from 'react-icons/fi';
 import { useSettings } from '../context/SettingsContext';
+import logo from '../assets/illusionlogo.jpeg';
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -67,13 +68,7 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-24">
           <Link to="/" className="flex items-center gap-3">
-            {companyLogo ? (
-              <img src={companyLogo} alt={displayName} className="h-14 w-14 rounded-full object-cover shadow-md border-2 border-gray-100" />
-            ) : (
-              <div className="h-14 w-14 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-md border-2 border-blue-100">
-                <span className="text-white text-xl font-bold">{displayName.charAt(0)}</span>
-              </div>
-            )}
+            <img src={logo} alt={displayName} className="h-14 w-14 rounded-full object-cover shadow-md border-2 border-gray-100" />
             <div>
               <span className="text-2xl font-bold text-gray-900">{displayName.split(' ')[0]}</span>
               <span className="text-2xl font-bold text-blue-600"> {displayName.split(' ').slice(1).join(' ')}</span>

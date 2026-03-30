@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 import { useSettings } from '../context/SettingsContext';
+import logo from '../assets/illusionlogo.jpeg';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
@@ -47,9 +48,7 @@ const Footer = () => {
         <div className="py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center gap-3 mb-6">
-              <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-xl">{(companyName || 'I').charAt(0)}</span>
-              </div>
+              <img src={logo} alt={companyName || 'WebTech Illusion'} className="w-14 h-14 rounded-full object-cover shadow-lg border-2 border-blue-500" />
               <div>
                 <span className="text-2xl font-bold">{(companyName || 'WebTech Illusion').split(' ')[0]}</span>
                 <span className="text-2xl font-bold text-blue-400"> {(companyName || 'WebTech Illusion').split(' ').slice(1).join(' ')}</span>
