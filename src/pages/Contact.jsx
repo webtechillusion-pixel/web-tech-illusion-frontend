@@ -2,12 +2,15 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiPhone, FiMail, FiMapPin } from 'react-icons/fi';
 import Footer from '../components/Footer';
+import { useSettings } from '../context/SettingsContext';
 
 const Contact = () => {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', phone: '', projectType: '', message: '' });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  
+  const { contactEmail, contactPhone, contactAddress } = useSettings();
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -102,7 +105,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-bold text-gray-900 mb-1">Office Address</h3>
-                      <p className="text-gray-600">Sector 16, Indira Nagar, Lucknow, UP 226010</p>
+                      <p className="text-gray-600">{contactAddress || 'Address not set'}</p>
                     </div>
                   </div>
                   
@@ -112,7 +115,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-bold text-gray-900 mb-1">Phone</h3>
-                      <p className="text-gray-600">+91 73804 97919</p>
+                      <p className="text-gray-600">{contactPhone}</p>
                       <p className="text-sm text-gray-500">Available 24/7</p>
                     </div>
                   </div>
@@ -123,7 +126,7 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-bold text-gray-900 mb-1">Email</h3>
-                      <p className="text-gray-600">info@webtechillusion.com</p>
+                      <p className="text-gray-600">{contactEmail}</p>
                       <p className="text-sm text-gray-500">We respond within 24 hours</p>
                     </div>
                   </div>

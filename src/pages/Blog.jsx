@@ -11,6 +11,7 @@ const Blog = () => {
   const [blogPosts, setBlogPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [seoData, setSeoData] = useState(null);
 
   const categories = [
     { id: 'all', label: 'All Posts' },
@@ -23,7 +24,20 @@ const Blog = () => {
 
   useEffect(() => {
     fetchBlogs();
+    fetchSeoData();
   }, [selectedCategory, searchTerm]);
+
+  const fetchSeoData = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}api/seo/blog`);
+      const data = await response.json();
+      if (data.success && data.data) {
+        setSeoData(data.data);
+      }
+    } catch (err) {
+      console.error('Error fetching SEO data:', err);
+    }
+  };
 
   const fetchBlogs = async () => {
     try {
@@ -115,6 +129,32 @@ const Blog = () => {
                   <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
                 </div>
               </div>
+
+              {/* OG Image Banner */}
+              {seoData?.ogImage && (
+                <div className="mt-10">
+                  {seoData.ogImageLink ? (
+                    <a 
+                      href={seoData.ogImageLink} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-block transition-transform hover:scale-105"
+                    >
+                      <img 
+                        src={seoData.ogImage} 
+                        alt="Blog Banner" 
+                        className="max-w-md mx-auto rounded-xl shadow-2xl border-2 border-white/20"
+                      />
+                    </a>
+                  ) : (
+                    <img 
+                      src={seoData.ogImage} 
+                      alt="Blog Banner" 
+                      className="max-w-md mx-auto rounded-xl shadow-2xl border-2 border-white/20"
+                    />
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

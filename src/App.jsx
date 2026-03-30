@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
+import { SettingsProvider } from './context/SettingsContext';
 import Navbar from './components/Navbar';
 import NotificationBanner from './components/NotificationBanner';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -21,31 +22,33 @@ const Documentation = lazy(() => import('./pages/Documentation'));
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Navbar />
-        <main className="pt-16">
-          <Suspense fallback={<LoadingSpinner size="lg" className="min-h-[50vh]" />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/project/:id" element={<ProjectDetail />} />
-              <Route path="/team" element={<Team />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/industries" element={<Industries />} />
-              <Route path="/careers" element={<Careers />} />
-              <Route path="/case-studies" element={<CaseStudies />} />
-              <Route path="/documentation" element={<Documentation />} />
-              <Route path="/dashboard/admin" element={<Dashboard />} />
-            </Routes>
-          </Suspense>
-        </main>
-        <NotificationBanner />
-      </div>
-    </Router>
+    <SettingsProvider>
+      <Router>
+        <div className="App">
+          <Navbar />
+          <main className="pt-16">
+            <Suspense fallback={<LoadingSpinner size="lg" className="min-h-[50vh]" />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/project/:id" element={<ProjectDetail />} />
+                <Route path="/team" element={<Team />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/industries" element={<Industries />} />
+                <Route path="/careers" element={<Careers />} />
+                <Route path="/case-studies" element={<CaseStudies />} />
+                <Route path="/documentation" element={<Documentation />} />
+                <Route path="/dashboard/admin" element={<Dashboard />} />
+              </Routes>
+            </Suspense>
+          </main>
+          <NotificationBanner />
+        </div>
+      </Router>
+    </SettingsProvider>
   );
 }
 

@@ -1,12 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/WebTech Logo with BG.png';
 import { FiMenu, FiX, FiPhone, FiChevronDown } from 'react-icons/fi';
+import { useSettings } from '../context/SettingsContext';
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const dropdownRefs = useRef([]);
+  const { companyName, contactPhone, companyLogo } = useSettings();
 
   const navItems = [
     {
@@ -59,15 +60,23 @@ const Navbar = () => {
     return () => document.removeEventListener('mousemove', handleClickOutside);
   }, []);
 
+  const displayName = companyName || 'WebTech Illusion';
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-24">
           <Link to="/" className="flex items-center gap-3">
-            <img src={logo} alt="WebTech Illusion" className="h-14 w-14 rounded-full object-cover shadow-md border-2 border-gray-100" />
+            {companyLogo ? (
+              <img src={companyLogo} alt={displayName} className="h-14 w-14 rounded-full object-cover shadow-md border-2 border-gray-100" />
+            ) : (
+              <div className="h-14 w-14 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-md border-2 border-blue-100">
+                <span className="text-white text-xl font-bold">{displayName.charAt(0)}</span>
+              </div>
+            )}
             <div>
-              <span className="text-2xl font-bold text-gray-900">WebTech</span>
-              <span className="text-2xl font-bold text-blue-600"> Illusion</span>
+              <span className="text-2xl font-bold text-gray-900">{displayName.split(' ')[0]}</span>
+              <span className="text-2xl font-bold text-blue-600"> {displayName.split(' ').slice(1).join(' ')}</span>
             </div>
           </Link>
 
@@ -112,9 +121,9 @@ const Navbar = () => {
           </div>
 
           <div className="hidden lg:flex items-center gap-4">
-            <a href="tel:+917380497919" className="flex items-center text-base text-gray-600 hover:text-blue-600 font-medium">
+            <a href={`tel:${contactPhone}`} className="flex items-center text-base text-gray-600 hover:text-blue-600 font-medium">
               <FiPhone className="w-4 h-4 mr-2" />
-              +91 73804 97919
+              {contactPhone}
             </a>
             <Link to="/contact" className="px-6 py-3 bg-blue-600 text-white text-base font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-lg shadow-blue-600/20">
               Get Started
@@ -151,9 +160,9 @@ const Navbar = () => {
               </div>
             ))}
             <div className="pt-4 border-t mt-4 space-y-2">
-              <a href="tel:+917380497919" className="flex items-center px-4 py-3 text-gray-600">
+              <a href={`tel:${contactPhone}`} className="flex items-center px-4 py-3 text-gray-600">
                 <FiPhone className="w-5 h-5 mr-2" />
-                +91 73804 97919
+                {contactPhone}
               </a>
               <Link to="/contact" className="block text-center py-3 bg-blue-600 text-white rounded-lg font-semibold">
                 Get Started

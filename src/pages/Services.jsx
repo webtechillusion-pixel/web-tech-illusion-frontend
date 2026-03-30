@@ -1,52 +1,85 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiCode, FiSmartphone, FiShoppingCart, FiBarChart, FiCloud, FiShield, FiArrowRight, FiCheckCircle, FiPhone, FiMail, FiMapPin, FiChevronRight } from 'react-icons/fi';
+import { FiCode, FiSmartphone, FiShoppingCart, FiBarChart, FiCloud, FiShield, FiArrowRight, FiCheckCircle, FiPhone, FiMail, FiMapPin, FiChevronRight, FiLoader } from 'react-icons/fi';
 import Footer from '../components/Footer';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+const iconMap = {
+  'web': <FiCode className="w-10 h-10" />,
+  'mobile': <FiSmartphone className="w-10 h-10" />,
+  'ecommerce': <FiShoppingCart className="w-10 h-10" />,
+  'marketing': <FiBarChart className="w-10 h-10" />,
+  'cloud': <FiCloud className="w-10 h-10" />,
+  'security': <FiShield className="w-10 h-10" />,
+  'default': <FiCode className="w-10 h-10" />,
+};
+
+const gradientMap = {
+  'web': 'from-blue-500 to-blue-700',
+  'mobile': 'from-cyan-500 to-cyan-700',
+  'ecommerce': 'from-teal-500 to-teal-700',
+  'marketing': 'from-green-500 to-green-700',
+  'cloud': 'from-purple-500 to-purple-700',
+  'security': 'from-pink-500 to-pink-700',
+  'default': 'from-indigo-500 to-indigo-700',
+};
+
 const Services = () => {
-  const services = [
-    {
-      icon: <FiCode className="w-10 h-10" />,
-      title: 'Web Development',
-      description: 'Custom websites and web applications built with cutting-edge technologies for optimal performance.',
-      features: ['Custom Website Design', 'Responsive Development', 'CMS Integration', 'API Development', 'Performance Optimization', 'SEO Implementation'],
-      gradient: 'from-blue-500 to-blue-700'
-    },
-    {
-      icon: <FiSmartphone className="w-10 h-10" />,
-      title: 'Mobile Solutions',
-      description: 'Native and cross-platform mobile applications for seamless experiences across all devices.',
-      features: ['iOS Development', 'Android Development', 'React Native Apps', 'Flutter Apps', 'App Store Optimization', 'Mobile UI/UX Design'],
-      gradient: 'from-cyan-500 to-cyan-700'
-    },
-    {
-      icon: <FiShoppingCart className="w-10 h-10" />,
-      title: 'E-Commerce Solutions',
-      description: 'Complete online store solutions with secure payment gateways and inventory management.',
-      features: ['Custom Store Design', 'Payment Gateway', 'Inventory Management', 'Order Tracking', 'Customer Dashboard', 'Mobile Commerce'],
-      gradient: 'from-teal-500 to-teal-700'
-    },
-    {
-      icon: <FiBarChart className="w-10 h-10" />,
-      title: 'Digital Marketing',
-      description: 'Strategic SEO, social media marketing, and content strategies to boost your online presence.',
-      features: ['Search Engine Optimization', 'Social Media Marketing', 'Content Strategy', 'Email Marketing', 'Analytics & Reporting', 'PPC Advertising'],
-      gradient: 'from-green-500 to-green-700'
-    },
-    {
-      icon: <FiCloud className="w-10 h-10" />,
-      title: 'Cloud Services',
-      description: 'Scalable cloud infrastructure and deployment solutions using AWS and Azure.',
-      features: ['AWS Deployment', 'Azure Solutions', 'Serverless Architecture', 'Cloud Migration', 'DevOps Services', '24/7 Monitoring'],
-      gradient: 'from-purple-500 to-purple-700'
-    },
-    {
-      icon: <FiShield className="w-10 h-10" />,
-      title: 'Security & Testing',
-      description: 'Comprehensive security audits and quality assurance services for robust solutions.',
-      features: ['Security Audits', 'Penetration Testing', 'Performance Testing', 'Code Reviews', 'Bug Fixing', 'Quality Assurance'],
-      gradient: 'from-pink-500 to-pink-700'
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_BASE_URL}api/services`);
+      const data = await response.json();
+      
+      if (data.success && data.data.length > 0) {
+        setServices(data.data);
+      } else {
+        setServices([]);
+      }
+    } catch (err) {
+      console.error('Error fetching services:', err);
+      setError('Failed to load services');
+      setServices([]);
+    } finally {
+      setLoading(false);
     }
-  ];
+  };
+
+  const getServiceIcon = (service) => {
+    const iconKey = service.icon?.toLowerCase() || 'default';
+    return iconMap[iconKey] || iconMap.default;
+  };
+
+  const getServiceGradient = (index) => {
+    if (services[index]?.icon) {
+      return gradientMap[services[index].icon.toLowerCase()] || gradientMap.default;
+    }
+    return gradientMap.default;
+  };
+
+  const getFeatureIcon = () => <FiCheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="text-center">
+          <FiLoader className="w-12 h-12 animate-spin text-blue-600 mx-auto mb-4" />
+          <p className="text-gray-600">Loading services...</p>
+        </div>
+      </div>
+    );
+  }
+
+  const displayServices = services.length > 0 ? services : [];
 
   return (
     <div className="min-h-screen bg-white">
@@ -66,29 +99,56 @@ const Services = () => {
       {/* Services Grid */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-8">
-            {services.map((service, index) => (
-              <div key={index} className="bg-white rounded-2xl p-8 border border-gray-100 hover:shadow-xl transition-all duration-500 group">
+          {error && (
+            <div className="mb-8 p-4 bg-yellow-50 border border-yellow-200 rounded-xl text-yellow-700 text-center">
+              {error}
+            </div>
+          )}
+          
+          <div className={`grid ${displayServices.length === 1 ? 'lg:grid-cols-1 max-w-2xl mx-auto' : displayServices.length === 2 ? 'lg:grid-cols-2' : 'lg:grid-cols-2'} gap-8`}>
+            {displayServices.map((service, index) => (
+              <div key={service._id || index} className="bg-white rounded-2xl p-8 border border-gray-100 hover:shadow-xl transition-all duration-500 group">
                 <div className="flex items-start gap-6">
-                  <div className={`w-20 h-20 bg-gradient-to-br ${service.gradient} rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
-                    {service.icon}
+                  <div className={`w-20 h-20 bg-gradient-to-br ${gradientMap[index % 7] || gradientMap.default} rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
+                    {getServiceIcon(service)}
                   </div>
                   <div className="flex-1">
                     <h3 className="text-2xl font-bold text-gray-900 mb-3">{service.title}</h3>
-                    <p className="text-gray-600 leading-relaxed mb-6">{service.description}</p>
+                    <p className="text-gray-600 leading-relaxed mb-6">{service.shortDescription}</p>
+                    {service.content && (
+                      <div className="text-sm text-gray-500 mb-4 line-clamp-2" dangerouslySetInnerHTML={{ __html: service.content }} />
+                    )}
                     <div className="grid grid-cols-2 gap-3">
-                      {service.features.map((feature, fIndex) => (
-                        <div key={fIndex} className="flex items-center text-sm text-gray-700">
-                          <FiCheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                          {feature}
-                        </div>
-                      ))}
+                      <div className="flex items-center text-sm text-gray-700">
+                        {getFeatureIcon()}
+                        Custom Solutions
+                      </div>
+                      <div className="flex items-center text-sm text-gray-700">
+                        {getFeatureIcon()}
+                        24/7 Support
+                      </div>
+                      <div className="flex items-center text-sm text-gray-700">
+                        {getFeatureIcon()}
+                        Quality Assured
+                      </div>
+                      <div className="flex items-center text-sm text-gray-700">
+                        {getFeatureIcon()}
+                        On-Time Delivery
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             ))}
           </div>
+
+          {displayServices.length === 0 && (
+            <div className="text-center py-16">
+              <FiCode className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">No services found</h3>
+              <p className="text-gray-600">Add services from the admin panel to display them here.</p>
+            </div>
+          )}
         </div>
       </section>
 

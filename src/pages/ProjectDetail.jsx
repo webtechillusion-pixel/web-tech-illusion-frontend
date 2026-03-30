@@ -110,6 +110,111 @@ const ProjectDetail = () => {
         "Enhanced brand visibility and reach",
         "Reduced cart abandonment by 35%"
       ]
+    },
+    4: {
+      title: "Food Delivery App",
+      subtitle: "On-Demand Food Delivery Platform",
+      description: "A comprehensive food delivery platform connecting restaurants with customers for seamless ordering and delivery experiences.",
+      longDescription: "Built a feature-rich food delivery application that connects restaurants with hungry customers. The platform includes real-time order tracking, restaurant management dashboard, delivery partner app, and secure payment processing.",
+      tech: ["React Native", "Node.js", "MongoDB", "Socket.io", "Razorpay"],
+      category: "Mobile App", 
+      gradient: "from-orange-500 to-red-600",
+      client: "Food Delivery Services",
+      duration: "5 months",
+      team: "5 developers",
+      year: "2024",
+      features: [
+        "Restaurant Listings & Search",
+        "Real-time Order Tracking",
+        "Multiple Payment Options",
+        "Restaurant Dashboard",
+        "Delivery Partner App",
+        "Push Notifications",
+        "Rating & Reviews System",
+        "Promo Codes & Offers"
+      ],
+      challenges: [
+        "Real-time tracking across delivery partners",
+        "Managing peak hour order surges",
+        "Ensuring delivery time accuracy",
+        "Building reliable delivery partner network"
+      ],
+      results: [
+        "500+ restaurants onboarded",
+        "10,000+ orders delivered monthly",
+        "4.5+ average app rating",
+        "30-minute average delivery time"
+      ]
+    },
+    5: {
+      title: "Healthcare Portal",
+      subtitle: "Comprehensive Healthcare Management System",
+      description: "A complete healthcare management system with appointment scheduling, patient records, and telemedicine capabilities.",
+      longDescription: "Developed a comprehensive healthcare portal that streamlines hospital operations and improves patient experience. The system includes appointment scheduling, electronic health records, telemedicine integration, and pharmacy management.",
+      tech: ["React", "Python", "PostgreSQL", "Django", "WebRTC"],
+      category: "Web Development", 
+      gradient: "from-teal-500 to-cyan-600",
+      client: "Healthcare Network",
+      duration: "6 months",
+      team: "4 developers",
+      year: "2024",
+      features: [
+        "Online Appointment Booking",
+        "Electronic Health Records",
+        "Telemedicine Consultations",
+        "Pharmacy Management",
+        "Lab Report Access",
+        "Billing & Insurance",
+        "Doctor Dashboard",
+        "Patient Mobile App"
+      ],
+      challenges: [
+        "Ensuring HIPAA compliance",
+        "Integrating with legacy hospital systems",
+        "Building secure telemedicine platform",
+        "Managing sensitive patient data"
+      ],
+      results: [
+        "50% reduction in appointment wait times",
+        "10,000+ patients registered",
+        "100+ doctors onboarded",
+        "99.9% uptime maintained"
+      ]
+    },
+    6: {
+      title: "Educational Platform",
+      subtitle: "Online Learning Management System",
+      description: "A modern e-learning platform with course creation, enrollment, live classes, and progress tracking for students and educators.",
+      longDescription: "Built a comprehensive educational platform that transforms online learning. Features include course creation tools, live video classes, assignment management, progress tracking, and certification generation.",
+      tech: ["Next.js", "Node.js", "MongoDB", "AWS", "Zoom API"],
+      category: "Web Development", 
+      gradient: "from-indigo-500 to-blue-600",
+      client: "Educational Institution",
+      duration: "4 months",
+      team: "3 developers",
+      year: "2024",
+      features: [
+        "Course Creation & Management",
+        "Live Video Classes",
+        "Assignment & Quizzes",
+        "Progress Tracking",
+        "Certificate Generation",
+        "Discussion Forums",
+        "Student Dashboard",
+        "Instructor Tools"
+      ],
+      challenges: [
+        "Creating engaging video content delivery",
+        "Building interactive assessment tools",
+        "Ensuring academic integrity in online exams",
+        "Managing large concurrent class sessions"
+      ],
+      results: [
+        "5000+ students enrolled",
+        "100+ courses available",
+        "95% course completion rate",
+        "4.8 student satisfaction rating"
+      ]
     }
   };
 
