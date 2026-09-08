@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FiPhone, FiMail, FiMapPin } from 'react-icons/fi';
 import Footer from '../components/Footer';
 import { useSettings } from '../context/SettingsContext';
+import apiConfig from '../config/api';
 
 const Contact = () => {
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', phone: '', projectType: '', message: '' });
@@ -19,12 +20,34 @@ const Contact = () => {
     setLoading(true);
     setError('');
     setSuccess(false);
-    setTimeout(() => {
+
+    try {
+      const response = await fetch(apiConfig.endpoints.contact.create, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: `${formData.firstName} ${formData.lastName}`.trim(),
+          phone: formData.phone,
+          email: formData.email,
+          projectType: formData.projectType,
+          message: formData.message
+        })
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Unable to send your message.');
+      }
+
       setSuccess(true);
       setFormData({ firstName: '', lastName: '', email: '', phone: '', projectType: '', message: '' });
-      setLoading(false);
       setTimeout(() => setSuccess(false), 5000);
-    }, 1500);
+    } catch (submitError) {
+      console.error('Contact form submission error:', submitError);
+      setError(submitError.message || 'Unable to send your message. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

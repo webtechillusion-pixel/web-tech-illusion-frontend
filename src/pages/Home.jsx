@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FiArrowRight, FiPhone, FiCheckCircle, FiAward, FiTarget, FiMail, FiMapPin, FiSend, FiChevronRight, FiCode, FiSmartphone, FiShoppingCart, FiBarChart, FiCloud, FiStar, FiUsers, FiBook, FiBriefcase, FiFileText, FiGlobe, FiClock, FiSearch, FiZap, FiMessageCircle, FiDollarSign, FiTrendingUp, FiShield, FiHeart } from 'react-icons/fi';
 import Footer from '../components/Footer';
 import logo from '../assets/illusionlogo.jpeg';
+import apiConfig from '../config/api';
 
 const Counter = ({ end, duration = 2000, suffix = '' }) => {
   const [count, setCount] = useState(0);
@@ -59,6 +60,36 @@ const Home = () => {
   const [form, setForm] = useState({ name: '', phone: '' });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterMessage, setNewsletterMessage] = useState('');
+  const [newsletterLoading, setNewsletterLoading] = useState(false);
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    setNewsletterLoading(true);
+    setNewsletterMessage('');
+
+    try {
+      const response = await fetch(apiConfig.endpoints.newsletter.subscribe, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newsletterEmail })
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Unable to subscribe.');
+      }
+
+      setNewsletterMessage(data.message || 'Thank you for subscribing!');
+      setNewsletterEmail('');
+    } catch (submitError) {
+      console.error('Newsletter subscription error:', submitError);
+      setNewsletterMessage(submitError.message || 'Unable to subscribe. Please try again.');
+    } finally {
+      setNewsletterLoading(false);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -592,12 +623,13 @@ const Home = () => {
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Stay Updated with Our Newsletter</h2>
           <p className="text-gray-400 mb-8">Get the latest insights, tips, and updates delivered to your inbox</p>
-          <form className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto" onSubmit={(e) => e.preventDefault()}>
-            <input type="email" placeholder="Enter your email" className="flex-1 px-6 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            <button type="submit" className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-all">
-              Subscribe
+          <form className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto" onSubmit={handleNewsletterSubmit}>
+            <input type="email" value={newsletterEmail} onChange={(e) => setNewsletterEmail(e.target.value)} placeholder="Enter your email" required className="flex-1 px-6 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            <button type="submit" disabled={newsletterLoading} className="px-8 py-4 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-all disabled:opacity-50">
+              {newsletterLoading ? '...' : 'Subscribe'}
             </button>
           </form>
+          {newsletterMessage && <p className="text-sm text-blue-100 mt-4">{newsletterMessage}</p>}
           <p className="text-sm text-gray-500 mt-4">No spam, unsubscribe anytime</p>
         </div>
       </section>

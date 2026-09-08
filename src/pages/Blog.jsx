@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiSearch, FiCalendar, FiUser, FiArrowRight, FiTag, FiClock, FiEye, FiMessageCircle } from 'react-icons/fi';
 import Footer from '../components/Footer';
+import apiConfig from '../config/api';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -12,6 +13,9 @@ const Blog = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [seoData, setSeoData] = useState(null);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterMessage, setNewsletterMessage] = useState('');
+  const [newsletterLoading, setNewsletterLoading] = useState(false);
 
   const categories = [
     { id: 'all', label: 'All Posts' },
@@ -26,6 +30,33 @@ const Blog = () => {
     fetchBlogs();
     fetchSeoData();
   }, [selectedCategory, searchTerm]);
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    setNewsletterLoading(true);
+    setNewsletterMessage('');
+
+    try {
+      const response = await fetch(apiConfig.endpoints.newsletter.subscribe, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: newsletterEmail })
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Unable to subscribe.');
+      }
+
+      setNewsletterMessage(data.message || 'Thank you for subscribing!');
+      setNewsletterEmail('');
+    } catch (submitError) {
+      console.error('Newsletter subscription error:', submitError);
+      setNewsletterMessage(submitError.message || 'Unable to subscribe. Please try again.');
+    } finally {
+      setNewsletterLoading(false);
+    }
+  };
 
   const fetchSeoData = async () => {
     try {
@@ -295,16 +326,20 @@ const Blog = () => {
           <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
             Get the latest articles, tips, and insights delivered straight to your inbox.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+          <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
             <input
               type="email"
+              value={newsletterEmail}
+              onChange={(e) => setNewsletterEmail(e.target.value)}
               placeholder="Enter your email"
+              required
               className="flex-1 px-6 py-3 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
             />
-            <button className="px-8 py-3 bg-white text-blue-600 rounded-full font-semibold hover:bg-gray-100 transition-colors">
-              Subscribe
+            <button type="submit" disabled={newsletterLoading} className="px-8 py-3 bg-white text-blue-600 rounded-full font-semibold hover:bg-gray-100 transition-colors disabled:opacity-50">
+              {newsletterLoading ? '...' : 'Subscribe'}
             </button>
-          </div>
+          </form>
+          {newsletterMessage && <p className="text-blue-100 text-sm mt-4">{newsletterMessage}</p>}
         </div>
       </section>
 

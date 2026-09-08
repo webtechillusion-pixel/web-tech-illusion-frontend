@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 import { useSettings } from '../context/SettingsContext';
+import apiConfig from '../config/api';
 import logo from '../assets/illusionlogo.jpeg';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
   
   const { 
     companyName, 
@@ -24,15 +26,33 @@ const Footer = () => {
     footerTagline
   } = useSettings();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setSuccess('Thank you for subscribing!');
+    setSuccess('');
+    setError('');
+
+    try {
+      const response = await fetch(apiConfig.endpoints.newsletter.subscribe, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Unable to subscribe.');
+      }
+
+      setSuccess(data.message || 'Thank you for subscribing!');
       setEmail('');
-      setLoading(false);
       setTimeout(() => setSuccess(''), 3000);
-    }, 1500);
+    } catch (submitError) {
+      console.error('Newsletter subscription error:', submitError);
+      setError(submitError.message || 'Unable to subscribe. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const socialLinks = [
@@ -115,6 +135,7 @@ const Footer = () => {
             </div>
             <h5 className="text-sm font-semibold mb-3">Newsletter</h5>
             {success && <div className="text-green-400 text-sm mb-2">{success}</div>}
+            {error && <div className="text-red-400 text-sm mb-2">{error}</div>}
             <form onSubmit={handleSubmit} className="flex gap-2">
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your email" required className="flex-1 px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500" />
               <button type="submit" disabled={loading} className="px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm disabled:opacity-50">
