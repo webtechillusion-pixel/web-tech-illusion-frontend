@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /dashboard/admin
+
+Sitemap: https://webtechillusion.com/sitemap.xml
