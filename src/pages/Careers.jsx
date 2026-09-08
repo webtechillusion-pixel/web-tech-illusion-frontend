@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiArrowRight, FiPhone, FiMail, FiMapPin, FiBriefcase, FiAward, FiClock, FiLoader, FiExternalLink } from 'react-icons/fi';
 import Footer from '../components/Footer';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+import { API_BASE_URL } from '../config/api';
 
 const Careers = () => {
   const [openings, setOpenings] = useState([]);
@@ -17,7 +16,7 @@ const Careers = () => {
   const fetchJobs = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}api/jobs`);
+      const response = await fetch(`${API_BASE_URL}/api/jobs`);
       const data = await response.json();
       
       if (data.success && data.data.length > 0) {

@@ -2,8 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiCode, FiSmartphone, FiShoppingCart, FiBarChart, FiCloud, FiShield, FiArrowRight, FiCheckCircle, FiPhone, FiMail, FiMapPin, FiChevronRight, FiLoader } from 'react-icons/fi';
 import Footer from '../components/Footer';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+import { API_BASE_URL } from '../config/api';
 
 const iconMap = {
   'web': <FiCode className="w-10 h-10" />,
@@ -37,7 +36,7 @@ const Services = () => {
   const fetchServices = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}api/services`);
+      const response = await fetch(`${API_BASE_URL}/api/services`);
       const data = await response.json();
       
       if (data.success && data.data.length > 0) {

@@ -1,8 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
+import { API_BASE_URL } from '../config/api';
 
 const SettingsContext = createContext();
-
-const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://web-tech-illusion-backend.onrender.com/').replace(/\/$/, '');
 
 export function SettingsProvider({ children }) {
   const [settings, setSettings] = useState({});

@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiSearch, FiCalendar, FiUser, FiArrowRight, FiTag, FiClock, FiEye, FiMessageCircle } from 'react-icons/fi';
 import Footer from '../components/Footer';
-import apiConfig from '../config/api';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL;
+import apiConfig, { API_BASE_URL } from '../config/api';
 
 const Blog = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -60,7 +58,7 @@ const Blog = () => {
 
   const fetchSeoData = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}api/seo/blog`);
+      const response = await fetch(`${API_BASE_URL}/api/seo/blog`);
       const data = await response.json();
       if (data.success && data.data) {
         setSeoData(data.data);
@@ -81,7 +79,7 @@ const Blog = () => {
         params.append('search', searchTerm);
       }
 
-      const response = await fetch(`${API_BASE_URL}api/blog?${params}`);
+      const response = await fetch(`${API_BASE_URL}/api/blog?${params}`);
       const data = await response.json();
 
       if (data.success) {

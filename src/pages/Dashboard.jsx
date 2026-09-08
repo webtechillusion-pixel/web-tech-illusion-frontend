@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SeoPanel from '../components/SeoPanel';
+import { API_BASE_URL } from '../config/api';
 
 const Dashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -26,8 +27,6 @@ const Dashboard = () => {
     isFeatured: false
   });
   const navigate = useNavigate();
-  const API_BASE_URL = import.meta.env.VITE_API_URL
-
   useEffect(() => {
     checkAuth();
   }, []);
@@ -37,7 +36,7 @@ const Dashboard = () => {
     
     if (token) {
       try {
-        const response = await fetch(`${API_BASE_URL}api/auth/verify`, {
+        const response = await fetch(`${API_BASE_URL}/api/auth/verify`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (response.ok) {
@@ -56,7 +55,7 @@ const Dashboard = () => {
     setError('');
     
     try {
-      const response = await fetch(`${API_BASE_URL}api/auth/login`, {
+      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(loginForm)
@@ -90,9 +89,9 @@ const Dashboard = () => {
 
     try {
       const [contactsRes, newsletterRes, blogsRes] = await Promise.all([
-        fetch(`${API_BASE_URL}api/contact`, { headers }),
-        fetch(`${API_BASE_URL}api/newsletter`, { headers }),
-        fetch(`${API_BASE_URL}api/blog/admin/all`, { headers })
+        fetch(`${API_BASE_URL}/api/contact`, { headers }),
+        fetch(`${API_BASE_URL}/api/newsletter`, { headers }),
+        fetch(`${API_BASE_URL}/api/blog/admin/all`, { headers })
       ]);
 
       const contactsData = await contactsRes.json();
@@ -135,8 +134,8 @@ const Dashboard = () => {
     
     try {
       const url = editingBlog 
-        ? `${API_BASE_URL}api/blog/${editingBlog._id}`
-        : `${API_BASE_URL}api/blog`;
+        ? `${API_BASE_URL}/api/blog/${editingBlog._id}`
+        : `${API_BASE_URL}/api/blog`;
       
       const method = editingBlog ? 'PUT' : 'POST';
       
@@ -199,7 +198,7 @@ const Dashboard = () => {
     const token = localStorage.getItem('adminToken');
     
     try {
-      const response = await fetch(`${API_BASE_URL}api/blog/${blogId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/blog/${blogId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -228,7 +227,7 @@ const Dashboard = () => {
     const token = localStorage.getItem('adminToken');
     
     try {
-      const response = await fetch(`${API_BASE_URL}api/contact/${contactId}/status`, {
+      const response = await fetch(`${API_BASE_URL}/api/contact/${contactId}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

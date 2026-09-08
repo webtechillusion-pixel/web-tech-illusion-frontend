@@ -1,4 +1,12 @@
-const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://web-tech-illusion-backend.onrender.com').replace(/\/$/, '');
+const DEFAULT_API_BASE_URL = 'https://web-tech-illusion-backend.onrender.com';
+const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+const API_BASE_URL = (
+  configuredApiUrl && !configuredApiUrl.includes('ondigitalocean.app')
+    ? configuredApiUrl
+    : DEFAULT_API_BASE_URL
+).replace(/\/$/, '');
+
+export { API_BASE_URL };
 
 export const apiConfig = {
   baseURL: API_BASE_URL,

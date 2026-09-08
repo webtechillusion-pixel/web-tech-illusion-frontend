@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Footer from '../components/Footer';
-
-const API_URL = (import.meta.env.VITE_API_URL || 'https://web-tech-illusion-backend.onrender.com').replace(/\/$/, '');
+import { API_BASE_URL } from '../config/api';
 
 const Team = () => {
   const [team, setTeam] = useState([]);
@@ -12,7 +11,7 @@ const Team = () => {
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const { data } = await axios.get(`${API_URL}/api/team`);
+        const { data } = await axios.get(`${API_BASE_URL}/api/team`);
         if (data.success) {
           setTeam(data.data);
         }
