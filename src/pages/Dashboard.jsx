@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SeoPanel from '../components/SeoPanel';
 import { API_BASE_URL } from '../config/api';
+import './Dashboard.css';
 
 const Dashboard = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -273,7 +274,7 @@ const Dashboard = () => {
 
   if (!isAuthenticated) {
     return (
-      <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+      <div className="dashboard-login fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
         <div className="bg-white p-8 rounded-2xl shadow-2xl w-96">
           <div className="text-center mb-6">
             <div className="mx-auto w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mb-4">
@@ -334,9 +335,9 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="dashboard-shell min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-lg border-b border-gray-200 relative z-50">
+      <header className="dashboard-header bg-white shadow-lg border-b border-gray-200 relative z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row justify-between items-center py-4 sm:py-6 space-y-4 sm:space-y-0">
             <div className="flex items-center space-x-4">
@@ -366,7 +367,7 @@ const Dashboard = () => {
       </header>
 
       {/* Stats Cards */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+      <div className="dashboard-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
           <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
             <div className="flex flex-col sm:flex-row items-center justify-between space-y-3 sm:space-y-0">
@@ -430,7 +431,7 @@ const Dashboard = () => {
         </div>
 
         {/* Tabs */}
-        <div className="bg-white rounded-xl shadow-lg border border-gray-100">
+        <div className="dashboard-workspace bg-white rounded-xl shadow-lg border border-gray-100">
           <div className="border-b border-gray-200 bg-gray-50 rounded-t-xl">
             <nav className="-mb-px flex">
               <button
