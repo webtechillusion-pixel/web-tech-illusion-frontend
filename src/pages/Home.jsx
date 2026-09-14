@@ -229,7 +229,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-[#f3f8ff] text-[#1f2937] font-sans">
 
-      <section className="relative pt-28 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative pt-20 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(96,165,250,0.18),_transparent_30%),radial-gradient(circle_at_bottom_right,_rgba(37,99,235,0.14),_transparent_28%)]"></div>
         <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-[#60a5fa]/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#0f172a]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
