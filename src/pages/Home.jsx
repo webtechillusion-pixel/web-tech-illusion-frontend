@@ -472,7 +472,7 @@ const Home = () => {
           <div className="absolute top-0 right-0 w-64 h-64 bg-[#2563eb]/5 rounded-bl-full pointer-events-none"></div>
 
           <div className="text-center max-w-2xl mx-auto mb-12">
-            <span className="section-badge">âš¡ Interactive Scope Estimator</span>
+            <span className="section-badge">Interactive Scope Estimator</span>
             <div className="divider"></div>
             <h2 className="text-3xl sm:text-4xl font-black text-[#0f172a] mt-2">
               Estimate Your Next <span className="text-[#2563eb]">Project Scope</span>
@@ -492,10 +492,10 @@ const Home = () => {
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { id: 'web-app',    label: 'Web Platform / SaaS', icon: 'ðŸŒ' },
-                    { id: 'mobile-app', label: 'iOS & Android App',   icon: 'ðŸ“±' },
-                    { id: 'ecommerce',  label: 'E-Commerce Store',    icon: 'ðŸ›ï¸' },
-                    { id: 'ai-solution',label: 'AI & Custom LLM',     icon: 'ðŸ§ ' },
+                    { id: 'web-app',    label: 'Web Platform / SaaS', icon: 'Web' },
+                    { id: 'mobile-app', label: 'iOS & Android App',   icon: 'App' },
+                    { id: 'ecommerce',  label: 'E-Commerce Store',    icon: 'Shop' },
+                    { id: 'ai-solution',label: 'AI & Custom LLM',     icon: 'AI' },
                   ].map((item) => (
                     <button
                       key={item.id}
@@ -543,7 +543,7 @@ const Home = () => {
                         <span
                           className="w-4 h-4 rounded-full flex items-center justify-center text-[10px]"
                           style={{ background: active ? '#2563eb' : '#dfeafc', color: active ? 'white' : 'transparent' }}
-                        >âœ“</span>
+                        >✓</span>
                       </button>
                     );
                   })}
@@ -557,8 +557,8 @@ const Home = () => {
                 </label>
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    { id: 'express',    label: 'Express Sprint',   time: '2â€“3 Weeks' },
-                    { id: 'standard',   label: 'Standard Agile',   time: '4â€“6 Weeks' },
+                    { id: 'express',    label: 'Express Sprint',   time: '2-3 Weeks' },
+                    { id: 'standard',   label: 'Standard Agile',   time: '4-6 Weeks' },
                     { id: 'enterprise', label: 'Enterprise Scale', time: '8+ Weeks' },
                   ].map((t) => (
                     <button
