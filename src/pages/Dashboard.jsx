@@ -49,6 +49,7 @@ const Dashboard = () => {
     bio: '',
     experience: '',
     image: '',
+    slug: '',
     skills: '',
     status: 'active',
     order: 0
@@ -167,7 +168,7 @@ const Dashboard = () => {
     }
   };
 
-  const handleImageUpload = async (event) => {
+  const handleImageUpload = async (event, target = 'blog') => {
     const file = event.target.files?.[0];
     if (!file) return;
 
@@ -189,11 +190,15 @@ const Dashboard = () => {
       }
 
       const uploadedUrl = data.url;
-      setBlogForm((prev) => ({
-        ...prev,
-        image: uploadedUrl,
-        imageLink: uploadedUrl
-      }));
+      if (target === 'team') {
+        setTeamForm((prev) => ({ ...prev, image: uploadedUrl }));
+      } else {
+        setBlogForm((prev) => ({
+          ...prev,
+          image: uploadedUrl,
+          imageLink: uploadedUrl
+        }));
+      }
       setError('');
     } catch (error) {
       console.error('Image upload error:', error);
@@ -409,6 +414,7 @@ const Dashboard = () => {
         bio: '',
         experience: '',
         image: '',
+        slug: '',
         skills: '',
         status: 'active',
         order: 0
@@ -429,6 +435,7 @@ const Dashboard = () => {
       bio: member.bio || '',
       experience: member.experience || '',
       image: member.image || '',
+      slug: member.slug || '',
       skills: Array.isArray(member.skills) ? member.skills.join(', ') : '',
       status: member.status || 'active',
       order: member.order || 0
@@ -1056,6 +1063,7 @@ const Dashboard = () => {
                       bio: '',
                       experience: '',
                       image: '',
+                      slug: '',
                       skills: '',
                       status: 'active',
                       order: 0
@@ -1221,8 +1229,8 @@ const Dashboard = () => {
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">Skills (comma separated)</label>
-                  <input type="text" value={teamForm.skills} onChange={(e) => setTeamForm({...teamForm, skills: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">Public profile slug</label>
+                  <input type="text" value={teamForm.slug} onChange={(e) => setTeamForm({...teamForm, slug: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="aarav-sharma" />
                 </div>
                 <div>
                   <label className="block text-gray-700 text-sm font-semibold mb-2">Status</label>
@@ -1231,6 +1239,33 @@ const Dashboard = () => {
                     <option value="inactive">Inactive</option>
                   </select>
                 </div>
+              </div>
+              <div className="rounded-xl border border-dashed border-blue-200 bg-blue-50 p-3">
+                <label className="block text-gray-700 text-sm font-semibold mb-2">Upload member image</label>
+                <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, 'team')} className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white file:font-semibold hover:file:bg-blue-700" />
+                {uploadingImage && <p className="mt-2 text-xs text-blue-700">Uploading image...</p>}
+              </div>
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-3">
+                <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">Direct public link</p>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    readOnly
+                    value={teamForm.slug ? `${window.location.origin}/team/${teamForm.slug}` : `${window.location.origin}/team/${(teamForm.name || 'team-member').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm text-gray-700"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => navigator.clipboard?.writeText(teamForm.slug ? `${window.location.origin}/team/${teamForm.slug}` : `${window.location.origin}/team/${(teamForm.name || 'team-member').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`)}
+                    className="px-3 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-700"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">Skills (comma separated)</label>
+                <input type="text" value={teamForm.skills} onChange={(e) => setTeamForm({...teamForm, skills: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
               <div className="flex justify-end gap-3 pt-2">
                 <button type="button" onClick={() => setShowTeamModal(false)} className="px-5 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">Cancel</button>
