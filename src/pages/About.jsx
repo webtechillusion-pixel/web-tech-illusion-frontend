@@ -22,7 +22,7 @@ const About = () => {
             Building the <span className="text-[#2563eb]">Future</span>
           </h1>
           <p className="text-xl text-[#6b7280] max-w-3xl mx-auto mb-10 leading-relaxed">
-            We are a leading software company in Lucknow helping brands grow with digital marketing, custom web development, mobile apps, and AI-powered business solutions.
+            We are a leading software company in Lucknow helping businesses grow with custom web development, website design, digital marketing, mobile apps, and AI-powered business solutions built for real results.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

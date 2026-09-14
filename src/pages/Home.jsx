@@ -245,7 +245,7 @@ const Home = () => {
 
               <h1 className="text-4xl sm:text-5xl lg:text-[4.2rem] lg:leading-[1.05] font-black text-[#0f172a] tracking-[-0.04em] mb-6">
                 Best Software Company in Lucknow<br />
-                for Web Development, Apps &{' '}
+                for Website Design, Web Apps &{' '}
                 <span className="inline-block text-[#2563eb]">
                   <Typewriter
                     words={['Digital Marketing', 'SEO Growth', 'Custom Software', 'Business Results']}
@@ -255,7 +255,7 @@ const Home = () => {
               </h1>
 
               <p className="text-lg text-[#475569] leading-relaxed mb-8 max-w-xl">
-                WebTech Illusion helps brands grow with premium websites, mobile app development, ecommerce platforms, and digital marketing strategies built for speed, trust, and measurable business results.
+                WebTech Illusion is a trusted web development company in Lucknow and digital marketing agency helping startups, local brands, and growing businesses with custom websites, mobile apps, SEO, and conversion-focused digital growth strategies.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-10">

@@ -94,7 +94,7 @@ const Services = () => {
             Our <span className="text-[#2563eb]">Services</span>
           </h1>
           <p className="text-xl text-[#6b7280] max-w-3xl mx-auto leading-relaxed">
-            End-to-end web development, mobile apps, SEO, and digital marketing services designed for businesses in Lucknow and beyond.
+            End-to-end website design, web development, mobile apps, SEO, and digital marketing services for businesses looking for the best software company in Lucknow and a growth-focused digital partner.
           </p>
         </div>
       </section>
