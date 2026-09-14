@@ -719,18 +719,20 @@ const Dashboard = () => {
                           {formatDate(blog.createdAt)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center space-x-2">
+                          <div className="flex items-center gap-2">
                             <button
                               onClick={() => handleEditBlog(blog)}
-                              className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                              className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-blue-600 hover:text-blue-800 rounded-lg hover:bg-blue-50 transition-colors"
                             >
                               <i className="fas fa-edit"></i>
+                              Edit
                             </button>
                             <button
                               onClick={() => handleDeleteBlog(blog._id)}
-                              className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                              className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-red-600 hover:text-red-800 rounded-lg hover:bg-red-50 transition-colors"
                             >
                               <i className="fas fa-trash"></i>
+                              Delete
                             </button>
                           </div>
                         </td>
