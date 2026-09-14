@@ -21,6 +21,7 @@ const Industries = lazy(() => import('./pages/Industries'));
 const Careers = lazy(() => import('./pages/Careers'));
 const CaseStudies = lazy(() => import('./pages/CaseStudies'));
 const Documentation = lazy(() => import('./pages/Documentation'));
+const CategoryDetailPage = lazy(() => import('./pages/CategoryDetailPage'));
 
 function App() {
   return (
@@ -45,6 +46,8 @@ function App() {
                 <Route path="/careers" element={<Careers />} />
                 <Route path="/case-studies" element={<CaseStudies />} />
                 <Route path="/documentation" element={<Documentation />} />
+                <Route path="/services/:slug" element={<CategoryDetailPage />} />
+                <Route path="/industries/:slug" element={<CategoryDetailPage />} />
                 <Route path="/dashboard/admin" element={<Dashboard />} />
               </Routes>
             </Suspense>

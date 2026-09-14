@@ -28,21 +28,21 @@ const Navbar = () => {
     {
       label: 'Services',
       children: [
-        { title: 'Web Development',   sub: 'Custom websites & web applications', path: '/services' },
-        { title: 'Mobile Solutions',  sub: 'iOS & Android apps',                 path: '/services' },
-        { title: 'E-Commerce',        sub: 'Online stores & marketplaces',        path: '/services' },
-        { title: 'Digital Marketing', sub: 'SEO, SEM & social media',            path: '/services' },
-        { title: 'Cloud Services',    sub: 'AWS, Azure & deployment',            path: '/services' },
+        { title: 'Web Development',   sub: 'Custom websites & web applications', path: '/services/web-development' },
+        { title: 'Mobile Solutions',  sub: 'iOS & Android apps',                 path: '/services/mobile-app-development' },
+        { title: 'E-Commerce',        sub: 'Online stores & marketplaces',        path: '/services/e-commerce-solutions' },
+        { title: 'Digital Marketing', sub: 'SEO, SEM & social media',            path: '/services/digital-marketing' },
+        { title: 'Cloud Services',    sub: 'AWS, Azure & deployment',            path: '/services/cloud-services' },
       ]
     },
     {
       label: 'Industries',
       children: [
-        { title: 'Healthcare',     sub: 'Medical & wellness platforms',    path: '/industries' },
-        { title: 'E-Commerce',     sub: 'Retail & shopping solutions',     path: '/industries' },
-        { title: 'Education',      sub: 'E-learning platforms',            path: '/industries' },
-        { title: 'Travel & Tourism', sub: 'Booking & reservation systems', path: '/industries' },
-        { title: 'Real Estate',    sub: 'Property management',             path: '/industries' },
+        { title: 'Healthcare',     sub: 'Medical & wellness platforms',    path: '/industries/healthcare' },
+        { title: 'E-Commerce',     sub: 'Retail & shopping solutions',     path: '/industries/e-commerce' },
+        { title: 'Education',      sub: 'E-learning platforms',            path: '/industries/education' },
+        { title: 'Travel & Tourism', sub: 'Booking & reservation systems', path: '/industries/travel-tourism' },
+        { title: 'Real Estate',    sub: 'Property management',             path: '/industries/real-estate' },
       ]
     },
     {
