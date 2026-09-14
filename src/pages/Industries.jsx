@@ -25,7 +25,7 @@ const Industries = () => {
             Industries We <span className="text-[#2563eb]">Serve</span>
           </h1>
           <p className="text-xl text-[#6b7280] max-w-3xl mx-auto leading-relaxed">
-            We deliver specialized digital solutions tailored to the unique needs of each industry.
+            We deliver digital solutions and growth-focused software for businesses that need smarter, faster, and more scalable operations.
           </p>
         </div>
       </section>

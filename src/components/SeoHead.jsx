@@ -30,27 +30,27 @@ const pageNames = {
 
 const defaultSeo = {
   home: {
-    metaTitle: 'WebTech Illusion - Digital Solutions, Web & Software Development',
-    metaDescription: 'Transform your business with WebTech Illusion. High-performance web development, AI integration, mobile apps, and scalable digital solutions.',
-    metaKeywords: 'web development, software company, mobile app development, UI/UX design, AI solutions, SEO agency, digital marketing, cloud DevOps',
+    metaTitle: 'Best Software Company in Lucknow | Web Development, App Development & Digital Marketing',
+    metaDescription: 'WebTech Illusion is the best software company in Lucknow for web development, mobile app development, AI solutions, SEO, and digital marketing services that grow businesses.',
+    metaKeywords: 'best software company in lucknow, software company in lucknow, web development company in lucknow, digital marketing agency in lucknow, mobile app development, SEO services, UI/UX design, AI solutions',
     schemaType: 'WebSite',
-    h1Heading: 'Building High-Performance Digital Experiences That Matter',
+    h1Heading: 'Best Software Company in Lucknow for Digital Growth',
     ogImage: `${SITE_URL}/assets/illusionlogo.jpeg`,
     robots: 'index, follow'
   },
   about: {
-    metaTitle: 'About Us | WebTech Illusion - Engineering Digital Innovation',
-    metaDescription: 'Discover the story, mission, and expert team behind WebTech Illusion. Delivering enterprise-grade digital products and consulting services globally.',
-    metaKeywords: 'about webtech illusion, tech company mission, software team, digital transformation agency',
+    metaTitle: 'About WebTech Illusion | Best Software Company in Lucknow',
+    metaDescription: 'Learn about WebTech Illusion, a leading software company in Lucknow helping ambitious brands grow with web, app, AI, and digital marketing solutions.',
+    metaKeywords: 'about webtech illusion, software company in lucknow, digital marketing agency in lucknow, web design company in lucknow, software team',
     schemaType: 'AboutPage',
     h1Heading: 'Pioneering Digital Excellence with Passion and Precision',
     ogImage: `${SITE_URL}/assets/illusionlogo.jpeg`,
     robots: 'index, follow'
   },
   services: {
-    metaTitle: 'Best Software Company in Lucknow | Web, Mobile & Digital Marketing Services',
-    metaDescription: 'WebTech Illusion is a leading software company in Lucknow delivering web development, mobile apps, ecommerce growth, cloud services, and digital marketing for ambitious brands.',
-    metaKeywords: 'best software company in lucknow, digital marketing, web development services, mobile app development, SEO services, cloud services',
+    metaTitle: 'Web Development, Mobile Apps & Digital Marketing Services in Lucknow | WebTech Illusion',
+    metaDescription: 'WebTech Illusion provides web development, mobile app development, digital marketing, SEO, and cloud services in Lucknow for businesses that want growth and visibility.',
+    metaKeywords: 'best software company in lucknow, digital marketing agency in lucknow, web development company in lucknow, mobile app development, SEO services, cloud services',
     schemaType: 'Service',
     h1Heading: 'Comprehensive Digital Capabilities Built for Modern Scale',
     ogImage: `${SITE_URL}/assets/illusionlogo.jpeg`,
@@ -75,18 +75,18 @@ const defaultSeo = {
     robots: 'index, follow'
   },
   contact: {
-    metaTitle: 'Contact Us | Start Your Project - WebTech Illusion',
-    metaDescription: 'Get in touch with WebTech Illusion for a free technical consultation, project estimate, or partnership inquiry. Fast 24-hour turnaround guaranteed.',
-    metaKeywords: 'contact software agency, hire web developers, get website quote, free tech consultation',
+    metaTitle: 'Contact WebTech Illusion | Best Software Company in Lucknow',
+    metaDescription: 'Get in touch with WebTech Illusion for web development, mobile apps, SEO, and digital marketing services in Lucknow and across India.',
+    metaKeywords: 'contact software company in lucknow, digital marketing agency in lucknow, web development company in lucknow, hire web developers, tech consultation',
     schemaType: 'ContactPage',
     h1Heading: 'Let’s Build Something Remarkable Together',
     ogImage: `${SITE_URL}/assets/illusionlogo.jpeg`,
     robots: 'index, follow'
   },
   industries: {
-    metaTitle: 'Industry Solutions | Tailored Tech for Every Sector - WebTech Illusion',
-    metaDescription: 'Tailored technology solutions for Healthcare, E-Commerce, Education, Travel & Tourism, and Real Estate businesses with growth-focused digital transformation.',
-    metaKeywords: 'best software company in lucknow, digital marketing, healthcare software, ecommerce solutions, edtech platforms, real estate tech',
+    metaTitle: 'Industry Solutions | Tech, SEO & Digital Growth for Every Sector - WebTech Illusion',
+    metaDescription: 'WebTech Illusion builds digital solutions for healthcare, e-commerce, education, travel, and real estate businesses with performance-driven software and digital marketing.',
+    metaKeywords: 'best software company in lucknow, digital marketing agency in lucknow, healthcare software, ecommerce solutions, edtech platforms, real estate tech',
     schemaType: 'WebPage',
     h1Heading: 'Domain-Specific Digital Solutions Engineered for Industry Leaders',
     ogImage: `${SITE_URL}/assets/illusionlogo.jpeg`,

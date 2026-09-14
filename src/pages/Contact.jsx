@@ -59,7 +59,7 @@ const Contact = () => {
             Contact <span className="text-[#2563eb]">Us</span>
           </h1>
           <p className="text-xl text-[#6b7280] max-w-3xl mx-auto leading-relaxed">
-            Ready to transform your digital presence? Let's discuss your project.
+            Ready to grow with the best software company in Lucknow? Let’s discuss your web, app, SEO, and digital marketing project.
           </p>
         </div>
       </section>

@@ -1,5 +1,17 @@
+import { useEffect } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { FiArrowRight, FiCheckCircle, FiCode, FiShoppingCart, FiSmartphone, FiCloud, FiTrendingUp, FiHeart, FiBookOpen, FiMapPin, FiHome, FiTarget } from 'react-icons/fi';
+
+const setMetaTag = (attribute, key, content) => {
+  if (!content) return;
+  let element = document.head.querySelector(`meta[${attribute}="${key}"]`);
+  if (!element) {
+    element = document.createElement('meta');
+    element.setAttribute(attribute, key);
+    document.head.appendChild(element);
+  }
+  element.setAttribute('content', content);
+};
 
 const servicePages = {
   'web-development': {
@@ -172,6 +184,60 @@ const CategoryDetailPage = () => {
   const { pathname } = useLocation();
   const type = pathname.startsWith('/services/') ? 'services' : 'industries';
   const data = type === 'services' ? servicePages[slug] : industryPages[slug];
+
+  useEffect(() => {
+    if (!data) return;
+
+    const pageUrl = `https://webtechillusion.com${pathname}`;
+    const title = `${data.label} | WebTech Illusion`;
+    const description = `${data.description} We help businesses with ${data.keywords.join(', ')}.`;
+    const keywords = [...new Set([...data.keywords, 'best software company in lucknow', 'digital marketing', 'software company', 'webtech illusion'])].join(', ');
+
+    document.title = title;
+    setMetaTag('name', 'description', description);
+    setMetaTag('name', 'keywords', keywords);
+    setMetaTag('name', 'robots', 'index, follow');
+    setMetaTag('property', 'og:title', title);
+    setMetaTag('property', 'og:description', description);
+    setMetaTag('property', 'og:url', pageUrl);
+    setMetaTag('property', 'og:type', 'website');
+    setMetaTag('property', 'og:site_name', 'WebTech Illusion');
+    setMetaTag('name', 'twitter:card', 'summary_large_image');
+    setMetaTag('name', 'twitter:title', title);
+    setMetaTag('name', 'twitter:description', description);
+
+    let canonical = document.head.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute('href', pageUrl);
+
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': type === 'services' ? 'Service' : 'ProfessionalService',
+      name: data.label,
+      description: data.description,
+      provider: {
+        '@type': 'Organization',
+        name: 'WebTech Illusion',
+        url: 'https://webtechillusion.com'
+      },
+      areaServed: 'Lucknow',
+      keywords,
+      url: pageUrl
+    };
+
+    let schemaScript = document.head.querySelector('script[data-category-schema="true"]');
+    if (!schemaScript) {
+      schemaScript = document.createElement('script');
+      schemaScript.type = 'application/ld+json';
+      schemaScript.setAttribute('data-category-schema', 'true');
+      document.head.appendChild(schemaScript);
+    }
+    schemaScript.textContent = JSON.stringify(schema);
+  }, [data, pathname, type]);
 
   if (!data) {
     return (

@@ -94,7 +94,7 @@ const Services = () => {
             Our <span className="text-[#2563eb]">Services</span>
           </h1>
           <p className="text-xl text-[#6b7280] max-w-3xl mx-auto leading-relaxed">
-            End-to-end technology services that help businesses transform and succeed in the digital age.
+            End-to-end web development, mobile apps, SEO, and digital marketing services designed for businesses in Lucknow and beyond.
           </p>
         </div>
       </section>

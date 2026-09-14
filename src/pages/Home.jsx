@@ -244,18 +244,18 @@ const Home = () => {
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-[4.2rem] lg:leading-[1.05] font-black text-[#0f172a] tracking-[-0.04em] mb-6">
-                We Build Digital<br />
-                Products That{' '}
+                Best Software Company in Lucknow<br />
+                for Web Development, Apps &{' '}
                 <span className="inline-block text-[#2563eb]">
                   <Typewriter
-                    words={['Actually Work', 'Drive Results', 'Stand Out', 'Scale Fast', 'Win Clients']}
+                    words={['Digital Marketing', 'SEO Growth', 'Custom Software', 'Business Results']}
                     className=""
                   />
                 </span>
               </h1>
 
               <p className="text-lg text-[#475569] leading-relaxed mb-8 max-w-xl">
-                From startups to growing businesses — we design and build high-converting websites, mobile apps, and e-commerce experiences that look premium and perform at scale.
+                WebTech Illusion helps brands grow with premium websites, mobile app development, ecommerce platforms, and digital marketing strategies built for speed, trust, and measurable business results.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-10">

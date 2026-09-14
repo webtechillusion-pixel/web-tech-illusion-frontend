@@ -22,7 +22,7 @@ const About = () => {
             Building the <span className="text-[#2563eb]">Future</span>
           </h1>
           <p className="text-xl text-[#6b7280] max-w-3xl mx-auto mb-10 leading-relaxed">
-            We are a digital transformation company that delivers consulting-led and AI-powered technology services to help businesses thrive in the digital age.
+            We are a leading software company in Lucknow helping brands grow with digital marketing, custom web development, mobile apps, and AI-powered business solutions.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
