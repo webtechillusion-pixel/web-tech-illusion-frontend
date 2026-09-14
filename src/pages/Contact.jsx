@@ -49,7 +49,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-[#f3f8ff]">
 
-      {/* â”€â”€ Hero â”€â”€ */}
+      {/* --- Hero --- */}
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#edf4ff]/50 pointer-events-none"></div>
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#2563eb]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
@@ -64,7 +64,7 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* â”€â”€ Form + Info â”€â”€ */}
+      {/* --- Form + Info --- */}
       <section className="py-16 pb-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12">
@@ -72,11 +72,11 @@ const Contact = () => {
             {/* Form card */}
             <div className="bg-white rounded-3xl p-8 border border-[#dfeafc] shadow-sm">
               <h2 className="text-2xl font-bold text-[#0f172a] mb-2">Send us a Message</h2>
-              <p className="text-sm text-[#9ca3af] mb-6">We'll get back to you within 2â€“4 hours.</p>
+              <p className="text-sm text-[#9ca3af] mb-6">We'll get back to you within 2-4 hours.</p>
 
               {success && (
                 <div className="mb-6 p-4 bg-[#d1fae5] border border-emerald-200 text-emerald-700 rounded-xl text-sm font-medium">
-                  âœ“ Message sent successfully! We'll get back to you soon.
+                  ✓ Message sent successfully! We'll get back to you soon.
                 </div>
               )}
               {error && (
@@ -131,9 +131,9 @@ const Contact = () => {
                     className="w-full px-4 py-3 border border-[#dfeafc] rounded-xl bg-[#f3f8ff] text-[#0f172a] focus:outline-none focus:border-[#2563eb] transition-colors text-sm"
                   >
                     <option value="">Select a service</option>
-                    <option value="static">Static Website (â‚¹15,000)</option>
-                    <option value="dynamic">Dynamic Website (â‚¹30,000)</option>
-                    <option value="functional">Fully Functional (â‚¹1,00,000+)</option>
+                    <option value="static">Static Website (₹15,000)</option>
+                    <option value="dynamic">Dynamic Website (₹30,000)</option>
+                    <option value="functional">Fully Functional (₹1,00,000+)</option>
                     <option value="ecommerce">E-Commerce Store</option>
                     <option value="other">Other</option>
                   </select>
@@ -209,8 +209,8 @@ const Contact = () => {
                   </div>
                   <div className="space-y-2 text-sm text-[#6b7280]">
                     {[
-                      { day: 'Monday â€“ Friday', hours: '9:00 AM â€“ 7:00 PM' },
-                      { day: 'Saturday',        hours: '10:00 AM â€“ 5:00 PM' },
+                      { day: 'Monday - Friday', hours: '9:00 AM - 7:00 PM' },
+                      { day: 'Saturday',        hours: '10:00 AM - 5:00 PM' },
                       { day: 'Sunday',          hours: 'Closed' },
                     ].map((row, i) => (
                       <div key={i} className="flex justify-between">

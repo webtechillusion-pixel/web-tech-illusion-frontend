@@ -12,7 +12,7 @@ const About = () => {
   return (
     <div className="min-h-screen bg-[#f3f8ff]">
 
-      {/* â”€â”€ Hero â”€â”€ */}
+      {/* ------ Hero ------ */}
       <section className="relative pt-32 pb-24 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#edf4ff]/60 pointer-events-none"></div>
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#2563eb]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
@@ -41,7 +41,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* â”€â”€ Mission â”€â”€ */}
+      {/* ------ Mission ------ */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -69,7 +69,7 @@ const About = () => {
               </div>
             </div>
 
-            {/* Values card â€” dark navy for contrast */}
+            {/* Values card --- dark navy for contrast */}
             <div className="bg-[#0f172a] rounded-3xl p-8 md:p-12">
               <h3 className="text-2xl font-bold text-white mb-6">Our Values</h3>
               <div className="space-y-4">
@@ -95,7 +95,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* â”€â”€ Expertise â”€â”€ */}
+      {/* ------ Expertise ------ */}
       <section className="py-24 bg-[#f3f8ff]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -170,7 +170,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* â”€â”€ Stats Banner â”€â”€ */}
+      {/* ------ Stats Banner ------ */}
       <section className="py-16 bg-[#0f172a]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
@@ -189,7 +189,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* â”€â”€ Why Choose Us â”€â”€ */}
+      {/* ------ Why Choose Us ------ */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -225,7 +225,7 @@ const About = () => {
         </div>
       </section>
 
-      {/* â”€â”€ CTA â”€â”€ */}
+      {/* ------ CTA ------ */}
       <section className="py-24 bg-[#f3f8ff]">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <span className="section-badge mb-4">Get In Touch</span>

@@ -13,7 +13,7 @@ import Footer from '../components/Footer';
 import logo from '../assets/illusionlogo.jpeg';
 import apiConfig from '../config/api';
 
-/* â”€â”€â”€ Animated Counter â”€â”€â”€ */
+/* --- Animated Counter --- */
 const Counter = ({ end, duration = 2000, suffix = '' }) => {
   const [count, setCount] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
@@ -44,7 +44,7 @@ const Counter = ({ end, duration = 2000, suffix = '' }) => {
   return <span ref={ref}>{count}{suffix}</span>;
 };
 
-/* â”€â”€â”€ Typewriter â”€â”€â”€ */
+/* --- Typewriter --- */
 const Typewriter = ({ words, delay = 1500, typingSpeed = 80, className = '' }) => {
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [currentText, setCurrentText] = useState('');
@@ -90,7 +90,7 @@ const techLogos = [
   { name: 'FastAPI',      tag: 'High-Perf API',   color: '#059669' },
 ];
 
-/* â”€â”€â”€ Main Component â”€â”€â”€ */
+/* --------- Main Component --------- */
 const Home = () => {
   const [contactForm, setContactForm] = useState({
     name: '', email: '', phone: '', service: 'web-development', budget: 'flexible', message: ''
@@ -131,7 +131,7 @@ const Home = () => {
       });
       const data = await response.json();
       if (!response.ok || !data.success) throw new Error(data.message || 'Unable to submit.');
-      setSubmitSuccess('Thank you! Your consultation request has been received. An engineering lead will contact you within 2â€“4 hours.');
+      setSubmitSuccess('Thank you! Your consultation request has been received. An engineering lead will contact you within 2-4 hours.');
       setContactForm({ name: '', email: '', phone: '', service: 'web-development', budget: 'flexible', message: '' });
     } catch (err) {
       setSubmitError(err.message || 'Something went wrong. Please try calling us directly.');
@@ -144,19 +144,19 @@ const Home = () => {
     setSelectedFeatures((prev) => prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]);
 
   const estimatorProjects = {
-    'web-app':    { name: 'Custom SaaS & Web Application',     baseWeeks: 3, baseBudget: '$1,200 â€“ $3,500' },
-    'mobile-app': { name: 'iOS & Android Mobile App',          baseWeeks: 4, baseBudget: '$2,000 â€“ $5,000' },
-    'ecommerce':  { name: 'High-Conversion E-Commerce Store',  baseWeeks: 3, baseBudget: '$1,500 â€“ $4,000' },
-    'ai-solution':{ name: 'AI Workflows & LLM Integration',    baseWeeks: 3, baseBudget: '$1,800 â€“ $4,500' },
+    'web-app':    { name: 'Custom SaaS & Web Application',     baseWeeks: 3, baseBudget: '$1,200 - $3,500' },
+    'mobile-app': { name: 'iOS & Android Mobile App',          baseWeeks: 4, baseBudget: '$2,000 - $5,000' },
+    'ecommerce':  { name: 'High-Conversion E-Commerce Store',  baseWeeks: 3, baseBudget: '$1,500 - $4,000' },
+    'ai-solution':{ name: 'AI Workflows & LLM Integration',    baseWeeks: 3, baseBudget: '$1,800 - $4,500' },
   };
 
   const featureOptions = [
-    { id: 'auth',    label: 'User Authentication & Roles',   icon: 'ðŸ”’' },
-    { id: 'payment', label: 'Stripe / Razorpay Payments',    icon: 'ðŸ’³' },
-    { id: 'dashboard',label:'Custom Admin Dashboard',        icon: 'ðŸ“Š' },
-    { id: 'ai',      label: 'AI Chatbot & Automation',       icon: 'ðŸ¤–' },
-    { id: 'seo',     label: 'Full SEO & Social Meta Stack',  icon: 'ðŸš€' },
-    { id: 'cloud',   label: 'AWS Cloud & CI/CD Pipeline',    icon: 'â˜ï¸' },
+    { id: 'auth',    label: 'User Authentication & Roles',   icon: 'Auth' },
+    { id: 'payment', label: 'Stripe / Razorpay Payments',    icon: 'Pay' },
+    { id: 'dashboard',label:'Custom Admin Dashboard',        icon: 'Admin' },
+    { id: 'ai',      label: 'AI Chatbot & Automation',       icon: 'AI' },
+    { id: 'seo',     label: 'Full SEO & Social Meta Stack',  icon: 'SEO' },
+    { id: 'cloud',   label: 'AWS Cloud & CI/CD Pipeline',    icon: 'Cloud' },
   ];
 
   const currentEstimator = estimatorProjects[selectedProjectType] || estimatorProjects['web-app'];
@@ -203,7 +203,7 @@ const Home = () => {
   const faqs = [
     {
       q: 'How quickly can you start and what is the typical project timeline?',
-      a: 'We can typically kick off within 48â€“72 hours of initial scope alignment. Standard web applications take 2â€“4 weeks, while complex full-stack platforms or multi-platform mobile apps take 4â€“8 weeks. We deliver working milestone demos every 2 weeks.'
+      a: 'We can typically kick off within 48-72 hours of initial scope alignment. Standard web applications take 2-4 weeks, while complex full-stack platforms or multi-platform mobile apps take 4-8 weeks. We deliver working milestone demos every 2 weeks.'
     },
     {
       q: 'Do I get 100% full ownership of the source code and intellectual property?',
@@ -345,7 +345,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* â”€â”€â”€ 2. TECH STACK MARQUEE â”€â”€â”€ */}
+      {/* --- 2. TECH STACK MARQUEE --- */}
       <section className="py-8 bg-white border-y border-[#dfeafc] overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 mb-4 flex items-center justify-between">
           <p className="text-xs font-mono uppercase tracking-widest text-[#9ca3af]">
@@ -369,7 +369,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* â”€â”€â”€ 3. SERVICES GRID â”€â”€â”€ */}
+      {/* --- 3. SERVICES GRID --- */}
       <section className="py-28 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-20">
           <span className="section-badge">
@@ -446,7 +446,7 @@ const Home = () => {
                 <ul className="space-y-2.5 mb-8 text-xs text-[#4b5563] font-medium">
                   {service.features.map((f, fi) => (
                     <li key={fi} className="flex items-center gap-2">
-                      <span className="w-4 h-4 rounded-full flex items-center justify-center text-[10px]" style={{ background: service.iconBg, color: service.iconColor }}>âœ“</span>
+                      <span className="w-4 h-4 rounded-full flex items-center justify-center text-[10px]" style={{ background: service.iconBg, color: service.iconColor }}>✓</span>
                       {f}
                     </li>
                   ))}
@@ -465,7 +465,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* â”€â”€â”€ 4. PROJECT ESTIMATOR â”€â”€â”€ */}
+      {/* --------- 4. PROJECT ESTIMATOR --------- */}
       <section className="py-24 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="rounded-3xl border border-[#dfeafc] bg-white p-8 sm:p-12 shadow-sm relative overflow-hidden">
           {/* Subtle top-right decoration */}
@@ -614,11 +614,11 @@ const Home = () => {
         </div>
       </section>
 
-      {/* â”€â”€â”€ 5. WHY CHOOSE US â”€â”€â”€ */}
+      {/* --- 5. WHY CHOOSE US --- */}
       <section className="py-28 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
-            <span className="section-badge">âš¡ The WebTech Illusion Difference</span>
+            <span className="section-badge">The WebTech Illusion Difference</span>
             <div className="divider text-left" style={{ margin: '16px 0' }}></div>
             <h2 className="text-3xl sm:text-5xl font-black text-[#0f172a] tracking-tight leading-tight">
               Why Forward-Thinking <br />
@@ -635,7 +635,7 @@ const Home = () => {
                 { title: 'Direct Engineer Access',          desc: 'No confusing middlemen. You communicate directly with engineering leads and inspect live sprint demos.' },
               ].map((item, i) => (
                 <div key={i} className="flex items-start gap-4 p-4 rounded-2xl bg-white border border-[#dfeafc] shadow-sm hover:border-[#2563eb] transition-colors">
-                  <div className="w-8 h-8 rounded-xl bg-[#edf4ff] text-[#2563eb] flex items-center justify-center shrink-0 mt-0.5 font-bold text-sm">âœ“</div>
+                  <div className="w-8 h-8 rounded-xl bg-[#edf4ff] text-[#2563eb] flex items-center justify-center shrink-0 mt-0.5 font-bold text-sm">✓</div>
                   <div>
                     <h3 className="text-sm font-bold text-[#0f172a]">{item.title}</h3>
                     <p className="text-xs text-[#6b7280] mt-1 leading-relaxed">{item.desc}</p>
@@ -661,10 +661,10 @@ const Home = () => {
                   <div className="font-bold text-[#0f172a]">{row.feature}</div>
                   <div className="grid grid-cols-2 gap-2 text-[11px]">
                     <div className="text-[#9ca3af] flex items-center gap-1.5">
-                      <span className="text-rose-400">âœ•</span> {row.traditional}
+                      <span className="text-rose-400">✕</span> {row.traditional}
                     </div>
                     <div className="text-emerald-600 font-bold flex items-center gap-1.5">
-                      <span>âœ“</span> {row.illusion}
+                      <span>✓</span> {row.illusion}
                     </div>
                   </div>
                 </div>
@@ -674,11 +674,11 @@ const Home = () => {
         </div>
       </section>
 
-      {/* â”€â”€â”€ 6. CASE STUDIES â”€â”€â”€ */}
+      {/* --- 6. CASE STUDIES --- */}
       <section className="py-28 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
-            <span className="section-badge">ðŸ’¼ Proven Results</span>
+            <span className="section-badge">Proven Results</span>
             <div className="divider text-left" style={{ margin: '16px 0' }}></div>
             <h2 className="text-3xl sm:text-5xl font-black text-[#0f172a] tracking-tight leading-tight">
               Featured Case Studies &<br />
@@ -749,12 +749,12 @@ const Home = () => {
         </div>
       </section>
 
-      {/* â”€â”€â”€ 7. DEVELOPMENT ROADMAP â”€â”€â”€ */}
+      {/* --- 7. DEVELOPMENT ROADMAP --- */}
       <section className="py-20 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="rounded-3xl bg-[#0f172a] p-10 sm:p-16">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-[#2563eb] text-xs font-bold uppercase tracking-wider border border-white/10">
-              ðŸ—ºï¸ Battle-Tested Methodology
+              Battle-Tested Methodology
             </span>
             <h2 className="text-3xl sm:text-5xl font-black text-white mt-4">
               How We Deliver <span className="text-[#2563eb]">Excellence</span>
@@ -786,10 +786,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* â”€â”€â”€ 8. TESTIMONIALS â”€â”€â”€ */}
+      {/* --------- 8. TESTIMONIALS --------- */}
       <section className="py-28 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="section-badge">â­ Client Reviews</span>
+          <span className="section-badge">Client Reviews</span>
           <div className="divider"></div>
           <h2 className="text-3xl sm:text-5xl font-black text-[#0f172a] mt-2">
             Trusted by Growing <span className="text-[#2563eb]">Enterprises</span>
@@ -841,10 +841,10 @@ const Home = () => {
         </div>
       </section>
 
-      {/* â”€â”€â”€ 9. FAQ â”€â”€â”€ */}
+      {/* --------- 9. FAQ --------- */}
       <section className="py-24 px-6 lg:px-8 max-w-4xl mx-auto">
         <div className="text-center mb-16">
-          <span className="section-badge">â“ Common Inquiries</span>
+          <span className="section-badge">Common Inquiries</span>
           <div className="divider"></div>
           <h2 className="text-3xl sm:text-5xl font-black text-[#0f172a] mt-2">
             Frequently Asked <span className="text-[#2563eb]">Questions</span>
@@ -872,7 +872,7 @@ const Home = () => {
                     className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-sm font-bold transition-all ${
                       isOpen ? 'bg-[#2563eb] text-white rotate-180' : 'bg-[#edf4ff] text-[#2563eb]'
                     }`}
-                  >â†“</span>
+                  >⌃</span>
                 </button>
                 {isOpen && (
                   <div className="px-6 pb-6 text-xs sm:text-sm text-[#6b7280] leading-relaxed border-t border-[#edf4ff] pt-4">
@@ -885,7 +885,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* â”€â”€â”€ 10. CONSULTATION FORM â”€â”€â”€ */}
+      {/* --------- 10. CONSULTATION FORM --------- */}
       <section id="consultation-section" className="py-28 px-6 lg:px-8 max-w-7xl mx-auto">
         <div className="rounded-3xl border border-[#dfeafc] bg-white p-8 sm:p-14 shadow-sm relative overflow-hidden">
           {/* Gold corner glow */}
@@ -932,7 +932,7 @@ const Home = () => {
                   </div>
                   <div>
                     <div className="text-[#9ca3af] text-[11px]">WhatsApp Chat</div>
-                    <div className="font-bold text-emerald-600">Chat with Engineering Lead â†—</div>
+                    <div className="font-bold text-emerald-600">Chat with Engineering Lead →</div>
                   </div>
                 </a>
 
@@ -1043,7 +1043,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* â”€â”€â”€ Floating Buttons â”€â”€â”€ */}
+      {/* --------- Floating Buttons --------- */}
       <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
         {showScrollTop && (
           <button

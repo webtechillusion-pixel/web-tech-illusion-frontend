@@ -200,7 +200,7 @@ const Footer = () => {
               disabled={loading}
               className="px-3 py-2 bg-[#2563eb] hover:bg-[#60a5fa] text-[#0f172a] rounded-lg transition-colors text-sm font-bold disabled:opacity-50"
             >
-              {loading ? 'â€¦' : 'Join'}
+              {loading ? '...' : 'Join'}
             </button>
           </form>
         </div>
@@ -210,7 +210,7 @@ const Footer = () => {
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-8 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-white/40 text-sm">
-            {footerCopyright || `Â© ${new Date().getFullYear()} ${name}. All rights reserved.`}
+            {footerCopyright || `© ${new Date().getFullYear()} ${name}. All rights reserved.`}
           </p>
           <div className="flex gap-6 text-sm text-white/40">
             {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map((item, i) => (

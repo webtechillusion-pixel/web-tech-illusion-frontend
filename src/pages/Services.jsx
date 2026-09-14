@@ -84,7 +84,7 @@ const Services = () => {
   return (
     <div className="min-h-screen bg-[#f3f8ff]">
 
-      {/* â”€â”€ Hero â”€â”€ */}
+      {/* ------ Hero ------ */}
       <section className="relative pt-32 pb-24 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#edf4ff]/50 pointer-events-none"></div>
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#2563eb]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
@@ -99,7 +99,7 @@ const Services = () => {
         </div>
       </section>
 
-      {/* â”€â”€ Services Grid â”€â”€ */}
+      {/* ------ Services Grid ------ */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           {error && (
@@ -159,7 +159,7 @@ const Services = () => {
         </div>
       </section>
 
-      {/* â”€â”€ Pricing â”€â”€ */}
+      {/* ------ Pricing ------ */}
       <section className="py-24 bg-[#f3f8ff]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -235,7 +235,7 @@ const Services = () => {
         </div>
       </section>
 
-      {/* â”€â”€ CTA â”€â”€ */}
+      {/* ------ CTA ------ */}
       <section className="py-20 bg-[#0f172a]">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <h2 className="text-4xl md:text-5xl font-black text-white mb-6">

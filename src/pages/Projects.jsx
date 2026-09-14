@@ -81,7 +81,7 @@ const Projects = () => {
   return (
     <div className="min-h-screen bg-[#f3f8ff]">
 
-      {/* â”€â”€ Hero â”€â”€ */}
+      {/* ------ Hero ------ */}
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#edf4ff]/50 pointer-events-none"></div>
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#2563eb]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
@@ -96,7 +96,7 @@ const Projects = () => {
         </div>
       </section>
 
-      {/* â”€â”€ Grid â”€â”€ */}
+      {/* ------ Grid ------ */}
       <section className="py-16 pb-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
@@ -206,7 +206,7 @@ const Projects = () => {
         </div>
       </section>
 
-      {/* â”€â”€ CTA â”€â”€ */}
+      {/* ------ CTA ------ */}
       <section className="py-20 bg-[#0f172a]">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-black text-white mb-6">

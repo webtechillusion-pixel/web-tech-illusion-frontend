@@ -4,18 +4,18 @@ import Footer from '../components/Footer';
 
 const Industries = () => {
   const industries = [
-    { name: 'Healthcare',      icon: 'ðŸ¥', desc: 'Medical & wellness platforms with HIPAA-compliant solutions',       iconBg: '#d1fae5', iconColor: '#059669' },
-    { name: 'E-Commerce',      icon: 'ðŸ›’', desc: 'Retail & shopping solutions for seamless online experiences',        iconBg: '#fef3c7', iconColor: '#d97706' },
-    { name: 'Education',       icon: 'ðŸŽ“', desc: 'E-learning platforms transforming education delivery',               iconBg: '#dbeafe', iconColor: '#2563eb' },
-    { name: 'Travel & Tourism',icon: 'âœˆï¸', desc: 'Booking & reservation systems for travel businesses',               iconBg: '#edf4ff', iconColor: '#2563eb' },
-    { name: 'Real Estate',     icon: 'ðŸ ', desc: 'Property management solutions for real estate professionals',        iconBg: '#ede9fe', iconColor: '#7c3aed' },
-    { name: 'Finance',         icon: 'ðŸ’°', desc: 'Fintech solutions for banking & financial services',                 iconBg: '#ccfbf1', iconColor: '#0f766e' },
+    { name: 'Healthcare',      icon: 'Med', desc: 'Medical & wellness platforms with HIPAA-compliant solutions',       iconBg: '#d1fae5', iconColor: '#059669' },
+    { name: 'E-Commerce',      icon: 'Shop', desc: 'Retail & shopping solutions for seamless online experiences',        iconBg: '#fef3c7', iconColor: '#d97706' },
+    { name: 'Education',       icon: 'Edu', desc: 'E-learning platforms transforming education delivery',               iconBg: '#dbeafe', iconColor: '#2563eb' },
+    { name: 'Travel & Tourism',icon: 'Travel', desc: 'Booking & reservation systems for travel businesses',               iconBg: '#edf4ff', iconColor: '#2563eb' },
+    { name: 'Real Estate',     icon: 'Home', desc: 'Property management solutions for real estate professionals',        iconBg: '#ede9fe', iconColor: '#7c3aed' },
+    { name: 'Finance',         icon: 'Fin', desc: 'Fintech solutions for banking & financial services',                 iconBg: '#ccfbf1', iconColor: '#0f766e' },
   ];
 
   return (
     <div className="min-h-screen bg-[#f3f8ff]">
 
-      {/* â”€â”€ Hero â”€â”€ */}
+      {/* --- Hero --- */}
       <section className="relative pt-32 pb-16 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#edf4ff]/50 pointer-events-none"></div>
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#2563eb]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
@@ -30,7 +30,7 @@ const Industries = () => {
         </div>
       </section>
 
-      {/* â”€â”€ Industries Grid â”€â”€ */}
+      {/* ------ Industries Grid ------ */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -61,7 +61,7 @@ const Industries = () => {
         </div>
       </section>
 
-      {/* â”€â”€ CTA â”€â”€ */}
+      {/* ------ CTA ------ */}
       <section className="py-20 bg-[#0f172a]">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
           <div className="w-16 h-16 bg-[#2563eb]/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
