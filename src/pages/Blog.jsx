@@ -222,9 +222,12 @@ const Blog = () => {
                         </div>
                       </div>
 
-                      <button className="w-full flex items-center justify-center px-4 py-2.5 bg-[#0f172a] hover:bg-[#2d2d3a] text-white rounded-xl font-semibold text-sm transition-all gap-2">
+                      <Link
+                        to={`/blog/${post._id}`}
+                        className="w-full flex items-center justify-center px-4 py-2.5 bg-[#0f172a] hover:bg-[#2d2d3a] text-white rounded-xl font-semibold text-sm transition-all gap-2"
+                      >
                         Read Article <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                      </button>
+                      </Link>
                     </div>
                   </article>
                 );

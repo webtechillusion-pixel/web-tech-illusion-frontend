@@ -16,6 +16,7 @@ const Team = lazy(() => import('./pages/Team'));
 const Services = lazy(() => import('./pages/Services'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Blog = lazy(() => import('./pages/Blog'));
+const BlogDetail = lazy(() => import('./pages/BlogDetail'));
 const Industries = lazy(() => import('./pages/Industries'));
 const Careers = lazy(() => import('./pages/Careers'));
 const CaseStudies = lazy(() => import('./pages/CaseStudies'));
@@ -39,6 +40,7 @@ function App() {
                 <Route path="/team" element={<Team />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:id" element={<BlogDetail />} />
                 <Route path="/industries" element={<Industries />} />
                 <Route path="/careers" element={<Careers />} />
                 <Route path="/case-studies" element={<CaseStudies />} />
