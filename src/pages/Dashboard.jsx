@@ -13,9 +13,15 @@ const Dashboard = () => {
   const [contacts, setContacts] = useState([]);
   const [subscribers, setSubscribers] = useState([]);
   const [blogs, setBlogs] = useState([]);
+  const [services, setServices] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
   const [error, setError] = useState('');
   const [showBlogModal, setShowBlogModal] = useState(false);
+  const [showServiceModal, setShowServiceModal] = useState(false);
+  const [showTeamModal, setShowTeamModal] = useState(false);
   const [editingBlog, setEditingBlog] = useState(null);
+  const [editingService, setEditingService] = useState(null);
+  const [editingTeamMember, setEditingTeamMember] = useState(null);
   const [blogForm, setBlogForm] = useState({
     title: '',
     excerpt: '',
@@ -27,6 +33,25 @@ const Dashboard = () => {
     readTime: '5 min read',
     status: 'draft',
     isFeatured: false
+  });
+  const [serviceForm, setServiceForm] = useState({
+    title: '',
+    shortDescription: '',
+    content: '',
+    icon: 'web',
+    features: '',
+    status: 'published'
+  });
+  const [teamForm, setTeamForm] = useState({
+    name: '',
+    role: '',
+    specialization: '',
+    bio: '',
+    experience: '',
+    image: '',
+    skills: '',
+    status: 'active',
+    order: 0
   });
   const [uploadingImage, setUploadingImage] = useState(false);
   const navigate = useNavigate();
@@ -91,15 +116,19 @@ const Dashboard = () => {
     const headers = { 'Authorization': `Bearer ${token}` };
 
     try {
-      const [contactsRes, newsletterRes, blogsRes] = await Promise.all([
+      const [contactsRes, newsletterRes, blogsRes, servicesRes, teamRes] = await Promise.all([
         fetch(buildApiUrl('api/contact'), { headers }),
         fetch(buildApiUrl('api/newsletter'), { headers }),
-        fetch(buildApiUrl('api/blog/admin/all'), { headers })
+        fetch(buildApiUrl('api/blog/admin/all'), { headers }),
+        fetch(buildApiUrl('api/services/admin/all'), { headers }),
+        fetch(buildApiUrl('api/team/admin/all'), { headers })
       ]);
 
       const contactsData = await contactsRes.json();
       const newsletterData = await newsletterRes.json();
       const blogsData = await blogsRes.json();
+      const servicesData = await servicesRes.json();
+      const teamData = await teamRes.json();
 
       if (contactsData.success) {
         setContacts(contactsData.data);
@@ -124,6 +153,14 @@ const Dashboard = () => {
           ...prev,
           totalBlogs: blogsData.pagination.totalRecords
         }));
+      }
+
+      if (servicesData.success) {
+        setServices(servicesData.data || []);
+      }
+
+      if (teamData.success) {
+        setTeamMembers(teamData.data || []);
       }
     } catch (error) {
       console.error('Error loading data:', error);
@@ -252,6 +289,169 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.error('Error deleting blog:', error);
+    }
+  };
+
+  const handleServiceSubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('adminToken');
+    const payload = {
+      ...serviceForm,
+      features: serviceForm.features
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean)
+    };
+
+    try {
+      const response = await fetch(
+        editingService ? buildApiUrl(`api/services/${editingService._id}`) : buildApiUrl('api/services'),
+        {
+          method: editingService ? 'PUT' : 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        }
+      );
+
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Failed to save service');
+      }
+
+      setShowServiceModal(false);
+      setEditingService(null);
+      setServiceForm({
+        title: '',
+        shortDescription: '',
+        content: '',
+        icon: 'web',
+        features: '',
+        status: 'published'
+      });
+      loadData();
+    } catch (error) {
+      console.error('Error saving service:', error);
+      setError(error.message || 'Failed to save service');
+    }
+  };
+
+  const handleEditService = (service) => {
+    setEditingService(service);
+    setServiceForm({
+      title: service.title || '',
+      shortDescription: service.shortDescription || '',
+      content: service.content || '',
+      icon: service.icon || 'web',
+      features: Array.isArray(service.features) ? service.features.join(', ') : '',
+      status: service.status || 'published'
+    });
+    setShowServiceModal(true);
+  };
+
+  const handleDeleteService = async (serviceId) => {
+    if (!window.confirm('Are you sure you want to delete this service?')) return;
+    const token = localStorage.getItem('adminToken');
+
+    try {
+      const response = await fetch(buildApiUrl(`api/services/${serviceId}`), {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.message || 'Failed to delete service');
+      loadData();
+    } catch (error) {
+      console.error('Error deleting service:', error);
+      setError(error.message || 'Failed to delete service');
+    }
+  };
+
+  const handleTeamSubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('adminToken');
+    const payload = {
+      ...teamForm,
+      skills: teamForm.skills
+        .split(',')
+        .map((item) => item.trim())
+        .filter(Boolean),
+      order: Number(teamForm.order || 0)
+    };
+
+    try {
+      const response = await fetch(
+        editingTeamMember ? buildApiUrl(`api/team/${editingTeamMember._id}`) : buildApiUrl('api/team'),
+        {
+          method: editingTeamMember ? 'PUT' : 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(payload)
+        }
+      );
+
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Failed to save team member');
+      }
+
+      setShowTeamModal(false);
+      setEditingTeamMember(null);
+      setTeamForm({
+        name: '',
+        role: '',
+        specialization: '',
+        bio: '',
+        experience: '',
+        image: '',
+        skills: '',
+        status: 'active',
+        order: 0
+      });
+      loadData();
+    } catch (error) {
+      console.error('Error saving team member:', error);
+      setError(error.message || 'Failed to save team member');
+    }
+  };
+
+  const handleEditTeamMember = (member) => {
+    setEditingTeamMember(member);
+    setTeamForm({
+      name: member.name || '',
+      role: member.role || '',
+      specialization: member.specialization || '',
+      bio: member.bio || '',
+      experience: member.experience || '',
+      image: member.image || '',
+      skills: Array.isArray(member.skills) ? member.skills.join(', ') : '',
+      status: member.status || 'active',
+      order: member.order || 0
+    });
+    setShowTeamModal(true);
+  };
+
+  const handleDeleteTeamMember = async (memberId) => {
+    if (!window.confirm('Are you sure you want to delete this team member?')) return;
+    const token = localStorage.getItem('adminToken');
+
+    try {
+      const response = await fetch(buildApiUrl(`api/team/${memberId}`), {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.message || 'Failed to delete team member');
+      loadData();
+    } catch (error) {
+      console.error('Error deleting team member:', error);
+      setError(error.message || 'Failed to delete team member');
     }
   };
 
@@ -514,6 +714,28 @@ const Dashboard = () => {
                 <span>Blogs</span>
               </button>
               <button
+                onClick={() => setActiveTab('services')}
+                className={`py-4 px-8 border-b-2 font-semibold text-sm transition-all flex items-center space-x-2 ${
+                  activeTab === 'services'
+                    ? 'border-blue-500 text-blue-600 bg-white'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <i className="fas fa-cogs"></i>
+                <span>Services</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('team')}
+                className={`py-4 px-8 border-b-2 font-semibold text-sm transition-all flex items-center space-x-2 ${
+                  activeTab === 'team'
+                    ? 'border-blue-500 text-blue-600 bg-white'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <i className="fas fa-users"></i>
+                <span>Team</span>
+              </button>
+              <button
                 onClick={() => setActiveTab('seo')}
                 className={`py-4 px-8 border-b-2 font-semibold text-sm transition-all flex items-center space-x-2 ${
                   activeTab === 'seo'
@@ -744,9 +966,280 @@ const Dashboard = () => {
             </div>
           )}
 
+          {activeTab === 'services' && (
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <i className="fas fa-cogs mr-2 text-blue-600"></i>
+                  Service Management
+                </h3>
+                <button
+                  onClick={() => {
+                    setEditingService(null);
+                    setServiceForm({
+                      title: '',
+                      shortDescription: '',
+                      content: '',
+                      icon: 'web',
+                      features: '',
+                      status: 'published'
+                    });
+                    setShowServiceModal(true);
+                  }}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2 transition-colors"
+                >
+                  <i className="fas fa-plus"></i>
+                  <span>Add Service</span>
+                </button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Service</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Icon</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {services.map((service) => (
+                      <tr key={service._id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4">
+                          <div>
+                            <div className="text-sm font-semibold text-gray-900">{service.title}</div>
+                            <div className="text-sm text-gray-500 line-clamp-1">{service.shortDescription}</div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{service.icon || 'web'}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            service.status === 'published' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {service.status === 'published' ? 'Published' : 'Draft'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center gap-2">
+                            <button onClick={() => handleEditService(service)} className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-blue-600 hover:text-blue-800 rounded-lg hover:bg-blue-50 transition-colors">
+                              <i className="fas fa-edit"></i>
+                              Edit
+                            </button>
+                            <button onClick={() => handleDeleteService(service._id)} className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-red-600 hover:text-red-800 rounded-lg hover:bg-red-50 transition-colors">
+                              <i className="fas fa-trash"></i>
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'team' && (
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <i className="fas fa-users mr-2 text-purple-600"></i>
+                  Team Management
+                </h3>
+                <button
+                  onClick={() => {
+                    setEditingTeamMember(null);
+                    setTeamForm({
+                      name: '',
+                      role: '',
+                      specialization: '',
+                      bio: '',
+                      experience: '',
+                      image: '',
+                      skills: '',
+                      status: 'active',
+                      order: 0
+                    });
+                    setShowTeamModal(true);
+                  }}
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2 transition-colors"
+                >
+                  <i className="fas fa-plus"></i>
+                  <span>Add Team Member</span>
+                </button>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Member</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Role</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {teamMembers.map((member) => (
+                      <tr key={member._id} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="flex items-center">
+                            <img src={member.image} alt={member.name} className="w-12 h-12 object-cover rounded-full mr-3" />
+                            <div>
+                              <div className="text-sm font-semibold text-gray-900">{member.name}</div>
+                              <div className="text-sm text-gray-500">{member.specialization || 'Team Member'}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{member.role}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                            member.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                          }`}>
+                            {member.status === 'active' ? 'Active' : 'Inactive'}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center gap-2">
+                            <button onClick={() => handleEditTeamMember(member)} className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-blue-600 hover:text-blue-800 rounded-lg hover:bg-blue-50 transition-colors">
+                              <i className="fas fa-edit"></i>
+                              Edit
+                            </button>
+                            <button onClick={() => handleDeleteTeamMember(member._id)} className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-red-600 hover:text-red-800 rounded-lg hover:bg-red-50 transition-colors">
+                              <i className="fas fa-trash"></i>
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
           {activeTab === 'seo' && <SeoPanel apiBaseUrl={API_BASE_URL} />}
         </div>
       </div>
+
+      {showServiceModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+              <h3 className="text-xl font-bold text-gray-900">{editingService ? 'Edit Service' : 'Add New Service'}</h3>
+              <button type="button" onClick={() => setShowServiceModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+                <i className="fas fa-times text-xl"></i>
+              </button>
+            </div>
+            <form onSubmit={handleServiceSubmit} className="p-6 space-y-4">
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">Title</label>
+                <input type="text" required value={serviceForm.title} onChange={(e) => setServiceForm({...serviceForm, title: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">Short Description</label>
+                <textarea rows="3" required value={serviceForm.shortDescription} onChange={(e) => setServiceForm({...serviceForm, shortDescription: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">Content</label>
+                <textarea rows="4" value={serviceForm.content} onChange={(e) => setServiceForm({...serviceForm, content: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">Icon Key</label>
+                  <select value={serviceForm.icon} onChange={(e) => setServiceForm({...serviceForm, icon: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="web">Web</option>
+                    <option value="mobile">Mobile</option>
+                    <option value="ecommerce">E-Commerce</option>
+                    <option value="marketing">Marketing</option>
+                    <option value="cloud">Cloud</option>
+                    <option value="security">Security</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">Status</label>
+                  <select value={serviceForm.status} onChange={(e) => setServiceForm({...serviceForm, status: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="published">Published</option>
+                    <option value="draft">Draft</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">Features (comma separated)</label>
+                <input type="text" value={serviceForm.features} onChange={(e) => setServiceForm({...serviceForm, features: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="React, Node.js, SEO, Support" />
+              </div>
+              <div className="flex justify-end gap-3 pt-2">
+                <button type="button" onClick={() => setShowServiceModal(false)} className="px-5 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">Cancel</button>
+                <button type="submit" className="px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">Save Service</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {showTeamModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+              <h3 className="text-xl font-bold text-gray-900">{editingTeamMember ? 'Edit Team Member' : 'Add New Team Member'}</h3>
+              <button type="button" onClick={() => setShowTeamModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
+                <i className="fas fa-times text-xl"></i>
+              </button>
+            </div>
+            <form onSubmit={handleTeamSubmit} className="p-6 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">Name</label>
+                  <input type="text" required value={teamForm.name} onChange={(e) => setTeamForm({...teamForm, name: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">Role</label>
+                  <input type="text" required value={teamForm.role} onChange={(e) => setTeamForm({...teamForm, role: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">Specialization</label>
+                <input type="text" value={teamForm.specialization} onChange={(e) => setTeamForm({...teamForm, specialization: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">Bio</label>
+                <textarea rows="3" value={teamForm.bio} onChange={(e) => setTeamForm({...teamForm, bio: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">Experience</label>
+                  <input type="text" value={teamForm.experience} onChange={(e) => setTeamForm({...teamForm, experience: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">Order</label>
+                  <input type="number" value={teamForm.order} onChange={(e) => setTeamForm({...teamForm, order: Number(e.target.value)})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-gray-700 text-sm font-semibold mb-2">Image URL</label>
+                <input type="url" required value={teamForm.image} onChange={(e) => setTeamForm({...teamForm, image: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com/member.jpg" />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">Skills (comma separated)</label>
+                  <input type="text" value={teamForm.skills} onChange={(e) => setTeamForm({...teamForm, skills: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">Status</label>
+                  <select value={teamForm.status} onChange={(e) => setTeamForm({...teamForm, status: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                  </select>
+                </div>
+              </div>
+              <div className="flex justify-end gap-3 pt-2">
+                <button type="button" onClick={() => setShowTeamModal(false)} className="px-5 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">Cancel</button>
+                <button type="submit" className="px-5 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">Save Member</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Blog Modal */}
       {showBlogModal && (
