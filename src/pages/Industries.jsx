@@ -1,40 +1,59 @@
-import { Link } from 'react-router-dom';
-import { FiArrowRight, FiPhone, FiMail, FiMapPin, FiTarget } from 'react-icons/fi';
+﻿import { Link } from 'react-router-dom';
+import { FiArrowRight, FiPhone, FiTarget } from 'react-icons/fi';
 import Footer from '../components/Footer';
 
 const Industries = () => {
   const industries = [
-    { name: 'Healthcare', icon: '🏥', desc: 'Medical & wellness platforms with HIPAA-compliant solutions' },
-    { name: 'E-Commerce', icon: '🛒', desc: 'Retail & shopping solutions for seamless online experiences' },
-    { name: 'Education', icon: '🎓', desc: 'E-learning platforms transforming education delivery' },
-    { name: 'Travel & Tourism', icon: '✈️', desc: 'Booking & reservation systems for travel businesses' },
-    { name: 'Real Estate', icon: '🏠', desc: 'Property management solutions for real estate professionals' },
-    { name: 'Finance', icon: '💰', desc: 'Fintech solutions for banking & financial services' },
+    { name: 'Healthcare',      icon: 'ðŸ¥', desc: 'Medical & wellness platforms with HIPAA-compliant solutions',       iconBg: '#d1fae5', iconColor: '#059669' },
+    { name: 'E-Commerce',      icon: 'ðŸ›’', desc: 'Retail & shopping solutions for seamless online experiences',        iconBg: '#fef3c7', iconColor: '#d97706' },
+    { name: 'Education',       icon: 'ðŸŽ“', desc: 'E-learning platforms transforming education delivery',               iconBg: '#dbeafe', iconColor: '#2563eb' },
+    { name: 'Travel & Tourism',icon: 'âœˆï¸', desc: 'Booking & reservation systems for travel businesses',               iconBg: '#edf4ff', iconColor: '#2563eb' },
+    { name: 'Real Estate',     icon: 'ðŸ ', desc: 'Property management solutions for real estate professionals',        iconBg: '#ede9fe', iconColor: '#7c3aed' },
+    { name: 'Finance',         icon: 'ðŸ’°', desc: 'Fintech solutions for banking & financial services',                 iconBg: '#ccfbf1', iconColor: '#0f766e' },
   ];
 
   return (
-    <div className="min-h-screen bg-white">
-      <section className="pt-32 pb-16 bg-gradient-to-br from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            Industries We <span className="text-blue-600">Serve</span>
+    <div className="min-h-screen bg-[#f3f8ff]">
+
+      {/* â”€â”€ Hero â”€â”€ */}
+      <section className="relative pt-32 pb-16 overflow-hidden">
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-[#edf4ff]/50 pointer-events-none"></div>
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#2563eb]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 text-center">
+          <span className="section-badge mb-4">Industry Focus</span>
+          <h1 className="text-5xl md:text-6xl font-black text-[#0f172a] mb-6 leading-tight">
+            Industries We <span className="text-[#2563eb]">Serve</span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-[#6b7280] max-w-3xl mx-auto leading-relaxed">
             We deliver specialized digital solutions tailored to the unique needs of each industry.
           </p>
         </div>
       </section>
 
-      <section className="py-24 bg-white">
+      {/* â”€â”€ Industries Grid â”€â”€ */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {industries.map((ind, i) => (
-              <div key={i} className="group p-8 rounded-2xl border border-gray-100 hover:border-blue-200 hover:shadow-xl transition-all duration-500">
-                <div className="text-5xl mb-6">{ind.icon}</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">{ind.name}</h3>
-                <p className="text-gray-600 mb-6">{ind.desc}</p>
-                <Link to="/contact" className="inline-flex items-center text-blue-600 font-semibold group-hover:text-blue-700">
-                  Get Consultation <FiArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <div
+                key={i}
+                className="group p-8 rounded-2xl bg-[#f3f8ff] border border-[#dfeafc] hover:border-[#2563eb] hover:shadow-md transition-all duration-300"
+              >
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform"
+                  style={{ background: ind.iconBg }}
+                >
+                  {ind.icon}
+                </div>
+                <h3 className="text-2xl font-bold text-[#0f172a] mb-3">{ind.name}</h3>
+                <p className="text-[#6b7280] mb-6 leading-relaxed text-sm">{ind.desc}</p>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center font-bold text-sm gap-1 transition-colors"
+                  style={{ color: ind.iconColor }}
+                >
+                  Get Consultation
+                  <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
             ))}
@@ -42,16 +61,29 @@ const Industries = () => {
         </div>
       </section>
 
-      <section className="py-24 bg-gray-50">
+      {/* â”€â”€ CTA â”€â”€ */}
+      <section className="py-20 bg-[#0f172a]">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
-          <FiTarget className="w-16 h-16 mx-auto mb-6 text-blue-600" />
-          <h2 className="text-4xl font-bold text-gray-900 mb-6">Ready to Transform Your Industry?</h2>
-          <p className="text-xl text-gray-600 mb-10">Let's discuss how we can help your business grow.</p>
+          <div className="w-16 h-16 bg-[#2563eb]/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <FiTarget className="w-8 h-8 text-[#2563eb]" />
+          </div>
+          <h2 className="text-4xl font-black text-white mb-6">
+            Ready to Transform Your <span className="text-[#2563eb]">Industry?</span>
+          </h2>
+          <p className="text-xl text-white/60 mb-10 leading-relaxed">
+            Let's discuss how we can help your business grow.
+          </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="tel:+917380497919" className="px-8 py-4 bg-gray-900 text-white font-bold rounded-lg hover:bg-gray-800 flex items-center justify-center gap-2">
+            <a
+              href="tel:+917380497919"
+              className="px-8 py-4 bg-white text-[#0f172a] font-bold rounded-xl hover:bg-[#f3f8ff] flex items-center justify-center gap-2 transition-all text-sm"
+            >
               <FiPhone className="w-5 h-5" /> Call Now
             </a>
-            <Link to="/contact" className="px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 flex items-center justify-center gap-2">
+            <Link
+              to="/contact"
+              className="button-shine px-8 py-4 bg-[#2563eb] hover:bg-[#60a5fa] text-[#0f172a] font-bold rounded-xl flex items-center justify-center gap-2 transition-all text-sm"
+            >
               Get Free Consultation
             </Link>
           </div>
@@ -64,3 +96,4 @@ const Industries = () => {
 };
 
 export default Industries;
+

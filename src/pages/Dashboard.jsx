@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SeoPanel from '../components/SeoPanel';
-import { API_BASE_URL } from '../config/api';
+import { API_BASE_URL, buildApiUrl } from '../config/api';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -23,10 +23,12 @@ const Dashboard = () => {
     category: 'web-development',
     author: '',
     image: '',
+    imageLink: '',
     readTime: '5 min read',
     status: 'draft',
     isFeatured: false
   });
+  const [uploadingImage, setUploadingImage] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     checkAuth();
@@ -37,7 +39,7 @@ const Dashboard = () => {
     
     if (token) {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/auth/verify`, {
+        const response = await fetch(buildApiUrl('api/auth/verify'), {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (response.ok) {
@@ -56,7 +58,7 @@ const Dashboard = () => {
     setError('');
     
     try {
-      const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+      const response = await fetch(buildApiUrl('api/auth/login'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(loginForm)
@@ -90,9 +92,9 @@ const Dashboard = () => {
 
     try {
       const [contactsRes, newsletterRes, blogsRes] = await Promise.all([
-        fetch(`${API_BASE_URL}/api/contact`, { headers }),
-        fetch(`${API_BASE_URL}/api/newsletter`, { headers }),
-        fetch(`${API_BASE_URL}/api/blog/admin/all`, { headers })
+        fetch(buildApiUrl('api/contact'), { headers }),
+        fetch(buildApiUrl('api/newsletter'), { headers }),
+        fetch(buildApiUrl('api/blog/admin/all'), { headers })
       ]);
 
       const contactsData = await contactsRes.json();
@@ -128,6 +130,43 @@ const Dashboard = () => {
     }
   };
 
+  const handleImageUpload = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const token = localStorage.getItem('adminToken');
+    const formData = new FormData();
+    formData.append('image', file);
+
+    setUploadingImage(true);
+    try {
+      const response = await fetch(buildApiUrl('api/upload'), {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Image upload failed');
+      }
+
+      const uploadedUrl = data.url;
+      setBlogForm((prev) => ({
+        ...prev,
+        image: uploadedUrl,
+        imageLink: uploadedUrl
+      }));
+      setError('');
+    } catch (error) {
+      console.error('Image upload error:', error);
+      setError(error.message || 'Failed to upload image');
+    } finally {
+      setUploadingImage(false);
+      event.target.value = '';
+    }
+  };
+
   const handleBlogSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -135,8 +174,8 @@ const Dashboard = () => {
     
     try {
       const url = editingBlog 
-        ? `${API_BASE_URL}/api/blog/${editingBlog._id}`
-        : `${API_BASE_URL}/api/blog`;
+        ? buildApiUrl(`api/blog/${editingBlog._id}`)
+        : buildApiUrl('api/blog');
       
       const method = editingBlog ? 'PUT' : 'POST';
       
@@ -161,6 +200,7 @@ const Dashboard = () => {
           category: 'web-development',
           author: '',
           image: '',
+          imageLink: '',
           readTime: '5 min read',
           status: 'draft',
           isFeatured: false
@@ -185,7 +225,8 @@ const Dashboard = () => {
       content: blog.content,
       category: blog.category,
       author: blog.author,
-      image: blog.image,
+      image: blog.image || '',
+      imageLink: blog.imageLink || blog.image || '',
       readTime: blog.readTime,
       status: blog.status,
       isFeatured: blog.isFeatured
@@ -199,7 +240,7 @@ const Dashboard = () => {
     const token = localStorage.getItem('adminToken');
     
     try {
-      const response = await fetch(`${API_BASE_URL}/api/blog/${blogId}`, {
+      const response = await fetch(buildApiUrl(`api/blog/${blogId}`), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -228,7 +269,7 @@ const Dashboard = () => {
     const token = localStorage.getItem('adminToken');
     
     try {
-      const response = await fetch(`${API_BASE_URL}/api/contact/${contactId}/status`, {
+      const response = await fetch(buildApiUrl(`api/contact/${contactId}/status`), {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -622,6 +663,7 @@ const Dashboard = () => {
                       category: 'web-development',
                       author: '',
                       image: '',
+                      imageLink: '',
                       readTime: '5 min read',
                       status: 'draft',
                       isFeatured: false
@@ -797,14 +839,20 @@ const Dashboard = () => {
                   <label className="block text-gray-700 text-sm font-semibold mb-2">
                     <i className="fas fa-image mr-2"></i>Image URL
                   </label>
-                  <input
-                    type="url"
-                    required
-                    value={blogForm.image}
-                    onChange={(e) => setBlogForm({...blogForm, image: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    placeholder="https://example.com/image.jpg"
-                  />
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <input
+                      type="url"
+                      required
+                      value={blogForm.image}
+                      onChange={(e) => setBlogForm({...blogForm, image: e.target.value})}
+                      className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      placeholder="https://example.com/image.jpg"
+                    />
+                    <label className="cursor-pointer inline-flex items-center justify-center px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
+                      <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
+                      {uploadingImage ? 'Uploading...' : 'Upload'}
+                    </label>
+                  </div>
                 </div>
                 <div>
                   <label className="block text-gray-700 text-sm font-semibold mb-2">
