@@ -26,13 +26,12 @@ const Navbar = () => {
 
   const navItems = [
     {
-      label: 'Services',
+      label: 'Company',
       children: [
-        { title: 'Web Development',   sub: 'Custom websites & web applications', path: '/services/web-development' },
-        { title: 'Mobile Solutions',  sub: 'iOS & Android apps',                 path: '/services/mobile-app-development' },
-        { title: 'E-Commerce',        sub: 'Online stores & marketplaces',        path: '/services/e-commerce-solutions' },
-        { title: 'Digital Marketing', sub: 'SEO, SEM & social media',            path: '/services/digital-marketing' },
-        { title: 'Cloud Services',    sub: 'AWS, Azure & deployment',            path: '/services/cloud-services' },
+        { title: 'About Us',   sub: 'Our story & vision',  path: '/about' },
+        { title: 'Leadership', sub: 'Meet our team',        path: '/team' },
+        { title: 'Careers',    sub: 'Join our team',        path: '/careers' },
+        { title: 'Newsroom',   sub: 'Latest updates',       path: '/blog' },
       ]
     },
     {
@@ -46,12 +45,13 @@ const Navbar = () => {
       ]
     },
     {
-      label: 'Company',
+      label: 'Services',
       children: [
-        { title: 'About Us',   sub: 'Our story & vision',  path: '/about' },
-        { title: 'Leadership', sub: 'Meet our team',        path: '/team' },
-        { title: 'Careers',    sub: 'Join our team',        path: '/careers' },
-        { title: 'Newsroom',   sub: 'Latest updates',       path: '/blog' },
+        { title: 'Web Development',   sub: 'Custom websites & web applications', path: '/services/web-development' },
+        { title: 'Mobile Solutions',  sub: 'iOS & Android apps',                 path: '/services/mobile-app-development' },
+        { title: 'E-Commerce',        sub: 'Online stores & marketplaces',        path: '/services/e-commerce-solutions' },
+        { title: 'Digital Marketing', sub: 'SEO, SEM & social media',            path: '/services/digital-marketing' },
+        { title: 'Cloud Services',    sub: 'AWS, Azure & deployment',            path: '/services/cloud-services' },
       ]
     },
     {
