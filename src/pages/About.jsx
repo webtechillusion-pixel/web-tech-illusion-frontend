@@ -12,6 +12,7 @@ const About = () => {
   return (
     <div className="min-h-screen bg-[#f3f8ff]">
 
+
       {/* ------ Hero ------ */}
       <section className="relative pt-32 pb-24 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#edf4ff]/60 pointer-events-none"></div>
