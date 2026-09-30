@@ -1,5 +1,9 @@
 const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://web-tech-illusion-backend.onrender.com').replace(/\/$/, '');
 
+export { API_BASE_URL };
+
+export const buildApiUrl = (path) => `${API_BASE_URL}${path}`;
+
 export const apiConfig = {
   baseURL: API_BASE_URL,
   endpoints: {
