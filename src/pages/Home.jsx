@@ -909,7 +909,7 @@ const Home = () => {
 
               <div className="space-y-3 text-xs font-medium">
                 <a
-                  href="tel:+917380497919"
+                  href="tel:+917379118083"
                   className="flex items-center gap-3 p-3.5 rounded-xl bg-[#f3f8ff] border border-[#dfeafc] hover:border-[#2563eb] transition-colors"
                 >
                   <div className="w-8 h-8 rounded-lg bg-[#edf4ff] text-[#2563eb] flex items-center justify-center shrink-0">
@@ -917,12 +917,12 @@ const Home = () => {
                   </div>
                   <div>
                     <div className="text-[#9ca3af] text-[11px]">Direct Phone Call</div>
-                    <div className="font-bold text-[#0f172a]">+91 73804 97919</div>
+                    <div className="font-bold text-[#0f172a]">+91 73791 18083</div>
                   </div>
                 </a>
 
                 <a
-                  href="https://wa.me/917380497919"
+                  href="https://wa.me/917379118083"
                   target="_blank"
                   rel="noreferrer"
                   className="flex items-center gap-3 p-3.5 rounded-xl bg-[#f3f8ff] border border-[#dfeafc] hover:border-emerald-400 transition-colors"
@@ -942,7 +942,7 @@ const Home = () => {
                   </div>
                   <div>
                     <div className="text-[#9ca3af] text-[11px]">Global Headquarters</div>
-                    <div className="font-bold text-[#0f172a]">Lucknow, India (Serving Worldwide)</div>
+                    <div className="font-bold text-[#0f172a]">Sector 16/1033, Indiranagar, Lucknow</div>
                   </div>
                 </div>
               </div>
@@ -1056,7 +1056,7 @@ const Home = () => {
           </button>
         )}
         <a
-          href="https://wa.me/917380497919"
+          href="https://wa.me/917379118083"
           target="_blank"
           rel="noreferrer"
           className="w-13 h-13 bg-emerald-500 hover:bg-emerald-600 text-white rounded-full flex items-center justify-center shadow-xl transition-all hover:scale-110"

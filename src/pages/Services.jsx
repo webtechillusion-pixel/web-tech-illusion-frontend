@@ -246,7 +246,7 @@ const Services = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-14">
             <a
-              href="tel:+917380497919"
+              href="tel:+917379118083"
               className="px-8 py-4 bg-white text-[#0f172a] font-bold rounded-xl hover:bg-[#f3f8ff] transition-all flex items-center justify-center gap-2"
             >
               <FiPhone className="w-5 h-5" /> Call Now
@@ -262,8 +262,8 @@ const Services = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             {[
               { icon: <FiPhone  className="w-5 h-5" />, label: 'Phone',    value: '+91 73804 97919',          style: { bg: '#edf4ff', color: '#2563eb' } },
-              { icon: <FiMail   className="w-5 h-5" />, label: 'Email',    value: 'info@webtechillusion.com', style: { bg: '#dbeafe', color: '#2563eb' } },
-              { icon: <FiMapPin className="w-5 h-5" />, label: 'Location', value: 'Lucknow, India',           style: { bg: '#d1fae5', color: '#059669' } },
+              { icon: <FiMail   className="w-5 h-5" />, label: 'Email',    value: 'webtechillusion@gmail.com', style: { bg: '#dbeafe', color: '#2563eb' } },
+              { icon: <FiMapPin className="w-5 h-5" />, label: 'Location', value: 'Sector 16/1033, Indiranagar, Lucknow', style: { bg: '#d1fae5', color: '#059669' } },
             ].map((s, i) => (
               <div key={i} className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-[#2563eb]/50 transition-colors">
                 <div

@@ -75,7 +75,7 @@ const Industries = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="tel:+917380497919"
+              href="tel:+917379118083"
               className="px-8 py-4 bg-white text-[#0f172a] font-bold rounded-xl hover:bg-[#f3f8ff] flex items-center justify-center gap-2 transition-all text-sm"
             >
               <FiPhone className="w-5 h-5" /> Call Now
