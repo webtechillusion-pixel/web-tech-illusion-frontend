@@ -70,6 +70,24 @@ const Services = () => {
     return iconStyleMap[key] || palette[index % palette.length];
   };
 
+  const getServiceSlug = (service) => {
+    // Map service title to URL slug
+    const titleMap = {
+      'web development': 'web-development',
+      'mobile apps': 'mobile-apps',
+      'mobile app development': 'mobile-apps',
+      'e-commerce': 'ecommerce',
+      'ecommerce': 'ecommerce',
+      'digital marketing': 'digital-marketing',
+      'cloud services': 'cloud-services',
+      'cloud': 'cloud-services',
+      'cybersecurity': 'security',
+      'security': 'security'
+    };
+    const key = service.title?.toLowerCase();
+    return titleMap[key] || service.title.toLowerCase().replace(/\s+/g, '-');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[#f3f8ff] flex items-center justify-center">
@@ -112,12 +130,13 @@ const Services = () => {
             <div className={`grid ${services.length === 1 ? 'lg:grid-cols-1 max-w-2xl mx-auto' : 'lg:grid-cols-2'} gap-8`}>
               {services.map((service, index) => {
                 const style = getServiceStyle(service, index);
+                const serviceSlug = getServiceSlug(service);
                 return (
                   <div
                     key={service._id || index}
                     className="bg-[#f3f8ff] rounded-2xl p-8 border border-[#dfeafc] hover:border-[#2563eb] hover:shadow-md transition-all duration-300 group"
                   >
-                    <div className="flex items-start gap-6">
+                    <div className="flex items-start gap-6 mb-6">
                       <div
                         className="w-18 h-18 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
                         style={{ background: style.bg, color: style.color, width: '4.5rem', height: '4.5rem' }}
@@ -126,23 +145,31 @@ const Services = () => {
                       </div>
                       <div className="flex-1">
                         <h3 className="text-2xl font-bold text-[#0f172a] mb-3">{service.title}</h3>
-                        <p className="text-[#6b7280] leading-relaxed mb-5 text-sm">{service.shortDescription}</p>
-                        {service.content && (
-                          <div
-                            className="text-sm text-[#9ca3af] mb-5 line-clamp-2"
-                            dangerouslySetInnerHTML={{ __html: service.content }}
-                          />
-                        )}
-                        <div className="grid grid-cols-2 gap-3">
-                          {['Custom Solutions', '24/7 Support', 'Quality Assured', 'On-Time Delivery'].map((f, fi) => (
-                            <div key={fi} className="flex items-center text-sm text-[#4b5563]">
-                              <FiCheckCircle className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: style.color }} />
-                              {f}
-                            </div>
-                          ))}
-                        </div>
                       </div>
                     </div>
+                    <p className="text-[#6b7280] leading-relaxed mb-5 text-sm">{service.shortDescription}</p>
+                    {service.content && (
+                      <div
+                        className="text-sm text-[#9ca3af] mb-5 line-clamp-2"
+                        dangerouslySetInnerHTML={{ __html: service.content }}
+                      />
+                    )}
+                    <div className="grid grid-cols-2 gap-3 mb-6">
+                      {['Custom Solutions', '24/7 Support', 'Quality Assured', 'On-Time Delivery'].map((f, fi) => (
+                        <div key={fi} className="flex items-center text-sm text-[#4b5563]">
+                          <FiCheckCircle className="w-4 h-4 mr-2 flex-shrink-0" style={{ color: style.color }} />
+                          {f}
+                        </div>
+                      ))}
+                    </div>
+                    <Link
+                      to={`/services/${serviceSlug}`}
+                      className="inline-flex items-center font-bold text-sm gap-1 transition-colors"
+                      style={{ color: style.color }}
+                    >
+                      Learn More
+                      <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </Link>
                   </div>
                 );
               })}

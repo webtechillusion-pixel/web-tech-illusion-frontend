@@ -4,12 +4,12 @@ import Footer from '../components/Footer';
 
 const Industries = () => {
   const industries = [
-    { name: 'Healthcare',      icon: 'Med', desc: 'Medical & wellness platforms with HIPAA-compliant solutions',       iconBg: '#d1fae5', iconColor: '#059669' },
-    { name: 'E-Commerce',      icon: 'Shop', desc: 'Retail & shopping solutions for seamless online experiences',        iconBg: '#fef3c7', iconColor: '#d97706' },
-    { name: 'Education',       icon: 'Edu', desc: 'E-learning platforms transforming education delivery',               iconBg: '#dbeafe', iconColor: '#2563eb' },
-    { name: 'Travel & Tourism',icon: 'Travel', desc: 'Booking & reservation systems for travel businesses',               iconBg: '#edf4ff', iconColor: '#2563eb' },
-    { name: 'Real Estate',     icon: 'Home', desc: 'Property management solutions for real estate professionals',        iconBg: '#ede9fe', iconColor: '#7c3aed' },
-    { name: 'Finance',         icon: 'Fin', desc: 'Fintech solutions for banking & financial services',                 iconBg: '#ccfbf1', iconColor: '#0f766e' },
+    { name: 'Healthcare',      slug: 'healthcare',      icon: 'Med', desc: 'Medical & wellness platforms with HIPAA-compliant solutions',       iconBg: '#d1fae5', iconColor: '#059669' },
+    { name: 'E-Commerce',      slug: 'ecommerce',       icon: 'Shop', desc: 'Retail & shopping solutions for seamless online experiences',        iconBg: '#fef3c7', iconColor: '#d97706' },
+    { name: 'Education',       slug: 'education',       icon: 'Edu', desc: 'E-learning platforms transforming education delivery',               iconBg: '#dbeafe', iconColor: '#2563eb' },
+    { name: 'Travel & Tourism',slug: 'travel-tourism',  icon: 'Travel', desc: 'Booking & reservation systems for travel businesses',               iconBg: '#edf4ff', iconColor: '#2563eb' },
+    { name: 'Real Estate',     slug: 'real-estate',     icon: 'Home', desc: 'Property management solutions for real estate professionals',        iconBg: '#ede9fe', iconColor: '#7c3aed' },
+    { name: 'Finance',         slug: 'finance',         icon: 'Fin', desc: 'Fintech solutions for banking & financial services',                 iconBg: '#ccfbf1', iconColor: '#0f766e' },
   ];
 
   return (
@@ -48,11 +48,11 @@ const Industries = () => {
                 <h3 className="text-2xl font-bold text-[#0f172a] mb-3">{ind.name}</h3>
                 <p className="text-[#6b7280] mb-6 leading-relaxed text-sm">{ind.desc}</p>
                 <Link
-                  to="/contact"
+                  to={`/industries/${ind.slug}`}
                   className="inline-flex items-center font-bold text-sm gap-1 transition-colors"
                   style={{ color: ind.iconColor }}
                 >
-                  Get Consultation
+                  Learn More
                   <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
