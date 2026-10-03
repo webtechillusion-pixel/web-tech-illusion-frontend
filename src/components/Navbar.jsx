@@ -1,6 +1,11 @@
 ﻿import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FiMenu, FiX, FiPhone, FiChevronDown } from 'react-icons/fi';
+import { 
+  FiMenu, FiX, FiPhone, FiChevronDown, FiUsers, FiBriefcase, 
+  FiAward, FiFileText, FiHeart, FiShoppingCart, FiBookOpen, 
+  FiTrendingUp, FiHome, FiCode, FiSmartphone, FiShoppingBag, 
+  FiBarChart, FiCloud, FiBook, FiTarget
+} from 'react-icons/fi';
 import { useSettings } from '../context/SettingsContext';
 import logo from '../assets/illusionlogo.jpeg';
 
@@ -28,38 +33,38 @@ const Navbar = () => {
     {
       label: 'Company',
       children: [
-        { title: 'About Us',   sub: 'Our story & vision',  path: '/about' },
-        { title: 'Leadership', sub: 'Meet our team',        path: '/team' },
-        { title: 'Careers',    sub: 'Join our team',        path: '/careers' },
-        { title: 'Newsroom',   sub: 'Latest updates',       path: '/blog' },
+        { title: 'About Us',   sub: 'Our story & vision',  path: '/about',   icon: FiUsers },
+        { title: 'Leadership', sub: 'Meet our team',        path: '/team',    icon: FiAward },
+        { title: 'Careers',    sub: 'Join our team',        path: '/careers', icon: FiBriefcase },
+        { title: 'Newsroom',   sub: 'Latest updates',       path: '/blog',    icon: FiFileText },
       ]
     },
     {
       label: 'Industries',
       children: [
-        { title: 'Healthcare',     sub: 'Medical & wellness platforms',    path: '/industries/healthcare' },
-        { title: 'E-Commerce',     sub: 'Retail & shopping solutions',     path: '/industries/e-commerce' },
-        { title: 'Education',      sub: 'E-learning platforms',            path: '/industries/education' },
-        { title: 'Travel & Tourism', sub: 'Booking & reservation systems', path: '/industries/travel-tourism' },
-        { title: 'Real Estate',    sub: 'Property management',             path: '/industries/real-estate' },
+        { title: 'Healthcare',     sub: 'Medical & wellness platforms',    path: '/industries/healthcare',     icon: FiHeart },
+        { title: 'E-Commerce',     sub: 'Retail & shopping solutions',     path: '/industries/e-commerce',     icon: FiShoppingCart },
+        { title: 'Education',      sub: 'E-learning platforms',            path: '/industries/education',      icon: FiBookOpen },
+        { title: 'Travel & Tourism', sub: 'Booking & reservation systems', path: '/industries/travel-tourism', icon: FiTrendingUp },
+        { title: 'Real Estate',    sub: 'Property management',             path: '/industries/real-estate',    icon: FiHome },
       ]
     },
     {
       label: 'Services',
       children: [
-        { title: 'Web Development',   sub: 'Custom websites & web applications', path: '/services/web-development' },
-        { title: 'Mobile Solutions',  sub: 'iOS & Android apps',                 path: '/services/mobile-app-development' },
-        { title: 'E-Commerce',        sub: 'Online stores & marketplaces',        path: '/services/e-commerce-solutions' },
-        { title: 'Digital Marketing', sub: 'SEO, SEM & social media',            path: '/services/digital-marketing' },
-        { title: 'Cloud Services',    sub: 'AWS, Azure & deployment',            path: '/services/cloud-services' },
+        { title: 'Web Development',   sub: 'Custom websites & web applications', path: '/services/web-development',       icon: FiCode },
+        { title: 'Mobile Solutions',  sub: 'iOS & Android apps',                 path: '/services/mobile-app-development', icon: FiSmartphone },
+        { title: 'E-Commerce',        sub: 'Online stores & marketplaces',        path: '/services/e-commerce-solutions',   icon: FiShoppingBag },
+        { title: 'Digital Marketing', sub: 'SEO, SEM & social media',            path: '/services/digital-marketing',      icon: FiBarChart },
+        { title: 'Cloud Services',    sub: 'AWS, Azure & deployment',            path: '/services/cloud-services',         icon: FiCloud },
       ]
     },
     {
       label: 'Insights',
       children: [
-        { title: 'Blog',          sub: 'Tech articles & guides',  path: '/blog' },
-        { title: 'Case Studies',  sub: 'Our success stories',     path: '/case-studies' },
-        { title: 'Documentation', sub: 'Technical resources',     path: '/documentation' },
+        { title: 'Blog',          sub: 'Tech articles & guides',  path: '/blog',          icon: FiBook },
+        { title: 'Case Studies',  sub: 'Our success stories',     path: '/case-studies',  icon: FiTarget },
+        { title: 'Documentation', sub: 'Technical resources',     path: '/documentation', icon: FiFileText },
       ]
     }
   ];
@@ -122,21 +127,24 @@ const Navbar = () => {
                   style={{ top: '100%', marginTop: '6px' }}
                 >
                   <div className="p-2">
-                    {item.children.map((child, cIdx) => (
-                      <Link
-                        key={cIdx}
-                        to={child.path}
-                        className="flex items-center p-3 rounded-xl hover:bg-[#f3f8ff] transition-colors group"
-                      >
-                        <div className="w-8 h-8 bg-[#edf4ff] rounded-lg flex items-center justify-center mr-3 flex-shrink-0 group-hover:bg-[#dfeafc] transition-colors">
-                          <div className="w-2 h-2 bg-[#2563eb] rounded-full"></div>
-                        </div>
-                        <div>
-                          <div className="text-sm font-semibold text-[#0f172a]">{child.title}</div>
-                          <div className="text-xs text-[#9ca3af] mt-0.5">{child.sub}</div>
-                        </div>
-                      </Link>
-                    ))}
+                    {item.children.map((child, cIdx) => {
+                      const IconComponent = child.icon;
+                      return (
+                        <Link
+                          key={cIdx}
+                          to={child.path}
+                          className="flex items-center p-3 rounded-xl hover:bg-[#f3f8ff] transition-colors group"
+                        >
+                          <div className="w-8 h-8 bg-[#edf4ff] rounded-lg flex items-center justify-center mr-3 flex-shrink-0 group-hover:bg-[#dfeafc] transition-colors">
+                            <IconComponent className="w-4 h-4 text-[#2563eb]" />
+                          </div>
+                          <div>
+                            <div className="text-sm font-semibold text-[#0f172a]">{child.title}</div>
+                            <div className="text-xs text-[#9ca3af] mt-0.5">{child.sub}</div>
+                          </div>
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -190,16 +198,19 @@ const Navbar = () => {
                 </button>
                 {activeDropdown === idx && (
                   <div className="pl-4 space-y-1 pb-2">
-                    {item.children.map((child, cIdx) => (
-                      <Link
-                        key={cIdx}
-                        to={child.path}
-                        className="flex items-center px-4 py-2.5 text-sm text-[#4b5563] hover:text-[#0f172a] rounded-lg hover:bg-[#f3f8ff] transition-colors"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#2563eb] mr-3 flex-shrink-0"></span>
-                        {child.title}
-                      </Link>
-                    ))}
+                    {item.children.map((child, cIdx) => {
+                      const IconComponent = child.icon;
+                      return (
+                        <Link
+                          key={cIdx}
+                          to={child.path}
+                          className="flex items-center px-4 py-2.5 text-sm text-[#4b5563] hover:text-[#0f172a] rounded-lg hover:bg-[#f3f8ff] transition-colors"
+                        >
+                          <IconComponent className="w-4 h-4 text-[#2563eb] mr-3 flex-shrink-0" />
+                          {child.title}
+                        </Link>
+                      );
+                    })}
                   </div>
                 )}
               </div>
