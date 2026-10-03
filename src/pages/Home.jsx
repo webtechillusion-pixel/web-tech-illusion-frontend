@@ -229,7 +229,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-[#f3f8ff] text-[#1f2937] font-sans">
 
-      <section className="relative pt-20 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative pt-12 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(96,165,250,0.18),_transparent_30%),radial-gradient(circle_at_bottom_right,_rgba(37,99,235,0.14),_transparent_28%)]"></div>
         <div className="absolute top-0 right-0 w-[700px] h-[700px] bg-[#60a5fa]/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#0f172a]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
@@ -237,7 +237,7 @@ const Home = () => {
         <div className="max-w-7xl mx-auto relative">
           <div className="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-16 items-center">
 
-            <div className="pt-4 lg:pt-8">
+            <div className="pt-0 lg:pt-2">
               <div className="inline-flex items-center gap-3 mb-7 px-4 py-2 rounded-full bg-white/90 border border-[#dfeafc] shadow-[0_8px_20px_rgba(37,99,235,0.08)] backdrop-blur-sm">
                 <img src={logo} alt="WebTech Illusion" className="w-8 h-8 rounded-full object-cover ring-2 ring-white shadow-sm" />
                 <span className="text-sm font-bold text-[#0f172a] tracking-[0.12em] uppercase">WebTech Illusion</span>
