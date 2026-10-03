@@ -194,3 +194,23 @@ body {
   border-radius: 2px;
   margin: 16px auto;
 }
+
+/* Floating Call Button Animations */
+@keyframes pulse-soft {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
