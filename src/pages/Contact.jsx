@@ -227,12 +227,13 @@ const Contact = () => {
                 <h3 className="font-bold text-[#0f172a] mb-4 text-sm">Find Our Office</h3>
                 <div className="w-full h-64 rounded-2xl overflow-hidden border border-[#dfeafc]">
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d14232.722544521492!2d80.99815679999999!3d26.897761749999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1772009178269!5m2!1sen!2sin"
+                    src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d56930.89005207366!2d80.998157!3d26.897762000000004!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1791006158311!5m2!1sen!2sin"
                     width="100%" height="100%"
                     style={{ border: 0 }}
                     allowFullScreen=""
                     loading="lazy"
-                    title="Office Location"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    title="Office Location - Sector 16/1033, Indiranagar, Lucknow"
                   />
                 </div>
               </div>
