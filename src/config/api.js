@@ -1,8 +1,23 @@
-const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://web-tech-illusion-backend.onrender.com').replace(/\/$/, '');
+const LIVE_BACKEND_URL = 'https://web-tech-illusion-backend.onrender.com';
+
+const resolveApiBaseUrl = () => {
+  const configured = (import.meta.env.VITE_API_URL || '').trim();
+  // If not configured, or pointing to dead DigitalOcean backend, fallback to live Render backend
+  if (!configured || configured.includes('ondigitalocean.app')) {
+    return LIVE_BACKEND_URL;
+  }
+  return configured.replace(/\/+$/, '');
+};
+
+const API_BASE_URL = resolveApiBaseUrl();
 
 export { API_BASE_URL };
 
-export const buildApiUrl = (path) => `${API_BASE_URL}${path}`;
+export const buildApiUrl = (path = '') => {
+  if (!path) return API_BASE_URL;
+  const cleanPath = String(path).startsWith('/') ? path : `/${path}`;
+  return `${API_BASE_URL}${cleanPath}`;
+};
 
 export const apiConfig = {
   baseURL: API_BASE_URL,

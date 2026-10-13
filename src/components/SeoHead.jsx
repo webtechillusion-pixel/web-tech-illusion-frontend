@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { API_BASE_URL } from '../config/api';
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL || 'https://web-tech-illusion-backend.onrender.com/').replace(/\/$/, '');
 const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin).replace(/\/$/, '');
 
 const pageNames = {

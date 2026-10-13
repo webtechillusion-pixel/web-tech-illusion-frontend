@@ -85,7 +85,8 @@ function SeoPanel({ apiBaseUrl }) {
 
   const loadConfigs = useCallback(async () => {
     try {
-      const response = await fetch(`${apiBaseUrl}api/seo`);
+      const normalizedBaseUrl = (apiBaseUrl || '').replace(/\/+$/, '');
+      const response = await fetch(`${normalizedBaseUrl}/api/seo`);
       const data = await response.json();
       if (data.success) setConfigs(data.data || []);
     } catch {
@@ -128,7 +129,8 @@ function SeoPanel({ apiBaseUrl }) {
     setSaving(true);
     setMessage('');
     try {
-      const response = await fetch(`${apiBaseUrl}api/seo`, {
+      const normalizedBaseUrl = (apiBaseUrl || '').replace(/\/+$/, '');
+      const response = await fetch(`${normalizedBaseUrl}/api/seo`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
