@@ -19,9 +19,11 @@ const Contact = lazy(() => import('./pages/Contact'));
 const Team = lazy(() => import('./pages/Team'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Blog = lazy(() => import('./pages/Blog'));
+const BlogDetail = lazy(() => import('./pages/BlogDetail'));
 const Careers = lazy(() => import('./pages/Careers'));
 const CaseStudies = lazy(() => import('./pages/CaseStudies'));
 const Documentation = lazy(() => import('./pages/Documentation'));
+const TeamDetail = lazy(() => import('./pages/TeamDetail'));
 
 function App() {
   return (
@@ -40,8 +42,10 @@ function App() {
                 <Route path="/projects" element={<Projects />} />
                 <Route path="/project/:id" element={<ProjectDetail />} />
                 <Route path="/team" element={<Team />} />
+                <Route path="/team/:slug" element={<TeamDetail />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:id" element={<BlogDetail />} />
                 <Route path="/industries" element={<Industries />} />
                 <Route path="/industries/:type" element={<IndustryDetail />} />
                 <Route path="/careers" element={<Careers />} />

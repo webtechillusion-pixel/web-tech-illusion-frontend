@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiSearch, FiCalendar, FiUser, FiArrowRight,
@@ -175,7 +175,7 @@ const Blog = () => {
                     key={post._id}
                     className="group bg-white rounded-2xl overflow-hidden border border-[#dfeafc] hover:border-[#2563eb] hover:shadow-md transition-all duration-300"
                   >
-                    <div className="relative h-48 overflow-hidden bg-[#edf4ff]">
+                    <div className="relative aspect-[16/10] overflow-hidden bg-[#edf4ff]">
                       <img
                         src={post.image}
                         alt={post.title}
@@ -183,24 +183,44 @@ const Blog = () => {
                       />
                       <div className="absolute top-4 left-4">
                         <span
-                          className="px-3 py-1 rounded-full text-xs font-semibold"
+                          className="px-3 py-1 rounded-full text-xs font-semibold shadow-sm"
                           style={{ background: catStyle.bg, color: catStyle.color }}
                         >
-                          {post.category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                          {post.category ? post.category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'General'}
                         </span>
                       </div>
                     </div>
 
                     <div className="p-6">
+                      {/* Tags */}
+                      {post.tags && post.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mb-2.5">
+                          {post.tags.slice(0, 3).map((tag, idx) => (
+                            <span key={idx} className="text-[11px] font-semibold bg-[#edf4ff] text-[#2563eb] px-2.5 py-0.5 rounded-full">
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+
                       <h2 className="text-lg font-bold text-[#0f172a] mb-2 group-hover:text-[#2563eb] transition-colors line-clamp-2">
                         {post.title}
                       </h2>
                       <p className="text-[#6b7280] text-sm mb-4 line-clamp-2 leading-relaxed">{post.excerpt}</p>
 
                       <div className="flex items-center justify-between text-xs text-[#9ca3af] mb-3">
-                        <div className="flex items-center gap-1">
-                          <FiUser className="w-3.5 h-3.5" />
-                          <span className="truncate max-w-[90px]">{post.author}</span>
+                        <div className="flex items-center gap-1.5">
+                          <FiUser className="w-3.5 h-3.5 text-[#2563eb]" />
+                          {post.teamMember?.slug ? (
+                            <Link
+                              to={`/team/${post.teamMember.slug}`}
+                              className="font-medium text-[#475569] hover:text-[#2563eb] underline-offset-2 hover:underline truncate max-w-[130px]"
+                            >
+                              {post.author || post.teamMember.name}
+                            </Link>
+                          ) : (
+                            <span className="font-medium text-[#475569] truncate max-w-[130px]">{post.author}</span>
+                          )}
                         </div>
                         <div className="flex items-center gap-1">
                           <FiCalendar className="w-3.5 h-3.5" />
@@ -223,8 +243,8 @@ const Blog = () => {
                       </div>
 
                       <Link
-                        to={`/blog/${post._id}`}
-                        className="w-full flex items-center justify-center px-4 py-2.5 bg-[#0f172a] hover:bg-[#2d2d3a] text-white rounded-xl font-semibold text-sm transition-all gap-2"
+                        to={`/blog/${post.slug || post._id}`}
+                        className="w-full flex items-center justify-center px-4 py-2.5 bg-[#0f172a] hover:bg-[#2563eb] text-white rounded-xl font-semibold text-sm transition-all gap-2"
                       >
                         Read Article <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </Link>

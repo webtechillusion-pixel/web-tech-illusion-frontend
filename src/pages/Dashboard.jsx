@@ -22,17 +22,34 @@ const Dashboard = () => {
   const [editingBlog, setEditingBlog] = useState(null);
   const [editingService, setEditingService] = useState(null);
   const [editingTeamMember, setEditingTeamMember] = useState(null);
+  const slugify = (value = '') => {
+    return String(value)
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '') || '';
+  };
+
+  const [tagInput, setTagInput] = useState('');
   const [blogForm, setBlogForm] = useState({
     title: '',
-    excerpt: '',
-    content: '',
-    category: 'web-development',
-    author: '',
+    slug: '',
+    category: 'General',
+    author: 'Sofa Hi Sofa Team',
+    authorEmail: '',
+    teamMember: '',
+    status: 'draft',
+    tags: [],
     image: '',
     imageLink: '',
+    excerpt: '',
+    content: '',
     readTime: '5 min read',
-    status: 'draft',
-    isFeatured: false
+    isFeatured: false,
+    faqs: [],
+    metaTitle: '',
+    metaDescription: '',
+    metaKeywords: ''
   });
   const [serviceForm, setServiceForm] = useState({
     title: '',
@@ -43,7 +60,9 @@ const Dashboard = () => {
     status: 'published'
   });
   const [teamForm, setTeamForm] = useState({
+    teamId: '',
     name: '',
+    email: '',
     role: '',
     specialization: '',
     bio: '',
@@ -209,6 +228,48 @@ const Dashboard = () => {
     }
   };
 
+  const handleAddTag = (tagToAdd) => {
+    const val = (tagToAdd || tagInput).trim().replace(/^,+|,+$/g, '');
+    if (!val) return;
+    if (!blogForm.tags.includes(val)) {
+      setBlogForm((prev) => ({
+        ...prev,
+        tags: [...prev.tags, val],
+        metaKeywords: prev.metaKeywords ? `${prev.metaKeywords}, ${val}` : val
+      }));
+    }
+    setTagInput('');
+  };
+
+  const handleRemoveTag = (tagToRemove) => {
+    setBlogForm((prev) => ({
+      ...prev,
+      tags: prev.tags.filter((t) => t !== tagToRemove)
+    }));
+  };
+
+  const handleAddFaq = () => {
+    setBlogForm((prev) => ({
+      ...prev,
+      faqs: [...prev.faqs, { question: '', answer: '' }]
+    }));
+  };
+
+  const handleUpdateFaq = (index, field, value) => {
+    setBlogForm((prev) => {
+      const updated = [...prev.faqs];
+      updated[index] = { ...updated[index], [field]: value };
+      return { ...prev, faqs: updated };
+    });
+  };
+
+  const handleRemoveFaq = (index) => {
+    setBlogForm((prev) => ({
+      ...prev,
+      faqs: prev.faqs.filter((_, i) => i !== index)
+    }));
+  };
+
   const handleBlogSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -220,6 +281,19 @@ const Dashboard = () => {
         : buildApiUrl('api/blog');
       
       const method = editingBlog ? 'PUT' : 'POST';
+
+      const wordCount = blogForm.content
+        ? blogForm.content.trim().split(/\s+/).filter(Boolean).length
+        : 0;
+      const computedReadTime = `${Math.max(1, Math.ceil(wordCount / 200))} min read`;
+
+      const payload = {
+        ...blogForm,
+        slug: blogForm.slug ? slugify(blogForm.slug) : slugify(blogForm.title),
+        readTime: blogForm.readTime || computedReadTime,
+        metaTitle: blogForm.metaTitle || blogForm.title,
+        metaDescription: blogForm.metaDescription || blogForm.excerpt
+      };
       
       const response = await fetch(url, {
         method,
@@ -227,7 +301,7 @@ const Dashboard = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify(blogForm)
+        body: JSON.stringify(payload)
       });
 
       const data = await response.json();
@@ -237,16 +311,25 @@ const Dashboard = () => {
         setEditingBlog(null);
         setBlogForm({
           title: '',
-          excerpt: '',
-          content: '',
-          category: 'web-development',
-          author: '',
+          slug: '',
+          category: 'General',
+          author: 'Sofa Hi Sofa Team',
+          authorEmail: '',
+          teamMember: '',
+          status: 'draft',
+          tags: [],
           image: '',
           imageLink: '',
+          excerpt: '',
+          content: '',
           readTime: '5 min read',
-          status: 'draft',
-          isFeatured: false
+          isFeatured: false,
+          faqs: [],
+          metaTitle: '',
+          metaDescription: '',
+          metaKeywords: ''
         });
+        setTagInput('');
         loadData();
       } else {
         setError(data.message);
@@ -262,17 +345,26 @@ const Dashboard = () => {
   const handleEditBlog = (blog) => {
     setEditingBlog(blog);
     setBlogForm({
-      title: blog.title,
-      excerpt: blog.excerpt,
-      content: blog.content,
-      category: blog.category,
-      author: blog.author,
+      title: blog.title || '',
+      slug: blog.slug || slugify(blog.title || ''),
+      category: blog.category || 'General',
+      author: blog.author || 'Sofa Hi Sofa Team',
+      authorEmail: blog.authorEmail || (blog.teamMember?.email || ''),
+      teamMember: blog.teamMember?._id || blog.teamMember || '',
       image: blog.image || '',
       imageLink: blog.imageLink || blog.image || '',
-      readTime: blog.readTime,
-      status: blog.status,
-      isFeatured: blog.isFeatured
+      readTime: blog.readTime || '5 min read',
+      status: blog.status || 'draft',
+      isFeatured: Boolean(blog.isFeatured),
+      excerpt: blog.excerpt || '',
+      content: blog.content || '',
+      tags: Array.isArray(blog.tags) ? blog.tags : [],
+      faqs: Array.isArray(blog.faqs) ? blog.faqs : [],
+      metaTitle: blog.metaTitle || '',
+      metaDescription: blog.metaDescription || '',
+      metaKeywords: blog.metaKeywords || ''
     });
+    setTagInput('');
     setShowBlogModal(true);
   };
 
@@ -380,11 +472,16 @@ const Dashboard = () => {
     const token = localStorage.getItem('adminToken');
     const payload = {
       ...teamForm,
-      skills: teamForm.skills
-        .split(',')
-        .map((item) => item.trim())
-        .filter(Boolean),
-      order: Number(teamForm.order || 0)
+      teamId: teamForm.teamId ? teamForm.teamId.trim() : '',
+      email: teamForm.email ? teamForm.email.trim() : '',
+      skills: typeof teamForm.skills === 'string'
+        ? teamForm.skills
+            .split(',')
+            .map((item) => item.trim())
+            .filter(Boolean)
+        : teamForm.skills,
+      order: Number(teamForm.order || 0),
+      slug: teamForm.slug ? slugify(teamForm.slug) : slugify(teamForm.name)
     };
 
     try {
@@ -408,7 +505,9 @@ const Dashboard = () => {
       setShowTeamModal(false);
       setEditingTeamMember(null);
       setTeamForm({
+        teamId: '',
         name: '',
+        email: '',
         role: '',
         specialization: '',
         bio: '',
@@ -429,14 +528,16 @@ const Dashboard = () => {
   const handleEditTeamMember = (member) => {
     setEditingTeamMember(member);
     setTeamForm({
+      teamId: member.teamId || '',
       name: member.name || '',
+      email: member.email || '',
       role: member.role || '',
       specialization: member.specialization || '',
       bio: member.bio || '',
       experience: member.experience || '',
       image: member.image || '',
       slug: member.slug || '',
-      skills: Array.isArray(member.skills) ? member.skills.join(', ') : '',
+      skills: Array.isArray(member.skills) ? member.skills.join(', ') : (member.skills || ''),
       status: member.status || 'active',
       order: member.order || 0
     });
@@ -887,29 +988,39 @@ const Dashboard = () => {
                     setEditingBlog(null);
                     setBlogForm({
                       title: '',
-                      excerpt: '',
-                      content: '',
-                      category: 'web-development',
-                      author: '',
+                      slug: '',
+                      category: 'General',
+                      author: 'Sofa Hi Sofa Team',
+                      authorEmail: '',
+                      teamMember: '',
+                      status: 'draft',
+                      tags: [],
                       image: '',
                       imageLink: '',
+                      excerpt: '',
+                      content: '',
                       readTime: '5 min read',
-                      status: 'draft',
-                      isFeatured: false
+                      isFeatured: false,
+                      faqs: [],
+                      metaTitle: '',
+                      metaDescription: '',
+                      metaKeywords: ''
                     });
+                    setTagInput('');
                     setShowBlogModal(true);
                   }}
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2 transition-colors"
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2 transition-colors shadow-sm"
                 >
                   <i className="fas fa-plus"></i>
-                  <span>Add Blog</span>
+                  <span>Create New Blog Post</span>
                 </button>
               </div>
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Blog</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Blog Article</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Author</th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Category</th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
@@ -924,17 +1035,32 @@ const Dashboard = () => {
                             <img 
                               src={blog.image} 
                               alt={blog.title} 
-                              className="w-16 h-12 object-cover rounded-lg mr-3"
+                              className="w-16 h-12 object-cover rounded-lg mr-3 border border-gray-200"
                             />
-                            <div>
+                            <div className="max-w-xs">
                               <div className="text-sm font-semibold text-gray-900 line-clamp-1">{blog.title}</div>
-                              <div className="text-sm text-gray-500 line-clamp-1">{blog.excerpt}</div>
+                              {blog.slug && (
+                                <div className="text-[11px] font-mono text-purple-600 line-clamp-1">
+                                  /{blog.slug}
+                                </div>
+                              )}
+                              <div className="text-xs text-gray-500 line-clamp-1">{blog.excerpt}</div>
                             </div>
                           </div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-xs font-medium text-gray-800">{blog.author || 'Team'}</span>
+                            {blog.teamMember && (
+                              <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-blue-100 text-blue-700" title="Connected to Team Member">
+                                ✓ Team
+                              </span>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
                           <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                            {blog.category.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                            {blog.category?.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
@@ -949,16 +1075,26 @@ const Dashboard = () => {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-2">
+                            <a
+                              href={`/blog/${blog.slug || blog._id}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-gray-600 hover:text-purple-600 rounded-lg hover:bg-purple-50 transition-colors"
+                              title="View Public Post"
+                            >
+                              <i className="fas fa-external-link-alt"></i>
+                              View
+                            </a>
                             <button
                               onClick={() => handleEditBlog(blog)}
-                              className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-blue-600 hover:text-blue-800 rounded-lg hover:bg-blue-50 transition-colors"
+                              className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 rounded-lg hover:bg-blue-50 transition-colors"
                             >
                               <i className="fas fa-edit"></i>
                               Edit
                             </button>
                             <button
                               onClick={() => handleDeleteBlog(blog._id)}
-                              className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-red-600 hover:text-red-800 rounded-lg hover:bg-red-50 transition-colors"
+                              className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-red-600 hover:text-red-800 rounded-lg hover:bg-red-50 transition-colors"
                             >
                               <i className="fas fa-trash"></i>
                               Delete
@@ -1049,15 +1185,20 @@ const Dashboard = () => {
           {activeTab === 'team' && (
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                  <i className="fas fa-users mr-2 text-purple-600"></i>
-                  Team Management
-                </h3>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                    <i className="fas fa-users mr-2 text-purple-600"></i>
+                    Team Management
+                  </h3>
+                  <p className="text-xs text-gray-500 mt-1">Manage team members, employee IDs, Cloudinary photos & blog authorship.</p>
+                </div>
                 <button
                   onClick={() => {
                     setEditingTeamMember(null);
                     setTeamForm({
+                      teamId: '',
                       name: '',
+                      email: '',
                       role: '',
                       specialization: '',
                       bio: '',
@@ -1070,7 +1211,7 @@ const Dashboard = () => {
                     });
                     setShowTeamModal(true);
                   }}
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2 transition-colors"
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm flex items-center space-x-2 transition-colors shadow-sm"
                 >
                   <i className="fas fa-plus"></i>
                   <span>Add Team Member</span>
@@ -1080,8 +1221,9 @@ const Dashboard = () => {
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Member</th>
-                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Role</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Member &amp; ID</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Email</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Role &amp; Specialization</th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
                     </tr>
@@ -1091,28 +1233,63 @@ const Dashboard = () => {
                       <tr key={member._id} className="hover:bg-gray-50 transition-colors">
                         <td className="px-6 py-4">
                           <div className="flex items-center">
-                            <img src={member.image} alt={member.name} className="w-12 h-12 object-cover rounded-full mr-3" />
+                            <img 
+                              src={member.image} 
+                              alt={member.name} 
+                              className="w-12 h-12 object-cover rounded-xl border border-gray-200 aspect-square shadow-sm mr-3" 
+                            />
                             <div>
-                              <div className="text-sm font-semibold text-gray-900">{member.name}</div>
-                              <div className="text-sm text-gray-500">{member.specialization || 'Team Member'}</div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-sm font-semibold text-gray-900">{member.name}</span>
+                                {member.teamId && (
+                                  <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-purple-100 text-purple-700 border border-purple-200">
+                                    ID: {member.teamId}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="text-xs text-gray-500 font-mono">
+                                /team/{member.slug || slugify(member.name)}
+                              </div>
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{member.role}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          {member.email ? (
+                            <a href={`mailto:${member.email}`} className="text-blue-600 hover:underline text-xs">
+                              {member.email}
+                            </a>
+                          ) : (
+                            <span className="text-gray-400 text-xs">—</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="text-sm font-medium text-gray-900">{member.role}</div>
+                          <div className="text-xs text-gray-500">{member.specialization || 'Team Member'}</div>
+                        </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                             member.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
                           }`}>
-                            {member.status === 'active' ? 'Active' : 'Inactive'}
+                            {member.status === 'active' ? '🟢 Active' : '🟡 Inactive'}
                           </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center gap-2">
-                            <button onClick={() => handleEditTeamMember(member)} className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-blue-600 hover:text-blue-800 rounded-lg hover:bg-blue-50 transition-colors">
+                            <a
+                              href={`/team/${member.slug || slugify(member.name)}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-gray-600 hover:text-purple-600 rounded-lg hover:bg-purple-50 transition-colors"
+                              title="View Public Profile"
+                            >
+                              <i className="fas fa-external-link-alt"></i>
+                              View
+                            </a>
+                            <button onClick={() => handleEditTeamMember(member)} className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-blue-600 hover:text-blue-800 rounded-lg hover:bg-blue-50 transition-colors">
                               <i className="fas fa-edit"></i>
                               Edit
                             </button>
-                            <button onClick={() => handleDeleteTeamMember(member._id)} className="inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-red-600 hover:text-red-800 rounded-lg hover:bg-red-50 transition-colors">
+                            <button onClick={() => handleDeleteTeamMember(member._id)} className="inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-red-600 hover:text-red-800 rounded-lg hover:bg-red-50 transition-colors">
                               <i className="fas fa-trash"></i>
                               Delete
                             </button>
@@ -1186,255 +1363,742 @@ const Dashboard = () => {
       )}
 
       {showTeamModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-              <h3 className="text-xl font-bold text-gray-900">{editingTeamMember ? 'Edit Team Member' : 'Add New Team Member'}</h3>
-              <button type="button" onClick={() => setShowTeamModal(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
-                <i className="fas fa-times text-xl"></i>
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[92vh] overflow-y-auto border border-gray-100">
+            <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-purple-50 to-blue-50 rounded-t-2xl">
+              <div>
+                <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                  <span className="p-2 bg-purple-600 text-white rounded-lg text-sm">
+                    <i className="fas fa-user-plus"></i>
+                  </span>
+                  {editingTeamMember ? 'Edit Team Member' : 'Add New Team Member'}
+                </h3>
+                <p className="text-xs text-gray-600 mt-1">Fill in the details to publish or update a team member profile.</p>
+              </div>
+              <button 
+                type="button" 
+                onClick={() => setShowTeamModal(false)} 
+                className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-white transition-colors"
+              >
+                <i className="fas fa-times"></i>
               </button>
             </div>
-            <form onSubmit={handleTeamSubmit} className="p-6 space-y-4">
+
+            <form onSubmit={handleTeamSubmit} className="p-6 space-y-5">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-gray-700 text-xs font-bold uppercase tracking-wider mb-2">
+                    Team ID No
+                  </label>
+                  <input
+                    type="text"
+                    value={teamForm.teamId}
+                    onChange={(e) => setTeamForm({ ...teamForm, teamId: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 font-mono font-medium"
+                    placeholder="e.g. WTI-101"
+                  />
+                </div>
+                <div className="md:col-span-2">
+                  <label className="block text-gray-700 text-xs font-bold uppercase tracking-wider mb-2">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={teamForm.name}
+                    onChange={(e) => {
+                      const name = e.target.value;
+                      setTeamForm(prev => ({
+                        ...prev,
+                        name,
+                        slug: (!editingTeamMember && (!prev.slug || prev.slug === slugify(prev.name))) ? slugify(name) : prev.slug
+                      }));
+                    }}
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="e.g. Aarav Sharma"
+                  />
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">Name</label>
-                  <input type="text" required value={teamForm.name} onChange={(e) => setTeamForm({...teamForm, name: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <label className="block text-gray-700 text-xs font-bold uppercase tracking-wider mb-2">
+                    Email Address *
+                  </label>
+                  <input
+                    type="email"
+                    value={teamForm.email}
+                    onChange={(e) => setTeamForm({ ...teamForm, email: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="aarav@webtechillusion.com"
+                  />
                 </div>
                 <div>
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">Role</label>
-                  <input type="text" required value={teamForm.role} onChange={(e) => setTeamForm({...teamForm, role: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <label className="block text-gray-700 text-xs font-bold uppercase tracking-wider mb-2">
+                    Role / Designation *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={teamForm.role}
+                    onChange={(e) => setTeamForm({ ...teamForm, role: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="e.g. Lead Full-Stack Developer"
+                  />
                 </div>
               </div>
-              <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">Specialization</label>
-                <input type="text" value={teamForm.specialization} onChange={(e) => setTeamForm({...teamForm, specialization: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              </div>
-              <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">Bio</label>
-                <textarea rows="3" value={teamForm.bio} onChange={(e) => setTeamForm({...teamForm, bio: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
-              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">Experience</label>
-                  <input type="text" value={teamForm.experience} onChange={(e) => setTeamForm({...teamForm, experience: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <label className="block text-gray-700 text-xs font-bold uppercase tracking-wider mb-2">
+                    Specialization
+                  </label>
+                  <input
+                    type="text"
+                    value={teamForm.specialization}
+                    onChange={(e) => setTeamForm({ ...teamForm, specialization: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="e.g. React, Node.js & Scalable Architecture"
+                  />
                 </div>
                 <div>
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">Order</label>
-                  <input type="number" value={teamForm.order} onChange={(e) => setTeamForm({...teamForm, order: Number(e.target.value)})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                  <label className="block text-gray-700 text-xs font-bold uppercase tracking-wider mb-2">
+                    Experience
+                  </label>
+                  <input
+                    type="text"
+                    value={teamForm.experience}
+                    onChange={(e) => setTeamForm({ ...teamForm, experience: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="e.g. 5+ years experience"
+                  />
                 </div>
               </div>
+
               <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">Image URL</label>
-                <input type="url" required value={teamForm.image} onChange={(e) => setTeamForm({...teamForm, image: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="https://example.com/member.jpg" />
+                <label className="block text-gray-700 text-xs font-bold uppercase tracking-wider mb-2">
+                  Bio / Overview
+                </label>
+                <textarea
+                  rows="3"
+                  value={teamForm.bio}
+                  onChange={(e) => setTeamForm({ ...teamForm, bio: e.target.value })}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                  placeholder="Professional biography highlighting achievements, leadership, and background..."
+                />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">Public profile slug</label>
-                  <input type="text" value={teamForm.slug} onChange={(e) => setTeamForm({...teamForm, slug: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="aarav-sharma" />
+
+              {/* Photo Upload & Aspect Ratio Section */}
+              <div className="p-4 rounded-2xl bg-purple-50/60 border border-purple-100 space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <label className="block text-purple-900 text-xs font-bold uppercase tracking-wider">
+                    Profile Photo (Cloudinary Upload or Link)
+                  </label>
+                  <span className="text-[11px] font-semibold text-purple-700 bg-purple-100/80 px-2.5 py-0.5 rounded-full border border-purple-200">
+                    Recommended: 1:1 Square (600×600px) • Max 5MB
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-[112px_minmax(0,1fr)] gap-4 items-center">
+                  {/* Aspect Ratio Preview */}
+                  <div className="w-28 h-28 aspect-square rounded-2xl border-2 border-purple-200 bg-white overflow-hidden shadow-sm flex items-center justify-center relative shrink-0">
+                    {teamForm.image ? (
+                      <img src={teamForm.image} alt="Preview" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="text-center p-2 text-gray-400">
+                        <i className="fas fa-camera text-2xl mb-1"></i>
+                        <p className="text-[10px] font-medium leading-tight">1:1 Ratio</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Dual Upload Flow */}
+                  <div className="space-y-2.5">
+                    <div className="flex items-center gap-2">
+                      <label className="cursor-pointer inline-flex items-center justify-center px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-all shrink-0">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => handleImageUpload(e, 'team')}
+                        />
+                        <i className="fas fa-cloud-upload-alt mr-2"></i>
+                        {uploadingImage ? 'Uploading...' : 'Upload Photo'}
+                      </label>
+                      <span className="text-xs text-gray-500 font-medium">Auto-upload to Cloudinary</span>
+                    </div>
+
+                    <input
+                      type="url"
+                      required
+                      value={teamForm.image}
+                      onChange={(e) => setTeamForm({ ...teamForm, image: e.target.value })}
+                      placeholder="https://res.cloudinary.com/... or paste image link"
+                      className="w-full px-3.5 py-2 bg-white border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-purple-500 font-mono"
+                    />
+                    <p className="text-[11px] text-gray-500">
+                      Photo displays in a consistent 1:1 square aspect ratio across Website, Team Page, and Blog cards.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="md:col-span-2">
+                  <label className="block text-gray-700 text-xs font-bold uppercase tracking-wider mb-2">
+                    Public Profile Slug
+                  </label>
+                  <input
+                    type="text"
+                    value={teamForm.slug}
+                    onChange={(e) => setTeamForm({ ...teamForm, slug: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 font-mono"
+                    placeholder="aarav-sharma"
+                  />
+                  <p className="text-[11px] text-gray-500 mt-1">
+                    URL: /team/{teamForm.slug || slugify(teamForm.name) || 'member'}
+                  </p>
                 </div>
                 <div>
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">Status</label>
-                  <select value={teamForm.status} onChange={(e) => setTeamForm({...teamForm, status: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                  <label className="block text-gray-700 text-xs font-bold uppercase tracking-wider mb-2">
+                    Status
+                  </label>
+                  <select
+                    value={teamForm.status}
+                    onChange={(e) => setTeamForm({ ...teamForm, status: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  >
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
                   </select>
                 </div>
               </div>
-              <div className="rounded-xl border border-dashed border-blue-200 bg-blue-50 p-3">
-                <label className="block text-gray-700 text-sm font-semibold mb-2">Upload member image</label>
-                <input type="file" accept="image/*" onChange={(e) => handleImageUpload(e, 'team')} className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white file:font-semibold hover:file:bg-blue-700" />
-                {uploadingImage && <p className="mt-2 text-xs text-blue-700">Uploading image...</p>}
-              </div>
-              <div className="rounded-xl border border-gray-200 bg-gray-50 p-3">
-                <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide mb-2">Direct public link</p>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="text"
-                    readOnly
-                    value={teamForm.slug ? `${window.location.origin}/team/${teamForm.slug}` : `${window.location.origin}/team/${(teamForm.name || 'team-member').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-white text-sm text-gray-700"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => navigator.clipboard?.writeText(teamForm.slug ? `${window.location.origin}/team/${teamForm.slug}` : `${window.location.origin}/team/${(teamForm.name || 'team-member').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`)}
-                    className="px-3 py-2 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-700"
-                  >
-                    Copy
-                  </button>
-                </div>
-              </div>
+
               <div>
-                <label className="block text-gray-700 text-sm font-semibold mb-2">Skills (comma separated)</label>
-                <input type="text" value={teamForm.skills} onChange={(e) => setTeamForm({...teamForm, skills: e.target.value})} className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <label className="block text-gray-700 text-xs font-bold uppercase tracking-wider mb-2">
+                  Skills (comma separated)
+                </label>
+                <input
+                  type="text"
+                  value={teamForm.skills}
+                  onChange={(e) => setTeamForm({ ...teamForm, skills: e.target.value })}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="React, Node.js, TypeScript, Cloud, UI/UX"
+                />
               </div>
-              <div className="flex justify-end gap-3 pt-2">
-                <button type="button" onClick={() => setShowTeamModal(false)} className="px-5 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">Cancel</button>
-                <button type="submit" className="px-5 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">Save Member</button>
+
+              <div className="flex justify-end gap-3 pt-3 border-t border-gray-100">
+                <button
+                  type="button"
+                  onClick={() => setShowTeamModal(false)}
+                  className="px-5 py-2.5 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors text-sm font-semibold"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl transition-colors font-semibold text-sm shadow-md"
+                >
+                  {editingTeamMember ? 'Update Team Member' : 'Save Member'}
+                </button>
               </div>
             </form>
           </div>
         </div>
       )}
 
-      {/* Blog Modal */}
+      {/* Blog Modal - Create New Blog Post */}
       {showBlogModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-200">
-              <div className="flex justify-between items-center">
-                <h3 className="text-xl font-bold text-gray-900">
-                  {editingBlog ? 'Edit Blog' : 'Add New Blog'}
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-3 sm:p-4 animate-fadeIn">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[94vh] overflow-y-auto border border-gray-100">
+            <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-purple-50 via-blue-50 to-indigo-50 rounded-t-2xl flex justify-between items-start">
+              <div>
+                <h3 className="text-2xl font-black text-gray-900 tracking-tight">
+                  {editingBlog ? 'Edit Blog Post' : 'Create New Blog Post'}
                 </h3>
-                <button
-                  onClick={() => {
-                    setShowBlogModal(false);
-                    setEditingBlog(null);
-                  }}
-                  className="text-gray-400 hover:text-gray-600 transition-colors"
-                >
-                  <i className="fas fa-times text-xl"></i>
-                </button>
+                <p className="text-xs text-gray-600 mt-1">
+                  Fill in the details to publish a new blog.
+                </p>
               </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowBlogModal(false);
+                  setEditingBlog(null);
+                }}
+                className="w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-white transition-colors"
+              >
+                <i className="fas fa-times"></i>
+              </button>
             </div>
-            <form onSubmit={handleBlogSubmit} className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="md:col-span-2">
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">
-                    <i className="fas fa-heading mr-2"></i>Title
+
+            <form onSubmit={handleBlogSubmit} className="p-6 space-y-6">
+              {/* Blog Title */}
+              <div>
+                <label className="block text-gray-800 text-xs font-bold uppercase tracking-wider mb-2">
+                  Blog Title *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={blogForm.title}
+                  onChange={(e) => {
+                    const title = e.target.value;
+                    setBlogForm((prev) => ({
+                      ...prev,
+                      title,
+                      slug: (!editingBlog && (!prev.slug || prev.slug === slugify(prev.title))) ? slugify(title) : prev.slug,
+                      metaTitle: (!prev.metaTitle || prev.metaTitle === prev.title) ? title : prev.metaTitle
+                    }));
+                  }}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-base font-semibold text-gray-900 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+                  placeholder="e.g. Best Sofas for Small Living Rooms"
+                />
+              </div>
+
+              {/* Custom URL (Slug) */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-gray-800 text-xs font-bold uppercase tracking-wider">
+                    Custom URL (Slug)
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={blogForm.title}
-                    onChange={(e) => setBlogForm({...blogForm, title: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    placeholder="Enter blog title"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">
-                    <i className="fas fa-align-left mr-2"></i>Excerpt
-                  </label>
-                  <textarea
-                    required
-                    value={blogForm.excerpt}
-                    onChange={(e) => setBlogForm({...blogForm, excerpt: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    placeholder="Enter short description"
-                    rows="2"
-                  ></textarea>
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">
-                    <i className="fas fa-paragraph mr-2"></i>Content
-                  </label>
-                  <textarea
-                    required
-                    value={blogForm.content}
-                    onChange={(e) => setBlogForm({...blogForm, content: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    placeholder="Enter full content"
-                    rows="6"
-                  ></textarea>
-                </div>
-                <div>
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">
-                    <i className="fas fa-folder mr-2"></i>Category
-                  </label>
-                  <select
-                    value={blogForm.category}
-                    onChange={(e) => setBlogForm({...blogForm, category: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (blogForm.title) {
+                        setBlogForm((prev) => ({ ...prev, slug: slugify(prev.title) }));
+                      }
+                    }}
+                    className="text-xs text-purple-600 hover:text-purple-800 font-semibold inline-flex items-center gap-1"
                   >
-                    <option value="web-development">Web Development</option>
-                    <option value="ui-ux-design">UI/UX Design</option>
-                    <option value="digital-marketing">Digital Marketing</option>
-                    <option value="mobile-apps">Mobile Apps</option>
-                    <option value="technology">Technology</option>
-                  </select>
+                    <i className="fas fa-magic"></i> Auto-generate from title
+                  </button>
                 </div>
+                <input
+                  type="text"
+                  value={blogForm.slug}
+                  onChange={(e) => setBlogForm({ ...blogForm, slug: slugify(e.target.value) })}
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-mono text-purple-700 focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="Leave empty to auto-generate from title"
+                />
+                <p className="text-[11px] text-gray-500 mt-1 font-mono">
+                  Preview: /blog/{blogForm.slug || slugify(blogForm.title) || 'your-slug'}
+                </p>
+              </div>
+
+              {/* Category, Author, Status */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">
-                    <i className="fas fa-user mr-2"></i>Author
+                  <label className="block text-gray-800 text-xs font-bold uppercase tracking-wider mb-2">
+                    Category
                   </label>
                   <input
                     type="text"
-                    value={blogForm.author}
-                    onChange={(e) => setBlogForm({...blogForm, author: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    placeholder="Author name"
+                    value={blogForm.category}
+                    onChange={(e) => setBlogForm({ ...blogForm, category: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="General"
+                    list="category-suggestions"
                   />
+                  <datalist id="category-suggestions">
+                    <option value="General" />
+                    <option value="Web Development" />
+                    <option value="UI/UX Design" />
+                    <option value="Digital Marketing" />
+                    <option value="Mobile Apps" />
+                    <option value="Technology" />
+                    <option value="E-Commerce" />
+                    <option value="Furniture & Interior" />
+                  </datalist>
                 </div>
-                <div className="md:col-span-2">
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">
-                    <i className="fas fa-image mr-2"></i>Image URL
+
+                <div>
+                  <label className="block text-gray-800 text-xs font-bold uppercase tracking-wider mb-2">
+                    Author
                   </label>
-                  <div className="flex flex-col sm:flex-row gap-3">
+                  <div className="space-y-1.5">
+                    <select
+                      value={blogForm.teamMember || '__custom__'}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (val === '__custom__') {
+                          setBlogForm(prev => ({
+                            ...prev,
+                            teamMember: '',
+                            author: prev.author || 'Sofa Hi Sofa Team',
+                            authorEmail: ''
+                          }));
+                        } else {
+                          const m = teamMembers.find(member => member._id === val);
+                          if (m) {
+                            setBlogForm(prev => ({
+                              ...prev,
+                              teamMember: m._id,
+                              author: m.name,
+                              authorEmail: m.email || ''
+                            }));
+                          }
+                        }
+                      }}
+                      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    >
+                      <option value="__custom__">Custom Author Name</option>
+                      {teamMembers.map((m) => (
+                        <option key={m._id} value={m._id}>
+                          {m.name} ({m.role}) {m.teamId ? `• ID: ${m.teamId}` : ''}
+                        </option>
+                      ))}
+                    </select>
+
                     <input
-                      type="url"
-                      required
-                      value={blogForm.image}
-                      onChange={(e) => setBlogForm({...blogForm, image: e.target.value})}
-                      className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                      placeholder="https://example.com/image.jpg"
+                      type="text"
+                      value={blogForm.author}
+                      onChange={(e) => setBlogForm({ ...blogForm, author: e.target.value })}
+                      className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      placeholder="Sofa Hi Sofa Team"
                     />
-                    <label className="cursor-pointer inline-flex items-center justify-center px-4 py-3 bg-gray-100 border border-gray-300 rounded-lg text-sm font-semibold text-gray-700 hover:bg-gray-200 transition-colors">
-                      <input type="file" accept="image/*" className="hidden" onChange={handleImageUpload} />
-                      {uploadingImage ? 'Uploading...' : 'Upload'}
-                    </label>
                   </div>
                 </div>
+
                 <div>
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">
-                    <i className="fas fa-clock mr-2"></i>Read Time
-                  </label>
-                  <input
-                    type="text"
-                    value={blogForm.readTime}
-                    onChange={(e) => setBlogForm({...blogForm, readTime: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                    placeholder="5 min read"
-                  />
-                </div>
-                <div>
-                  <label className="block text-gray-700 text-sm font-semibold mb-2">
-                    <i className="fas fa-toggle-on mr-2"></i>Status
+                  <label className="block text-gray-800 text-xs font-bold uppercase tracking-wider mb-2">
+                    Status
                   </label>
                   <select
                     value={blogForm.status}
-                    onChange={(e) => setBlogForm({...blogForm, status: e.target.value})}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    onChange={(e) => setBlogForm({ ...blogForm, status: e.target.value })}
+                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 font-medium"
                   >
                     <option value="draft">Draft</option>
                     <option value="published">Published</option>
                   </select>
                 </div>
               </div>
-              <div className="mt-6 flex justify-end space-x-3">
+
+              {/* Tags — Type tag and press Enter or Comma */}
+              <div>
+                <label className="block text-gray-800 text-xs font-bold uppercase tracking-wider mb-2">
+                  Tags — Type tag and press Enter or Comma
+                </label>
+                <div className="min-h-[46px] p-2 bg-gray-50 border border-gray-200 rounded-xl flex flex-wrap items-center gap-2 focus-within:bg-white focus-within:border-purple-500 focus-within:ring-2 focus-within:ring-purple-200 transition-all">
+                  {blogForm.tags && blogForm.tags.map((tag, idx) => (
+                    <span
+                      key={`${tag}-${idx}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-semibold shadow-xs"
+                    >
+                      #{tag}
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveTag(tag)}
+                        className="w-4 h-4 rounded-full flex items-center justify-center hover:bg-purple-200 text-purple-700"
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                  <input
+                    type="text"
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ',') {
+                        e.preventDefault();
+                        handleAddTag(tagInput);
+                      } else if (e.key === 'Backspace' && !tagInput && blogForm.tags.length > 0) {
+                        handleRemoveTag(blogForm.tags[blogForm.tags.length - 1]);
+                      }
+                    }}
+                    placeholder={blogForm.tags.length === 0 ? "Type tag..." : "Add another..."}
+                    className="flex-1 min-w-[120px] bg-transparent border-none text-sm text-gray-800 focus:outline-none px-2 py-1"
+                  />
+                  {tagInput && (
+                    <button
+                      type="button"
+                      onClick={() => handleAddTag(tagInput)}
+                      className="px-2.5 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-semibold"
+                    >
+                      Add
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Featured Image URL & Upload */}
+              <div className="p-4 rounded-2xl bg-blue-50/50 border border-blue-100 space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <label className="block text-gray-800 text-xs font-bold uppercase tracking-wider">
+                    Featured Image URL
+                  </label>
+                  <span className="text-[11px] font-semibold text-blue-700 bg-blue-100/70 px-2.5 py-0.5 rounded-full border border-blue-200">
+                    Recommended: 16:9 Banner (1200×675px) • Direct URL or Cloudinary Upload
+                  </span>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-2.5">
+                  <input
+                    type="url"
+                    required
+                    value={blogForm.image}
+                    onChange={(e) => setBlogForm({ ...blogForm, image: e.target.value, imageLink: e.target.value })}
+                    className="flex-1 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-xs font-mono text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    placeholder="https://res.cloudinary.com/..."
+                  />
+                  <label className="cursor-pointer inline-flex items-center justify-center px-4 py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold shadow-sm transition-colors shrink-0">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={(e) => handleImageUpload(e, 'blog')}
+                    />
+                    <i className="fas fa-cloud-upload-alt mr-2"></i>
+                    {uploadingImage ? 'Uploading...' : 'Upload Photo'}
+                  </label>
+                </div>
+
+                {blogForm.image && (
+                  <div className="relative rounded-xl overflow-hidden border border-gray-200 max-h-48 aspect-video bg-gray-100 flex items-center justify-center group">
+                    <img src={blogForm.image} alt="Featured Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => setBlogForm({ ...blogForm, image: '', imageLink: '' })}
+                      className="absolute top-2 right-2 bg-black/70 hover:bg-red-600 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs transition-colors"
+                      title="Remove Image"
+                    >
+                      <i className="fas fa-trash"></i>
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Short Excerpt */}
+              <div>
+                <label className="block text-gray-800 text-xs font-bold uppercase tracking-wider mb-2">
+                  Short Excerpt
+                </label>
+                <textarea
+                  required
+                  rows="2"
+                  value={blogForm.excerpt}
+                  onChange={(e) => {
+                    const excerpt = e.target.value;
+                    setBlogForm((prev) => ({
+                      ...prev,
+                      excerpt,
+                      metaDescription: (!prev.metaDescription || prev.metaDescription === prev.excerpt) ? excerpt : prev.metaDescription
+                    }));
+                  }}
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                  placeholder="A short description for the blog listing page..."
+                />
+              </div>
+
+              {/* Full Content */}
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-gray-800 text-xs font-bold uppercase tracking-wider">
+                    Full Content *
+                  </label>
+                  <div className="flex items-center gap-1.5 text-xs text-gray-500">
+                    <span className="px-2 py-0.5 rounded bg-gray-100 font-semibold font-mono text-purple-700">
+                      {blogForm.content ? blogForm.content.trim().split(/\s+/).filter(Boolean).length : 0} words
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-1 p-2 bg-gray-100 border border-gray-200 rounded-t-xl text-xs text-gray-700">
+                  <button
+                    type="button"
+                    onClick={() => setBlogForm(prev => ({ ...prev, content: prev.content + '\n## Heading 2\n' }))}
+                    className="px-2.5 py-1 bg-white hover:bg-gray-200 rounded border border-gray-200 font-bold"
+                  >
+                    H2
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBlogForm(prev => ({ ...prev, content: prev.content + '\n### Heading 3\n' }))}
+                    className="px-2.5 py-1 bg-white hover:bg-gray-200 rounded border border-gray-200 font-bold"
+                  >
+                    H3
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBlogForm(prev => ({ ...prev, content: prev.content + ' **bold text** ' }))}
+                    className="px-2.5 py-1 bg-white hover:bg-gray-200 rounded border border-gray-200 font-bold"
+                  >
+                    B
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBlogForm(prev => ({ ...prev, content: prev.content + ' *italic text* ' }))}
+                    className="px-2.5 py-1 bg-white hover:bg-gray-200 rounded border border-gray-200 italic"
+                  >
+                    I
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBlogForm(prev => ({ ...prev, content: prev.content + '\n- Bullet point\n- Second point\n' }))}
+                    className="px-2.5 py-1 bg-white hover:bg-gray-200 rounded border border-gray-200"
+                  >
+                    • List
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setBlogForm(prev => ({ ...prev, content: prev.content + '\n> Quote block here\n' }))}
+                    className="px-2.5 py-1 bg-white hover:bg-gray-200 rounded border border-gray-200"
+                  >
+                    “ Quote
+                  </button>
+                </div>
+
+                <textarea
+                  required
+                  rows="8"
+                  value={blogForm.content}
+                  onChange={(e) => setBlogForm({ ...blogForm, content: e.target.value })}
+                  className="w-full px-4 py-3 bg-gray-50 border-x border-b border-gray-200 rounded-b-xl text-sm leading-relaxed focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 font-sans"
+                  placeholder="Write the full blog post content here..."
+                />
+              </div>
+
+              {/* Frequently Asked Questions (Optional) */}
+              <div className="p-5 rounded-2xl bg-gray-50 border border-gray-200 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+                      <i className="fas fa-question-circle text-purple-600"></i>
+                      Frequently Asked Questions (Optional)
+                    </h4>
+                    <p className="text-xs text-gray-500 mt-0.5">
+                      Adds structured FAQ schema for Google Search & rich snippets.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleAddFaq}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-xs font-semibold transition-colors"
+                  >
+                    <i className="fas fa-plus"></i> Add FAQ
+                  </button>
+                </div>
+
+                {(!blogForm.faqs || blogForm.faqs.length === 0) ? (
+                  <div className="text-center py-6 border border-dashed border-gray-300 rounded-xl bg-white">
+                    <p className="text-xs font-semibold text-gray-600">No FAQs added yet.</p>
+                    <p className="text-[11px] text-gray-400 mt-1">Click "Add FAQ" above to insert questions.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {blogForm.faqs.map((faq, fIndex) => (
+                      <div key={fIndex} className="p-3.5 bg-white rounded-xl border border-gray-200 space-y-2 relative shadow-xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[11px] font-bold uppercase tracking-wider text-purple-700">FAQ #{fIndex + 1}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveFaq(fIndex)}
+                            className="text-gray-400 hover:text-red-600 text-xs"
+                          >
+                            <i className="fas fa-trash"></i>
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          value={faq.question}
+                          onChange={(e) => handleUpdateFaq(fIndex, 'question', e.target.value)}
+                          placeholder="Question e.g. What is the return policy?"
+                          className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 font-semibold"
+                        />
+                        <textarea
+                          rows="2"
+                          value={faq.answer}
+                          onChange={(e) => handleUpdateFaq(fIndex, 'answer', e.target.value)}
+                          placeholder="Answer to the question..."
+                          className="w-full px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-xs focus:bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* SEO Settings */}
+              <div className="p-5 rounded-2xl bg-gradient-to-br from-indigo-50/60 to-purple-50/60 border border-indigo-100 space-y-4">
+                <div className="flex items-center justify-between">
+                  <h4 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+                    <i className="fab fa-google text-blue-600"></i>
+                    SEO Settings
+                  </h4>
+                  <span className="text-[11px] text-gray-500">Google Search Optimization</span>
+                </div>
+
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-gray-700 text-xs font-semibold mb-1">
+                      Meta Title
+                    </label>
+                    <input
+                      type="text"
+                      value={blogForm.metaTitle}
+                      onChange={(e) => setBlogForm({ ...blogForm, metaTitle: e.target.value })}
+                      placeholder="Auto-generated if empty"
+                      className="w-full px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-purple-500"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-700 text-xs font-semibold mb-1">
+                      Meta Description
+                    </label>
+                    <textarea
+                      rows="2"
+                      value={blogForm.metaDescription}
+                      onChange={(e) => setBlogForm({ ...blogForm, metaDescription: e.target.value })}
+                      placeholder="Auto-generated if empty"
+                      className="w-full px-4 py-2 bg-white border border-gray-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                    />
+                  </div>
+
+                  {/* Google Search Snippet Preview */}
+                  <div className="p-3 bg-white rounded-xl border border-gray-200 space-y-1">
+                    <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Search Snippet Preview</p>
+                    <div className="text-sm font-medium text-blue-700 hover:underline cursor-pointer truncate">
+                      {blogForm.metaTitle || blogForm.title || 'Blog Title Preview'}
+                    </div>
+                    <div className="text-[11px] text-emerald-700 font-mono truncate">
+                      https://webtechillusion.com › blog › {blogForm.slug || slugify(blogForm.title) || 'slug'}
+                    </div>
+                    <div className="text-xs text-gray-600 line-clamp-2">
+                      {blogForm.metaDescription || blogForm.excerpt || 'Article summary description will appear here on Google search results...'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-end items-center gap-3 pt-4 border-t border-gray-100">
                 <button
                   type="button"
                   onClick={() => {
                     setShowBlogModal(false);
                     setEditingBlog(null);
                   }}
-                  className="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="px-6 py-2.5 border border-gray-200 text-gray-700 rounded-xl hover:bg-gray-50 transition-colors text-sm font-semibold"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg hover:opacity-90 disabled:opacity-50 transition-all font-semibold"
+                  className="px-7 py-2.5 bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:opacity-95 text-white rounded-xl transition-all font-bold text-sm shadow-lg shadow-purple-500/25 flex items-center gap-2"
                 >
                   {loading ? (
-                    <span className="flex items-center">
-                      <i className="fas fa-spinner fa-spin mr-2"></i>Saving...
-                    </span>
+                    <>
+                      <i className="fas fa-spinner fa-spin"></i>
+                      <span>Publishing...</span>
+                    </>
                   ) : (
-                    <span className="flex items-center">
-                      <i className="fas fa-save mr-2"></i>
-                      {editingBlog ? 'Update Blog' : 'Create Blog'}
-                    </span>
+                    <>
+                      <span>🚀 Publish</span>
+                    </>
                   )}
                 </button>
               </div>
