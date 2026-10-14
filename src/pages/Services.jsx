@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiCode, FiSmartphone, FiShoppingCart, FiBarChart, FiCloud,
@@ -290,7 +290,7 @@ const Services = () => {
             {[
               { icon: <FiPhone  className="w-5 h-5" />, label: 'Phone',    value: '+91 73804 97919',          style: { bg: '#edf4ff', color: '#2563eb' } },
               { icon: <FiMail   className="w-5 h-5" />, label: 'Email',    value: 'webtechillusion@gmail.com', style: { bg: '#dbeafe', color: '#2563eb' } },
-              { icon: <FiMapPin className="w-5 h-5" />, label: 'Location', value: 'Sector 16/1033, Indiranagar, Lucknow', style: { bg: '#d1fae5', color: '#059669' } },
+              { icon: <FiMapPin className="w-5 h-5" />, label: 'Location', value: '16/1033 Road, Sector 16, Indira Nagar, Lucknow, Uttar Pradesh 226016', style: { bg: '#d1fae5', color: '#059669' } },
             ].map((s, i) => (
               <div key={i} className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-[#2563eb]/50 transition-colors">
                 <div

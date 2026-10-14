@@ -41,7 +41,7 @@ export function SettingsProvider({ children }) {
     contactEmail: settings.contact_email || 'webtechillusion@gmail.com',
     contactPhone: settings.contact_phone || '+91 73791 18083',
     contactWhatsapp: settings.contact_whatsapp || '917379118083',
-    contactAddress: settings.contact_address || 'Sector 16/1033, Indiranagar, Lucknow',
+    contactAddress: settings.contact_address || '16/1033 Road, Sector 16, Indira Nagar, Lucknow, Uttar Pradesh 226016',
     socialFacebook: settings.social_facebook || '',
     socialTwitter: settings.social_twitter || '',
     socialInstagram: settings.social_instagram || '',

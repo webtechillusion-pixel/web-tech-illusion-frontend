@@ -255,7 +255,7 @@ const About = () => {
             {[
               { icon: <FiPhone  className="w-5 h-5" />, label: 'Phone',    value: '+91 73804 97919',          iconBg: '#edf4ff', iconColor: '#2563eb' },
               { icon: <FiMail   className="w-5 h-5" />, label: 'Email',    value: 'webtechillusion@gmail.com', iconBg: '#dbeafe', iconColor: '#2563eb' },
-              { icon: <FiMapPin className="w-5 h-5" />, label: 'Location', value: 'Sector 16/1033, Indiranagar, Lucknow', iconBg: '#d1fae5', iconColor: '#059669' },
+              { icon: <FiMapPin className="w-5 h-5" />, label: 'Location', value: '16/1033 Road, Sector 16, Indira Nagar, Lucknow, Uttar Pradesh 226016', iconBg: '#d1fae5', iconColor: '#059669' },
             ].map((s, i) => (
               <div key={i} className="bg-white rounded-2xl p-6 border border-[#dfeafc] shadow-sm">
                 <div

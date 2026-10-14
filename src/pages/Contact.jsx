@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FiPhone, FiMail, FiMapPin, FiSend, FiClock } from 'react-icons/fi';
 import Footer from '../components/Footer';
@@ -233,7 +233,7 @@ const Contact = () => {
                     allowFullScreen=""
                     loading="lazy"
                     referrerPolicy="strict-origin-when-cross-origin"
-                    title="Office Location - Sector 16/1033, Indiranagar, Lucknow"
+                    title="Office Location - 16/1033 Road, Sector 16, Indira Nagar, Lucknow, Uttar Pradesh 226016"
                   />
                 </div>
               </div>

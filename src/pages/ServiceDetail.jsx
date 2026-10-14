@@ -444,7 +444,7 @@ const ServiceDetail = () => {
             {[
               { icon: <FiPhone  className="w-5 h-5" />, label: 'Phone',    value: '+91 73791 18083' },
               { icon: <FiMail   className="w-5 h-5" />, label: 'Email',    value: 'webtechillusion@gmail.com' },
-              { icon: <FiMapPin className="w-5 h-5" />, label: 'Location', value: 'Sector 16/1033, Indiranagar, Lucknow' },
+              { icon: <FiMapPin className="w-5 h-5" />, label: 'Location', value: '16/1033 Road, Sector 16, Indira Nagar, Lucknow, Uttar Pradesh 226016' },
             ].map((s, i) => (
               <div key={i} className="bg-white/5 rounded-2xl p-6 border border-white/10 hover:border-[#c8a96e]/50 transition-colors">
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center mx-auto mb-3 bg-[#c8a96e]/20 text-[#c8a96e]">

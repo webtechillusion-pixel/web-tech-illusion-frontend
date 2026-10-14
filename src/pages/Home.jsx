@@ -942,7 +942,7 @@ const Home = () => {
                   </div>
                   <div>
                     <div className="text-[#9ca3af] text-[11px]">Global Headquarters</div>
-                    <div className="font-bold text-[#0f172a]">Sector 16/1033, Indiranagar, Lucknow</div>
+                    <div className="font-bold text-[#0f172a]">16/1033 Road, Sector 16, Indira Nagar, Lucknow, Uttar Pradesh 226016</div>
                   </div>
                 </div>
               </div>
