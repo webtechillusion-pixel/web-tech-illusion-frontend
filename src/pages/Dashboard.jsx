@@ -594,6 +594,32 @@ const Dashboard = () => {
     }
   };
 
+  const handleDeleteContact = async (contactId) => {
+    if (!window.confirm('Are you sure you want to delete this contact submission?')) return;
+    const token = localStorage.getItem('adminToken');
+
+    try {
+      const response = await fetch(buildApiUrl(`api/contact/${contactId}`), {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Failed to delete contact submission');
+      }
+
+      setContacts((prev) => prev.filter((c) => c._id !== contactId));
+      setStats((prev) => ({
+        ...prev,
+        totalContacts: Math.max(0, (prev.totalContacts || 1) - 1)
+      }));
+    } catch (error) {
+      console.error('Error deleting contact:', error);
+      setError(error.message || 'Failed to delete contact submission');
+    }
+  };
+
   const exportContacts = () => {
     const headers = ['Name', 'Email', 'Phone', 'Message', 'Status', 'Date'];
     const csvContent = [headers.join(',')];
@@ -881,6 +907,7 @@ const Dashboard = () => {
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Message</th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Date</th>
                       <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Actions</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
@@ -916,6 +943,17 @@ const Dashboard = () => {
                             <option value="read">🟡 Read</option>
                             <option value="responded">🟢 Responded</option>
                           </select>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm">
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteContact(contact._id)}
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 rounded-lg transition-colors cursor-pointer"
+                            title="Delete Contact Submission"
+                          >
+                            <i className="fas fa-trash"></i>
+                            <span>Delete</span>
+                          </button>
                         </td>
                       </tr>
                     ))}
