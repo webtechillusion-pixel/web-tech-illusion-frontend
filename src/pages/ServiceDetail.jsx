@@ -198,6 +198,27 @@ const serviceDetails = {
   }
 };
 
+const serviceSlugAlias = {
+  'web-development': 'web-development',
+  'web': 'web-development',
+  'web-dev': 'web-development',
+  'mobile-apps': 'mobile-apps',
+  'mobile-app-development': 'mobile-apps',
+  'mobile-solutions': 'mobile-apps',
+  'mobile': 'mobile-apps',
+  'ecommerce': 'ecommerce',
+  'e-commerce': 'ecommerce',
+  'e-commerce-solutions': 'ecommerce',
+  'ecommerce-solutions': 'ecommerce',
+  'digital-marketing': 'digital-marketing',
+  'marketing': 'digital-marketing',
+  'seo': 'digital-marketing',
+  'cloud-services': 'cloud-services',
+  'cloud': 'cloud-services',
+  'security': 'security',
+  'cybersecurity': 'security'
+};
+
 const ServiceDetail = () => {
   const { type } = useParams();
   const navigate = useNavigate();
@@ -205,9 +226,12 @@ const ServiceDetail = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Map route param to service detail key
+    // Map route param to service detail key with alias support
+    const normalizedParam = type?.toLowerCase().trim();
+    const mappedKey = serviceSlugAlias[normalizedParam] || normalizedParam;
+    
     const serviceKey = Object.keys(serviceDetails).find(
-      key => key === type
+      key => key === mappedKey || key === normalizedParam
     );
 
     if (serviceKey) {
@@ -215,19 +239,20 @@ const ServiceDetail = () => {
       setLoading(false);
     } else {
       // If service not found in predefined list, try to fetch from API
-      fetchServiceFromAPI();
+      fetchServiceFromAPI(normalizedParam);
     }
   }, [type]);
 
-  const fetchServiceFromAPI = async () => {
+  const fetchServiceFromAPI = async (targetType) => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/services`);
       const data = await response.json();
       
       if (data.success && data.data) {
-        const found = data.data.find(s => 
-          s.title.toLowerCase().replace(/\s+/g, '-') === type
-        );
+        const found = data.data.find(s => {
+          const sSlug = s.title.toLowerCase().replace(/\s+/g, '-');
+          return sSlug === targetType || serviceSlugAlias[sSlug] === targetType;
+        });
         if (found) {
           setService({
             title: found.title,
@@ -268,7 +293,7 @@ const ServiceDetail = () => {
     return (
       <div className="min-h-screen bg-[#faf8f5]">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 py-20 text-center">
-          <h1 className="text-4xl font-bold text-[#1a1a2e] mb-4">Service Not Found</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#1a1a2e] mb-4">Service Not Found</h1>
           <p className="text-[#1a1a2e]/60 mb-8">The service you're looking for doesn't exist.</p>
           <Link to="/services" className="inline-block px-8 py-3 bg-[#c8a96e] text-white font-semibold rounded-lg hover:bg-[#b59757] transition-colors">
             Back to Services
@@ -283,32 +308,32 @@ const ServiceDetail = () => {
   return (
     <div className="min-h-screen bg-[#faf8f5]">
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-[#faf8f5] via-white to-[#faf8f5] relative overflow-hidden">
+      <section className="pt-28 sm:pt-32 pb-14 sm:pb-20 bg-gradient-to-br from-[#faf8f5] via-white to-[#faf8f5] relative overflow-hidden">
         <div className="absolute inset-0 opacity-5" style={{ background: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a2e' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}></div>
         
-        <div className="max-w-6xl mx-auto px-6 lg:px-8 relative">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <Link to="/services" className="inline-flex items-center text-[#c8a96e] hover:text-[#b59757] mb-6 text-sm font-semibold">
             ← Back to Services
           </Link>
           
-          <div className="flex items-start gap-8 mb-12">
+          <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-8 mb-8 sm:mb-12">
             <div
-              className="w-24 h-24 rounded-3xl flex items-center justify-center flex-shrink-0"
+              className="w-16 h-16 sm:w-24 sm:h-24 rounded-2xl sm:rounded-3xl flex items-center justify-center shrink-0"
               style={{ background: style.bg, color: style.color }}
             >
               {iconMap[service.icon]}
             </div>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <span className="section-badge mb-3">Service Details</span>
-              <h1 className="text-5xl md:text-6xl font-black text-[#1a1a2e] mb-4 leading-tight">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-[#1a1a2e] mb-4 leading-tight break-words">
                 {service.title}
               </h1>
-              <p className="text-xl text-[#1a1a2e]/70 max-w-2xl">{service.subtitle}</p>
+              <p className="text-base sm:text-xl text-[#1a1a2e]/70 max-w-2xl">{service.subtitle}</p>
             </div>
           </div>
 
           <div className="prose prose-lg max-w-none prose-headings:text-[#1a1a2e] prose-a:text-[#c8a96e]">
-            <p className="text-lg text-[#1a1a2e]/80 leading-relaxed">{service.fullDescription}</p>
+            <p className="text-base sm:text-lg text-[#1a1a2e]/80 leading-relaxed">{service.fullDescription}</p>
           </div>
         </div>
       </section>

@@ -182,15 +182,15 @@ const BlogDetail = () => {
   return (
     <div className="min-h-screen bg-[#f3f8ff]">
       {/* ------ Hero Section ------ */}
-      <section className="relative pt-32 pb-10 overflow-hidden">
+      <section className="relative pt-28 sm:pt-32 pb-8 sm:pb-10 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#edf4ff]/50 pointer-events-none"></div>
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#2563eb]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
 
-        <div className="relative max-w-4xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-4 mb-6">
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between gap-3 mb-4 sm:mb-6">
             <Link
               to="/blog"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#2563eb] hover:text-[#1d4ed8]"
+              className="inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-[#2563eb] hover:text-[#1d4ed8]"
             >
               <FiArrowLeft className="w-4 h-4" />
               Back to Articles
@@ -199,7 +199,7 @@ const BlogDetail = () => {
             <button
               type="button"
               onClick={handleShare}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#dfeafc] bg-white text-xs font-semibold text-[#475569] hover:border-[#2563eb] transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-[#dfeafc] bg-white text-xs font-semibold text-[#475569] hover:border-[#2563eb] transition-colors cursor-pointer"
             >
               {copied ? (
                 <>
@@ -215,7 +215,7 @@ const BlogDetail = () => {
             </button>
           </div>
 
-          <div className="mb-4 flex flex-wrap items-center gap-2">
+          <div className="mb-3 sm:mb-4 flex flex-wrap items-center gap-2">
             <span
               className="inline-flex px-3 py-1 rounded-full text-xs font-semibold"
               style={{ background: catStyle.bg, color: catStyle.color }}
@@ -224,27 +224,27 @@ const BlogDetail = () => {
             </span>
           </div>
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black text-[#0f172a] leading-tight mb-6">
+          <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-[#0f172a] leading-tight mb-4 sm:mb-6 break-words">
             {post.title}
           </h1>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-[#6b7280] border-b border-[#dfeafc] pb-6 mb-8">
-            <div className="flex items-center gap-2">
-              <FiUser className="w-4 h-4 text-[#2563eb]" />
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-[#6b7280] border-b border-[#dfeafc] pb-4 sm:pb-6 mb-6 sm:mb-8">
+            <div className="flex items-center gap-1.5">
+              <FiUser className="w-3.5 h-3.5 text-[#2563eb]" />
               <span className="font-medium text-[#0f172a]">
                 {post.author || 'WebTech Illusion Team'}
               </span>
             </div>
-            <div className="flex items-center gap-2">
-              <FiCalendar className="w-4 h-4 text-[#2563eb]" />
+            <div className="flex items-center gap-1.5">
+              <FiCalendar className="w-3.5 h-3.5 text-[#2563eb]" />
               <span>{formatDate(post.createdAt)}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <FiClock className="w-4 h-4 text-[#2563eb]" />
+            <div className="flex items-center gap-1.5">
+              <FiClock className="w-3.5 h-3.5 text-[#2563eb]" />
               <span>{post.readTime || '5 min read'}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <FiEye className="w-4 h-4 text-[#2563eb]" />
+            <div className="flex items-center gap-1.5">
+              <FiEye className="w-3.5 h-3.5 text-[#2563eb]" />
               <span>{post.views || 0} views</span>
             </div>
           </div>
@@ -253,16 +253,16 @@ const BlogDetail = () => {
 
       {/* ------ Main Article Content ------ */}
       <section className="pb-16">
-        <div className="max-w-4xl mx-auto px-6 lg:px-8 space-y-10">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
           {post.image && (
-            <div className="overflow-hidden rounded-3xl border border-[#dfeafc] bg-white shadow-sm aspect-video max-h-[460px]">
+            <div className="overflow-hidden rounded-2xl sm:rounded-3xl border border-[#dfeafc] bg-white shadow-sm aspect-[16/9] w-full max-w-full">
               <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
             </div>
           )}
 
           {/* Article Excerpt Callout */}
           {post.excerpt && (
-            <div className="p-6 rounded-2xl bg-gradient-to-r from-blue-50/70 to-indigo-50/70 border border-blue-100 text-base sm:text-lg text-[#1e293b] font-medium leading-relaxed italic border-l-4 border-l-[#2563eb]">
+            <div className="p-4 sm:p-6 rounded-2xl bg-gradient-to-r from-blue-50/70 to-indigo-50/70 border border-blue-100 text-sm sm:text-lg text-[#1e293b] font-medium leading-relaxed italic border-l-4 border-l-[#2563eb]">
               "{post.excerpt}"
             </div>
           )}

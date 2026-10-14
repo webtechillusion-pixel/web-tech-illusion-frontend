@@ -98,18 +98,18 @@ const TeamDetail = () => {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
       />
 
-      <section className="relative pt-32 pb-16 overflow-hidden">
+      <section className="relative pt-28 sm:pt-32 pb-12 sm:pb-16 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#edf4ff]/50 pointer-events-none"></div>
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#2563eb]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
 
-        <div className="relative max-w-6xl mx-auto px-6 lg:px-8">
-          <Link to="/team" className="inline-flex items-center gap-2 text-sm font-semibold text-[#2563eb] mb-8 hover:underline">
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Link to="/team" className="inline-flex items-center gap-2 text-sm font-semibold text-[#2563eb] mb-6 sm:mb-8 hover:underline">
             ← Back to All Team Members
           </Link>
 
-          <div className="grid lg:grid-cols-[360px_minmax(0,1fr)] gap-8 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-[360px_minmax(0,1fr)] gap-6 sm:gap-8 items-start">
             {/* Left: Fixed Aspect Ratio Photo Container */}
-            <div className="bg-white border border-[#dfeafc] rounded-3xl overflow-hidden shadow-sm sticky top-28">
+            <div className="bg-white border border-[#dfeafc] rounded-3xl overflow-hidden shadow-sm lg:sticky lg:top-28 max-w-sm mx-auto lg:max-w-none w-full">
               <div className="relative aspect-[3/4] w-full overflow-hidden bg-slate-100">
                 <img 
                   src={member.image || 'https://res.cloudinary.com/dgoe6emli/image/upload/v1726000000/default-avatar.png'} 
@@ -124,7 +124,7 @@ const TeamDetail = () => {
               </div>
 
               {/* Quick Info Box */}
-              <div className="p-5 border-t border-[#edf4ff] bg-[#fafcff] space-y-3">
+              <div className="p-4 sm:p-5 border-t border-[#edf4ff] bg-[#fafcff] space-y-3">
                 {member.email && (
                   <div className="flex items-center gap-2.5 text-sm text-[#475569]">
                     <FiMail className="w-4 h-4 text-[#2563eb] flex-shrink-0" />
@@ -143,7 +143,7 @@ const TeamDetail = () => {
             </div>
 
             {/* Right: Details & Bio */}
-            <div className="bg-white rounded-3xl border border-[#dfeafc] p-6 sm:p-8 shadow-sm">
+            <div className="bg-white rounded-3xl border border-[#dfeafc] p-5 sm:p-8 shadow-sm">
               <div className="flex flex-wrap items-center gap-2 mb-3">
                 <span className="inline-flex px-3 py-1 rounded-full bg-[#edf4ff] text-[#1d4ed8] text-xs font-semibold">
                   {member.role}
@@ -155,10 +155,10 @@ const TeamDetail = () => {
                 )}
               </div>
 
-              <h1 className="text-3xl md:text-5xl font-black text-[#0f172a] mb-2">{member.name}</h1>
+              <h1 className="text-2xl sm:text-4xl md:text-5xl font-black text-[#0f172a] mb-2 break-words">{member.name}</h1>
 
               {member.specialization && (
-                <p className="text-lg text-[#2563eb] font-semibold mb-6">{member.specialization}</p>
+                <p className="text-base sm:text-lg text-[#2563eb] font-semibold mb-6">{member.specialization}</p>
               )}
 
               {member.bio && (

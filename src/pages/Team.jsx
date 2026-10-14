@@ -28,18 +28,18 @@ const Team = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      <section className="pt-32 pb-16 bg-gradient-to-br from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
-          <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+      <section className="pt-28 sm:pt-32 pb-12 sm:pb-16 bg-gradient-to-br from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-gray-900 mb-4 sm:mb-6 break-words">
             Our <span className="text-blue-600">Team</span>
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-base sm:text-xl text-gray-600 max-w-3xl mx-auto">
             Meet the experienced developers and authors behind WebTech Illusion's success.
           </p>
         </div>
       </section>
 
-      <section className="py-16 bg-white relative z-10">
+      <section className="py-12 sm:py-16 bg-white relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {loading ? (
             <div className="flex justify-center py-20">
@@ -50,7 +50,7 @@ const Team = () => {
               <p className="text-gray-500 text-lg">No team members found.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
               {team.map((developer, index) => (
                 <div 
                   key={developer._id || index}

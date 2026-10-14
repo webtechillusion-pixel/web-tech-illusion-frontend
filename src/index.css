@@ -137,6 +137,8 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -144,8 +146,22 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  max-width: 100%;
   background-color: #f3f8ff;
   color: #1f2937;
+}
+
+#root, .App {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+img, video {
+  max-width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6, p, a {
+  overflow-wrap: break-word;
 }
 
 ::selection {

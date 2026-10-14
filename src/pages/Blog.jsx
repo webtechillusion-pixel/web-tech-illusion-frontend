@@ -93,40 +93,40 @@ const Blog = () => {
     <div className="min-h-screen bg-[#f3f8ff]">
 
       {/* ------ Hero ------ */}
-      <section className="relative pt-32 pb-16 overflow-hidden">
+      <section className="relative pt-28 sm:pt-32 pb-12 sm:pb-16 overflow-hidden">
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#edf4ff]/50 pointer-events-none"></div>
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#2563eb]/5 rounded-full blur-[120px] pointer-events-none -z-10"></div>
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 text-center">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="section-badge mb-4">Our Blog</span>
-          <h1 className="text-5xl md:text-6xl font-black text-[#0f172a] mb-6 leading-tight">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-[#0f172a] mb-4 sm:mb-6 leading-tight break-words">
             Latest Insights &<br />
             <span className="text-[#2563eb]">Expert Articles</span>
           </h1>
-          <p className="text-lg text-[#6b7280] mb-10 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-[#6b7280] mb-8 sm:mb-10 max-w-2xl mx-auto leading-relaxed">
             Stay updated with the latest trends, tips, and insights in web development, design, and digital marketing.
           </p>
 
           {/* Search */}
-          <div className="max-w-xl mx-auto relative">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9ca3af] w-5 h-5 pointer-events-none" />
+          <div className="max-w-xl mx-auto relative px-2 sm:px-0">
+            <FiSearch className="absolute left-6 sm:left-4 top-1/2 -translate-y-1/2 text-[#9ca3af] w-5 h-5 pointer-events-none" />
             <input
               type="text"
               placeholder="Search articles..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-6 py-4 bg-white border border-[#dfeafc] rounded-2xl text-[#0f172a] placeholder-[#cbd5e1] focus:outline-none focus:border-[#2563eb] transition-colors shadow-sm text-sm"
+              className="w-full pl-12 pr-6 py-3.5 sm:py-4 bg-white border border-[#dfeafc] rounded-2xl text-[#0f172a] placeholder-[#cbd5e1] focus:outline-none focus:border-[#2563eb] transition-colors shadow-sm text-sm"
             />
           </div>
 
           {/* SEO banner */}
           {seoData?.ogImage && (
-            <div className="mt-10">
+            <div className="mt-8 sm:mt-10 px-4">
               {seoData.ogImageLink ? (
-                <a href={seoData.ogImageLink} target="_blank" rel="noopener noreferrer" className="inline-block hover:scale-105 transition-transform">
-                  <img src={seoData.ogImage} alt="Blog Banner" className="max-w-md mx-auto rounded-2xl shadow-lg border border-[#dfeafc]" />
+                <a href={seoData.ogImageLink} target="_blank" rel="noopener noreferrer" className="inline-block hover:scale-105 transition-transform max-w-full">
+                  <img src={seoData.ogImage} alt="Blog Banner" className="max-w-full sm:max-w-md mx-auto rounded-2xl shadow-lg border border-[#dfeafc]" />
                 </a>
               ) : (
-                <img src={seoData.ogImage} alt="Blog Banner" className="max-w-md mx-auto rounded-2xl shadow-lg border border-[#dfeafc]" />
+                <img src={seoData.ogImage} alt="Blog Banner" className="max-w-full sm:max-w-md mx-auto rounded-2xl shadow-lg border border-[#dfeafc]" />
               )}
             </div>
           )}
@@ -134,16 +134,16 @@ const Blog = () => {
       </section>
 
       {/* ------ Posts ------ */}
-      <section className="py-16 pb-28">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+      <section className="py-12 sm:py-16 pb-20 sm:pb-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           {/* Category filters */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all border ${
+                className={`px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all border cursor-pointer ${
                   selectedCategory === cat.id
                     ? 'bg-[#0f172a] text-white border-[#0f172a]'
                     : 'bg-white text-[#6b7280] border-[#dfeafc] hover:border-[#2563eb] hover:text-[#0f172a]'
@@ -155,11 +155,11 @@ const Blog = () => {
           </div>
 
           {/* Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {loading ? (
               [...Array(6)].map((_, i) => (
                 <div key={i} className="bg-white rounded-2xl overflow-hidden border border-[#dfeafc] animate-pulse">
-                  <div className="h-48 bg-[#edf4ff]"></div>
+                  <div className="aspect-[16/9] w-full bg-[#edf4ff]"></div>
                   <div className="p-6 space-y-3">
                     <div className="h-5 bg-[#edf4ff] rounded w-1/3"></div>
                     <div className="h-5 bg-[#edf4ff] rounded"></div>
@@ -173,9 +173,9 @@ const Blog = () => {
                 return (
                   <article
                     key={post._id}
-                    className="group bg-white rounded-2xl overflow-hidden border border-[#dfeafc] hover:border-[#2563eb] hover:shadow-md transition-all duration-300"
+                    className="group bg-white rounded-2xl overflow-hidden border border-[#dfeafc] hover:border-[#2563eb] hover:shadow-md transition-all duration-300 flex flex-col"
                   >
-                    <div className="relative aspect-[16/10] overflow-hidden bg-[#edf4ff]">
+                    <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#edf4ff]">
                       <img
                         src={post.image}
                         alt={post.title}

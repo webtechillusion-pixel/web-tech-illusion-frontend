@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiArrowRight, FiPhone, FiCheckCircle, FiAward, FiTarget,
@@ -243,7 +243,7 @@ const Home = () => {
                 <span className="text-sm font-bold text-[#0f172a] tracking-[0.12em] uppercase">WebTech Illusion</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-[4.2rem] lg:leading-[1.05] font-black text-[#0f172a] tracking-[-0.04em] mb-6">
+              <h1 className="text-3xl sm:text-5xl lg:text-[4.2rem] lg:leading-[1.05] font-black text-[#0f172a] tracking-[-0.04em] mb-6 break-words">
                 Best Software Company in Lucknow<br />
                 for Website Design, Web Apps &{' '}
                 <span className="inline-block text-[#2563eb]">
@@ -254,7 +254,7 @@ const Home = () => {
                 </span>
               </h1>
 
-              <p className="text-lg text-[#475569] leading-relaxed mb-8 max-w-xl">
+              <p className="text-base sm:text-lg text-[#475569] leading-relaxed mb-8 max-w-xl">
                 WebTech Illusion is a trusted web development company in Lucknow and digital marketing agency helping startups, local brands, and growing businesses with custom websites, mobile apps, SEO, and conversion-focused digital growth strategies.
               </p>
 
@@ -289,28 +289,28 @@ const Home = () => {
               <div className="absolute -inset-5 bg-gradient-to-br from-[#bfdbfe] via-transparent to-[#dbeafe] blur-3xl opacity-70 rounded-[2rem] -z-10"></div>
 
               <div className="space-y-5">
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-3 gap-2 sm:gap-4">
                   {[
                     { value: <Counter end={150} suffix="+" />, label: 'Projects', color: '#0f172a' },
                     { value: <Counter end={50} suffix="+" />, label: 'Clients', color: '#2563eb' },
                     { value: <Counter end={5} suffix="+" />, label: 'Years', color: '#059669' },
                   ].map((s, i) => (
-                    <div key={i} className="bg-white/90 rounded-2xl p-4 border border-[#dfeafc] shadow-[0_12px_24px_rgba(15,23,42,0.05)] text-center backdrop-blur-sm">
-                      <div className="text-2xl sm:text-3xl font-black mb-1" style={{ color: s.color }}>{s.value}</div>
-                      <p className="text-[11px] uppercase tracking-[0.12em] text-[#64748b] font-semibold">{s.label}</p>
+                    <div key={i} className="bg-white/90 rounded-2xl p-2.5 sm:p-4 border border-[#dfeafc] shadow-[0_12px_24px_rgba(15,23,42,0.05)] text-center backdrop-blur-sm">
+                      <div className="text-xl sm:text-3xl font-black mb-1" style={{ color: s.color }}>{s.value}</div>
+                      <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] sm:tracking-[0.12em] text-[#64748b] font-semibold">{s.label}</p>
                     </div>
                   ))}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                   {[
                     { icon: <FiCode className="w-5 h-5" />, title: 'Web Development', desc: 'Fast, modern websites', iconBg: '#dbeafe', iconColor: '#2563eb' },
                     { icon: <FiSmartphone className="w-5 h-5" />, title: 'Mobile Apps', desc: 'iOS & Android solutions', iconBg: '#e0f2fe', iconColor: '#0284c7' },
                     { icon: <FiShoppingCart className="w-5 h-5" />, title: 'E-Commerce', desc: 'Stores that convert', iconBg: '#d1fae5', iconColor: '#059669' },
                     { icon: <FiTrendingUp className="w-5 h-5" />, title: 'Digital Growth', desc: 'SEO & strategy', iconBg: '#eff6ff', iconColor: '#2563eb' },
                   ].map((card, i) => (
-                    <div key={i} className="bg-white/90 rounded-2xl p-5 border border-[#dfeafc] shadow-[0_14px_28px_rgba(15,23,42,0.05)] hover:-translate-y-1 hover:shadow-[0_18px_30px_rgba(37,99,235,0.12)] transition-all duration-300 group">
-                      <div className="w-11 h-11 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform" style={{ background: card.iconBg, color: card.iconColor }}>
+                    <div key={i} className="bg-white/90 rounded-2xl p-4 sm:p-5 border border-[#dfeafc] shadow-[0_14px_28px_rgba(15,23,42,0.05)] hover:-translate-y-1 hover:shadow-[0_18px_30px_rgba(37,99,235,0.12)] transition-all duration-300 group">
+                      <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform" style={{ background: card.iconBg, color: card.iconColor }}>
                         {card.icon}
                       </div>
                       <h3 className="text-sm font-bold text-[#0f172a] mb-1">{card.title}</h3>
@@ -555,7 +555,7 @@ const Home = () => {
                 <label className="block text-xs font-bold text-[#6b7280] uppercase tracking-wider mb-3">
                   3. Delivery Velocity
                 </label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                   {[
                     { id: 'express',    label: 'Express Sprint',   time: '2-3 Weeks' },
                     { id: 'standard',   label: 'Standard Agile',   time: '4-6 Weeks' },

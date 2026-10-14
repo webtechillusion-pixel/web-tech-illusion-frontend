@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import NotificationBanner from './components/NotificationBanner';
 import LoadingSpinner from './components/LoadingSpinner';
 import SeoHead from './components/SeoHead';
+import ScrollToTop from './components/ScrollToTop';
 import './App.css';
 
 const Home = lazy(() => import('./pages/Home'));
@@ -29,10 +30,11 @@ function App() {
   return (
     <SettingsProvider>
       <Router>
+        <ScrollToTop />
         <div className="App">
           <SeoHead />
           <Navbar />
-          <main className="pt-16">
+          <main className="pt-16 sm:pt-20 lg:pt-24">
             <Suspense fallback={<LoadingSpinner size="lg" className="min-h-[50vh]" />}>
               <Routes>
                 <Route path="/" element={<Home />} />

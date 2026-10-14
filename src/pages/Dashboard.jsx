@@ -1856,7 +1856,7 @@ const Dashboard = () => {
                 </div>
 
                 {blogForm.image && (
-                  <div className="relative rounded-xl overflow-hidden border border-gray-200 max-h-48 aspect-video bg-gray-100 flex items-center justify-center group">
+                  <div className="relative rounded-xl overflow-hidden border border-gray-200 aspect-[16/9] w-full max-w-lg bg-gray-100 flex items-center justify-center group">
                     <img src={blogForm.image} alt="Featured Preview" className="w-full h-full object-cover" />
                     <button
                       type="button"

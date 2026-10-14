@@ -1,4 +1,4 @@
-﻿import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   FiMenu, FiX, FiPhone, FiChevronDown, FiUsers, FiBriefcase, 
@@ -29,6 +29,14 @@ const Navbar = () => {
     setActiveDropdown(null);
   }, [location]);
 
+  const handleNavClick = () => {
+    setActiveDropdown(null);
+    setMobileOpen(false);
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+  };
+
   const navItems = [
     {
       label: 'Company',
@@ -42,21 +50,21 @@ const Navbar = () => {
     {
       label: 'Industries',
       children: [
-        { title: 'Healthcare',     sub: 'Medical & wellness platforms',    path: '/industries/healthcare',     icon: FiHeart },
-        { title: 'E-Commerce',     sub: 'Retail & shopping solutions',     path: '/industries/e-commerce',     icon: FiShoppingCart },
-        { title: 'Education',      sub: 'E-learning platforms',            path: '/industries/education',      icon: FiBookOpen },
-        { title: 'Travel & Tourism', sub: 'Booking & reservation systems', path: '/industries/travel-tourism', icon: FiTrendingUp },
-        { title: 'Real Estate',    sub: 'Property management',             path: '/industries/real-estate',    icon: FiHome },
+        { title: 'Healthcare',       sub: 'Medical & wellness platforms',    path: '/industries/healthcare',     icon: FiHeart },
+        { title: 'E-Commerce',       sub: 'Retail & shopping solutions',     path: '/industries/ecommerce',      icon: FiShoppingCart },
+        { title: 'Education',        sub: 'E-learning platforms',            path: '/industries/education',      icon: FiBookOpen },
+        { title: 'Travel & Tourism', sub: 'Booking & reservation systems',   path: '/industries/travel-tourism', icon: FiTrendingUp },
+        { title: 'Real Estate',      sub: 'Property management',             path: '/industries/real-estate',    icon: FiHome },
       ]
     },
     {
       label: 'Services',
       children: [
-        { title: 'Web Development',   sub: 'Custom websites & web applications', path: '/services/web-development',       icon: FiCode },
-        { title: 'Mobile Solutions',  sub: 'iOS & Android apps',                 path: '/services/mobile-app-development', icon: FiSmartphone },
-        { title: 'E-Commerce',        sub: 'Online stores & marketplaces',        path: '/services/e-commerce-solutions',   icon: FiShoppingBag },
-        { title: 'Digital Marketing', sub: 'SEO, SEM & social media',            path: '/services/digital-marketing',      icon: FiBarChart },
-        { title: 'Cloud Services',    sub: 'AWS, Azure & deployment',            path: '/services/cloud-services',         icon: FiCloud },
+        { title: 'Web Development',   sub: 'Custom websites & web applications', path: '/services/web-development', icon: FiCode },
+        { title: 'Mobile Solutions',  sub: 'iOS & Android apps',                 path: '/services/mobile-apps',     icon: FiSmartphone },
+        { title: 'E-Commerce',        sub: 'Online stores & marketplaces',        path: '/services/ecommerce',       icon: FiShoppingBag },
+        { title: 'Digital Marketing', sub: 'SEO, SEM & social media',            path: '/services/digital-marketing',icon: FiBarChart },
+        { title: 'Cloud Services',    sub: 'AWS, Azure & deployment',            path: '/services/cloud-services',  icon: FiCloud },
       ]
     },
     {
@@ -75,24 +83,24 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/90 backdrop-blur-xl shadow-[0_12px_30px_rgba(37,99,235,0.08)] border-b border-[#dfeafc]'
-          : 'bg-white/80 backdrop-blur-xl border-b border-[#edf4ff]'
+          ? 'bg-white/95 backdrop-blur-xl shadow-[0_12px_30px_rgba(37,99,235,0.08)] border-b border-[#dfeafc]'
+          : 'bg-white/90 backdrop-blur-xl border-b border-[#edf4ff]'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20 lg:h-24">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-20 lg:h-24">
 
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="relative">
+          <Link to="/" onClick={handleNavClick} className="flex items-center gap-2.5 sm:gap-3 group min-w-0">
+            <div className="relative shrink-0">
               <img
                 src={logo}
                 alt={displayName}
-                className="h-16 w-16 sm:h-[4.25rem] sm:w-[4.25rem] rounded-full object-cover shadow-[0_12px_28px_rgba(37,99,235,0.2)] border-2 border-white ring-2 ring-[#dfeafc] group-hover:ring-[#93c5fd] transition-all duration-300"
+                className="h-11 w-11 sm:h-14 sm:w-14 lg:h-16 lg:w-16 rounded-full object-cover shadow-[0_8px_20px_rgba(37,99,235,0.2)] border-2 border-white ring-2 ring-[#dfeafc] group-hover:ring-[#93c5fd] transition-all duration-300"
               />
             </div>
-            <div className="leading-none">
-              <span className="block text-xl sm:text-[1.45rem] font-black tracking-tight text-[#0f172a] whitespace-nowrap">
+            <div className="leading-none min-w-0">
+              <span className="block text-base sm:text-xl lg:text-[1.35rem] font-black tracking-tight text-[#0f172a] truncate">
                 {displayName}
               </span>
             </div>
@@ -108,7 +116,10 @@ const Navbar = () => {
                 onMouseEnter={() => setActiveDropdown(idx)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <button className="px-4 py-2 text-sm font-semibold text-[#374151] hover:text-[#0f172a] flex items-center gap-1.5 transition-all duration-200 rounded-xl hover:bg-[#f3f8ff] cursor-pointer">
+                <button
+                  type="button"
+                  className="px-4 py-2 text-sm font-semibold text-[#374151] hover:text-[#0f172a] flex items-center gap-1.5 transition-all duration-200 rounded-xl hover:bg-[#f3f8ff] cursor-pointer"
+                >
                   {item.label}
                   <FiChevronDown
                     className={`w-3.5 h-3.5 transition-transform duration-200 ${
@@ -122,7 +133,7 @@ const Navbar = () => {
                   className={`absolute left-0 w-72 bg-white rounded-2xl shadow-xl border border-[#dfeafc] overflow-hidden transition-all duration-200 z-50 ${
                     activeDropdown === idx
                       ? 'opacity-100 translate-y-0 visible'
-                      : 'opacity-0 -translate-y-2 invisible'
+                      : 'opacity-0 -translate-y-2 invisible pointer-events-none'
                   }`}
                   style={{ top: '100%', marginTop: '6px' }}
                 >
@@ -133,9 +144,10 @@ const Navbar = () => {
                         <Link
                           key={cIdx}
                           to={child.path}
-                          className="flex items-center p-3 rounded-xl hover:bg-[#f3f8ff] transition-colors group"
+                          onClick={handleNavClick}
+                          className="flex items-center p-3 rounded-xl hover:bg-[#f3f8ff] transition-colors group cursor-pointer"
                         >
-                          <div className="w-8 h-8 bg-[#edf4ff] rounded-lg flex items-center justify-center mr-3 flex-shrink-0 group-hover:bg-[#dfeafc] transition-colors">
+                          <div className="w-8 h-8 bg-[#edf4ff] rounded-lg flex items-center justify-center mr-3 shrink-0 group-hover:bg-[#dfeafc] transition-colors">
                             <IconComponent className="w-4 h-4 text-[#2563eb]" />
                           </div>
                           <div>
@@ -164,6 +176,7 @@ const Navbar = () => {
             )}
             <Link
               to="/contact"
+              onClick={handleNavClick}
               className="button-shine px-6 py-2.5 bg-gradient-to-r from-[#0f172a] to-[#2563eb] text-white text-sm font-semibold rounded-xl hover:shadow-[0_12px_25px_rgba(37,99,235,0.22)] transition-all duration-300"
             >
               Get Started
@@ -173,7 +186,7 @@ const Navbar = () => {
           {/* Mobile Hamburger */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 text-[#374151] hover:text-[#0f172a] rounded-lg hover:bg-[#f3f8ff] transition-colors"
+            className="lg:hidden p-2.5 text-[#374151] hover:text-[#0f172a] rounded-xl hover:bg-[#f3f8ff] transition-colors cursor-pointer"
             aria-label="Toggle menu"
           >
             {mobileOpen ? <FiX className="w-6 h-6" /> : <FiMenu className="w-6 h-6" />}
@@ -183,31 +196,38 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="lg:hidden bg-white border-t border-[#dfeafc] shadow-lg max-h-[80vh] overflow-y-auto">
-          <div className="max-w-7xl mx-auto px-6 py-4 space-y-1">
+        <div className="lg:hidden bg-white border-t border-[#dfeafc] shadow-2xl max-h-[calc(100vh-4rem)] overflow-y-auto">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 space-y-1">
             {navItems.map((item, idx) => (
-              <div key={idx}>
+              <div key={idx} className="border-b border-gray-100 last:border-b-0 pb-1">
                 <button
+                  type="button"
                   onClick={() => setActiveDropdown(activeDropdown === idx ? null : idx)}
-                  className="w-full flex items-center justify-between px-4 py-3 text-[#0f172a] font-semibold text-sm rounded-xl hover:bg-[#f3f8ff] transition-colors"
+                  className="w-full flex items-center justify-between px-3 py-3 text-[#0f172a] font-bold text-sm rounded-xl hover:bg-[#f3f8ff] transition-colors"
                 >
-                  {item.label}
+                  <span>{item.label}</span>
                   <FiChevronDown
-                    className={`w-4 h-4 transition-transform ${activeDropdown === idx ? 'rotate-180 text-[#2563eb]' : 'text-[#9ca3af]'}`}
+                    className={`w-4 h-4 transition-transform duration-200 ${activeDropdown === idx ? 'rotate-180 text-[#2563eb]' : 'text-[#9ca3af]'}`}
                   />
                 </button>
                 {activeDropdown === idx && (
-                  <div className="pl-4 space-y-1 pb-2">
+                  <div className="pl-2 space-y-1 pb-2">
                     {item.children.map((child, cIdx) => {
                       const IconComponent = child.icon;
                       return (
                         <Link
                           key={cIdx}
                           to={child.path}
-                          className="flex items-center px-4 py-2.5 text-sm text-[#4b5563] hover:text-[#0f172a] rounded-lg hover:bg-[#f3f8ff] transition-colors"
+                          onClick={handleNavClick}
+                          className="flex items-center px-3 py-2.5 text-sm text-[#4b5563] hover:text-[#0f172a] rounded-xl hover:bg-[#f3f8ff] active:bg-[#edf4ff] transition-colors min-h-[44px]"
                         >
-                          <IconComponent className="w-4 h-4 text-[#2563eb] mr-3 flex-shrink-0" />
-                          {child.title}
+                          <div className="w-7 h-7 bg-[#edf4ff] rounded-lg flex items-center justify-center mr-3 shrink-0">
+                            <IconComponent className="w-3.5 h-3.5 text-[#2563eb]" />
+                          </div>
+                          <div>
+                            <div className="text-sm font-semibold text-[#0f172a]">{child.title}</div>
+                            <div className="text-[11px] text-[#9ca3af]">{child.sub}</div>
+                          </div>
                         </Link>
                       );
                     })}
@@ -216,11 +236,11 @@ const Navbar = () => {
               </div>
             ))}
 
-            <div className="pt-4 border-t border-[#dfeafc] mt-2 space-y-2">
+            <div className="pt-4 border-t border-[#dfeafc] mt-2 space-y-2.5">
               {contactPhone && (
                 <a
                   href={`tel:${contactPhone}`}
-                  className="flex items-center px-4 py-3 text-sm text-[#6b7280] font-medium"
+                  className="flex items-center justify-center px-4 py-3 text-sm text-[#0f172a] font-semibold bg-[#f3f8ff] rounded-xl border border-[#dfeafc]"
                 >
                   <FiPhone className="w-4 h-4 mr-2 text-[#2563eb]" />
                   {contactPhone}
@@ -228,7 +248,8 @@ const Navbar = () => {
               )}
               <Link
                 to="/contact"
-                className="block text-center py-3 bg-[#0f172a] text-white rounded-xl font-semibold text-sm hover:bg-[#2d2d3a] transition-colors"
+                onClick={handleNavClick}
+                className="block text-center py-3.5 bg-gradient-to-r from-[#0f172a] to-[#2563eb] text-white rounded-xl font-bold text-sm shadow-md transition-all active:scale-[0.99]"
               >
                 Get Started
               </Link>

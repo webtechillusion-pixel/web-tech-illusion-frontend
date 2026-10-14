@@ -171,13 +171,31 @@ const industryDetails = {
   }
 };
 
+const industrySlugAlias = {
+  'healthcare': 'healthcare',
+  'ecommerce': 'ecommerce',
+  'e-commerce': 'ecommerce',
+  'education': 'education',
+  'travel-tourism': 'travel-tourism',
+  'travel': 'travel-tourism',
+  'real-estate': 'real-estate',
+  'realestate': 'real-estate',
+  'finance': 'finance',
+  'fintech': 'finance'
+};
+
 const IndustryDetail = () => {
   const { type } = useParams();
   const [industry, setIndustry] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const industryKey = Object.keys(industryDetails).find(key => key === type);
+    const normalizedParam = type?.toLowerCase().trim();
+    const mappedKey = industrySlugAlias[normalizedParam] || normalizedParam;
+
+    const industryKey = Object.keys(industryDetails).find(
+      key => key === mappedKey || key === normalizedParam
+    );
     
     if (industryKey) {
       setIndustry(industryDetails[industryKey]);
@@ -200,7 +218,7 @@ const IndustryDetail = () => {
     return (
       <div className="min-h-screen bg-[#faf8f5]">
         <div className="max-w-4xl mx-auto px-6 lg:px-8 py-20 text-center">
-          <h1 className="text-4xl font-bold text-[#1a1a2e] mb-4">Industry Not Found</h1>
+          <h1 className="text-3xl sm:text-4xl font-bold text-[#1a1a2e] mb-4">Industry Not Found</h1>
           <p className="text-[#1a1a2e]/60 mb-8">The industry you're looking for doesn't exist.</p>
           <Link to="/industries" className="inline-block px-8 py-3 bg-[#c8a96e] text-white font-semibold rounded-lg hover:bg-[#b59757] transition-colors">
             Back to Industries
@@ -213,30 +231,28 @@ const IndustryDetail = () => {
   return (
     <div className="min-h-screen bg-[#faf8f5]">
       {/* Hero */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-[#faf8f5] via-white to-[#faf8f5] relative overflow-hidden">
+      <section className="pt-28 sm:pt-32 pb-14 sm:pb-20 bg-gradient-to-br from-[#faf8f5] via-white to-[#faf8f5] relative overflow-hidden">
         <div className="absolute inset-0 opacity-5" style={{ background: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231a1a2e' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")` }}></div>
         
-        <div className="max-w-6xl mx-auto px-6 lg:px-8 relative">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <Link to="/industries" className="inline-flex items-center text-[#c8a96e] hover:text-[#b59757] mb-6 text-sm font-semibold">
             ← Back to Industries
           </Link>
           
-          <div className="flex items-start gap-8 mb-12">
-            <div
-              className="text-6xl"
-            >
+          <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-8 mb-8 sm:mb-12">
+            <div className="text-5xl sm:text-6xl shrink-0">
               {industry.icon}
             </div>
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <span className="section-badge mb-3">Industry Focus</span>
-              <h1 className="text-5xl md:text-6xl font-black text-[#1a1a2e] mb-4 leading-tight">
+              <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-[#1a1a2e] mb-4 leading-tight break-words">
                 {industry.name}
               </h1>
-              <p className="text-xl text-[#1a1a2e]/70 max-w-2xl">{industry.subtitle}</p>
+              <p className="text-base sm:text-xl text-[#1a1a2e]/70 max-w-2xl">{industry.subtitle}</p>
             </div>
           </div>
 
-          <p className="text-lg text-[#1a1a2e]/80 leading-relaxed max-w-3xl">{industry.overview}</p>
+          <p className="text-base sm:text-lg text-[#1a1a2e]/80 leading-relaxed max-w-3xl">{industry.overview}</p>
         </div>
       </section>
 
