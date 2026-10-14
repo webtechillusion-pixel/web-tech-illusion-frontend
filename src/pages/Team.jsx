@@ -60,8 +60,12 @@ const Team = () => {
                   {/* Fixed Aspect Ratio Photo Container */}
                   <div className="relative aspect-[4/5] w-full overflow-hidden bg-slate-100">
                     <img 
-                      src={developer.image || 'https://res.cloudinary.com/dgoe6emli/image/upload/v1726000000/default-avatar.png'} 
+                      src={developer.image?.replace(/^http:\/\//, 'https://') || `https://ui-avatars.com/api/?name=${encodeURIComponent(developer.name || 'Team')}&background=0f172a&color=38bdf8&size=512&bold=true`} 
                       alt={developer.name}
+                      onError={(e) => {
+                        e.currentTarget.onerror = null;
+                        e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(developer.name || 'Team')}&background=0f172a&color=38bdf8&size=512&bold=true`;
+                      }}
                       className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>

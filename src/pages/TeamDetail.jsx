@@ -112,8 +112,12 @@ const TeamDetail = () => {
             <div className="bg-white border border-[#dfeafc] rounded-3xl overflow-hidden shadow-sm lg:sticky lg:top-28 max-w-sm mx-auto lg:max-w-none w-full">
               <div className="relative aspect-[3/4] w-full overflow-hidden bg-slate-100">
                 <img 
-                  src={member.image || 'https://res.cloudinary.com/dgoe6emli/image/upload/v1726000000/default-avatar.png'} 
+                  src={member.image?.replace(/^http:\/\//, 'https://') || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || 'Team')}&background=0f172a&color=38bdf8&size=512&bold=true`} 
                   alt={member.name} 
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || 'Team')}&background=0f172a&color=38bdf8&size=512&bold=true`;
+                  }}
                   className="w-full h-full object-cover object-top" 
                 />
                 {member.teamId && (

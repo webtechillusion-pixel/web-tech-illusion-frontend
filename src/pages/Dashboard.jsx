@@ -1234,8 +1234,12 @@ const Dashboard = () => {
                         <td className="px-6 py-4">
                           <div className="flex items-center">
                             <img 
-                              src={member.image} 
+                              src={member.image?.replace(/^http:\/\//, 'https://') || `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || 'Team')}&background=0f172a&color=38bdf8&size=128&bold=true`} 
                               alt={member.name} 
+                              onError={(e) => {
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(member.name || 'Team')}&background=0f172a&color=38bdf8&size=128&bold=true`;
+                              }}
                               className="w-12 h-12 object-cover rounded-xl border border-gray-200 aspect-square shadow-sm mr-3" 
                             />
                             <div>
@@ -1503,7 +1507,15 @@ const Dashboard = () => {
                   {/* Aspect Ratio Preview */}
                   <div className="w-28 h-28 aspect-square rounded-2xl border-2 border-purple-200 bg-white overflow-hidden shadow-sm flex items-center justify-center relative shrink-0">
                     {teamForm.image ? (
-                      <img src={teamForm.image} alt="Preview" className="w-full h-full object-cover" />
+                      <img 
+                        src={teamForm.image.replace(/^http:\/\//, 'https://')} 
+                        alt="Preview" 
+                        onError={(e) => {
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(teamForm.name || 'Team')}&background=0f172a&color=38bdf8&size=128&bold=true`;
+                        }}
+                        className="w-full h-full object-cover" 
+                      />
                     ) : (
                       <div className="text-center p-2 text-gray-400">
                         <i className="fas fa-camera text-2xl mb-1"></i>
