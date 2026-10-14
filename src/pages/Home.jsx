@@ -786,58 +786,210 @@ const Home = () => {
         </div>
       </section>
 
-      {/* --------- 8. TESTIMONIALS --------- */}
+      {/* --------- 8. ENGAGEMENT MODELS & STANDARDS --------- */}
       <section className="py-28 px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="section-badge">Client Reviews</span>
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <span className="section-badge">How We Partner</span>
           <div className="divider"></div>
           <h2 className="text-3xl sm:text-5xl font-black text-[#0f172a] mt-2">
-            Trusted by Growing <span className="text-[#2563eb]">Enterprises</span>
+            Flexible <span className="text-[#2563eb]">Engagement Models</span>
           </h2>
-          <p className="text-[#6b7280] text-sm mt-2">See what founders and business leaders say about working with WebTech Illusion.</p>
+          <p className="text-[#6b7280] text-sm sm:text-base mt-3">
+            Choose the collaboration model that fits your product stage, timeline, and technical requirements.
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            {
-              name: 'Rajesh Sharma', role: 'Founder, TravelHub Global',
-              quote: 'WebTech Illusion transformed our booking platform completely. Page load speed dropped to 0.4s and direct bookings surged by 240% in the first quarter.',
-              rating: 5, tag: 'Custom Web Platform', initial: 'R',
-            },
-            {
-              name: 'Priya Verma', role: 'Director, Aura Luxe Cosmetics',
-              quote: 'Their e-commerce engineering and custom checkout architecture doubled our conversion rates. The team delivered ahead of schedule with flawless code.',
-              rating: 5, tag: 'E-Commerce Store', initial: 'P',
-            },
-            {
-              name: 'Amit Patel', role: 'CTO, FleetTrack Logistics',
-              quote: 'Exceptional full-stack and mobile app capabilities. Engineers are responsive, technically sharp, and proactive in suggesting architectural improvements.',
-              rating: 5, tag: 'Mobile & Cloud App', initial: 'A',
-            },
-          ].map((item, i) => (
-            <div
-              key={i}
-              className="p-8 rounded-3xl bg-white border border-[#dfeafc] shadow-sm hover:shadow-md hover:border-[#2563eb] transition-all flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex gap-1 mb-4 text-[#2563eb]">
-                  {[...Array(item.rating)].map((_, si) => (
-                    <FiStar key={si} className="w-4 h-4 fill-current" />
-                  ))}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch mb-16">
+          {/* Model 1: Fixed-Scope */}
+          <div className="p-8 rounded-3xl bg-white border border-[#dfeafc] shadow-sm hover:shadow-md hover:border-[#2563eb] transition-all flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-5">
+                <div className="w-12 h-12 rounded-2xl bg-[#edf4ff] text-[#2563eb] flex items-center justify-center">
+                  <FiTarget className="w-6 h-6" />
                 </div>
-                <p className="text-sm text-[#4b5563] leading-relaxed italic mb-6">"{item.quote}"</p>
+                <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#f3f8ff] text-[#2563eb] border border-[#dfeafc]">
+                  Fixed Scope
+                </span>
               </div>
-              <div className="pt-4 border-t border-[#edf4ff] flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-[#0f172a] flex items-center justify-center font-bold text-[#2563eb] text-sm">
-                  {item.initial}
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-[#0f172a]">{item.name}</div>
-                  <div className="text-[11px] text-[#9ca3af]">{item.role}</div>
-                </div>
+              <h3 className="text-xl font-bold text-[#0f172a] mb-2">Project-Based Delivery</h3>
+              <p className="text-xs text-[#6b7280] leading-relaxed mb-6">
+                Best for MVPs, full-scale corporate websites, web applications, and e-commerce stores with well-defined scopes and deliverables.
+              </p>
+
+              <div className="space-y-3 pt-4 border-t border-[#edf4ff] mb-8">
+                {[
+                  'Milestone-based delivery & transparent quotes',
+                  'Bi-weekly staging demos & sprint reviews',
+                  '100% full source code & design IP ownership',
+                  '30-day complimentary post-launch warranty',
+                  'Strict timeline & SLA commitments',
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5 text-xs text-[#4b5563]">
+                    <FiCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </div>
+                ))}
               </div>
             </div>
-          ))}
+
+            <div>
+              <div className="text-[11px] text-[#9ca3af] font-medium mb-3">Timeline: <b className="text-[#0f172a]">2 - 6 Weeks typical</b></div>
+              <button
+                type="button"
+                onClick={scrollToConsultation}
+                className="w-full py-3.5 px-4 rounded-xl border border-[#dfeafc] bg-[#f3f8ff] hover:bg-[#2563eb] hover:text-white hover:border-[#2563eb] text-[#0f172a] text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer group"
+              >
+                <span>Start a Fixed Project</span>
+                <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </div>
+
+          {/* Model 2: Dedicated Developers (Highlighted) */}
+          <div className="p-8 rounded-3xl bg-white border-2 border-[#2563eb] shadow-xl relative flex flex-col justify-between">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-[#2563eb] text-white text-[11px] font-bold tracking-wide uppercase shadow-sm">
+              Most Popular for Scaling
+            </div>
+            <div>
+              <div className="flex items-center justify-between mb-5 mt-2">
+                <div className="w-12 h-12 rounded-2xl bg-[#2563eb] text-white flex items-center justify-center shadow-md">
+                  <FiUsers className="w-6 h-6" />
+                </div>
+                <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#dbeafe] text-[#1d4ed8]">
+                  Full-Time Squad
+                </span>
+              </div>
+              <h3 className="text-xl font-bold text-[#0f172a] mb-2">Dedicated Tech Team</h3>
+              <p className="text-xs text-[#6b7280] leading-relaxed mb-6">
+                Scale your engineering capacity with dedicated senior full-stack developers, mobile engineers, and UI specialists working directly with your team.
+              </p>
+
+              <div className="space-y-3 pt-4 border-t border-[#edf4ff] mb-8">
+                {[
+                  'Hand-picked senior engineers matched to your stack',
+                  'Direct Slack, Git repository & daily standup access',
+                  'Flexible ramp-up or ramp-down (2-week notice)',
+                  'Lead architect review & code quality assurance',
+                  'Zero hiring, payroll, or administrative overhead',
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5 text-xs text-[#0f172a] font-medium">
+                    <FiCheck className="w-4 h-4 text-[#2563eb] shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="text-[11px] text-[#9ca3af] font-medium mb-3">Commitment: <b className="text-[#0f172a]">Monthly Dedicated Retainer</b></div>
+              <button
+                type="button"
+                onClick={scrollToConsultation}
+                className="w-full py-3.5 px-4 rounded-xl bg-[#2563eb] hover:bg-[#1d4ed8] text-white text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer group"
+              >
+                <span>Hire Dedicated Developers</span>
+                <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </div>
+
+          {/* Model 3: Retainer & Continuous Support */}
+          <div className="p-8 rounded-3xl bg-white border border-[#dfeafc] shadow-sm hover:shadow-md hover:border-[#2563eb] transition-all flex flex-col justify-between">
+            <div>
+              <div className="flex items-center justify-between mb-5">
+                <div className="w-12 h-12 rounded-2xl bg-[#ecfdf5] text-emerald-600 flex items-center justify-center">
+                  <FiTrendingUp className="w-6 h-6" />
+                </div>
+                <span className="text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-[#f3f8ff] text-emerald-700 border border-[#dfeafc]">
+                  Continuous Growth
+                </span>
+              </div>
+              <h3 className="text-xl font-bold text-[#0f172a] mb-2">Growth & Maintenance</h3>
+              <p className="text-xs text-[#6b7280] leading-relaxed mb-6">
+                Ongoing feature iteration, 24/7 uptime monitoring, Core Web Vitals speed optimization, security updates, and active technical maintenance.
+              </p>
+
+              <div className="space-y-3 pt-4 border-t border-[#edf4ff] mb-8">
+                {[
+                  'Reserved monthly engineering & design hours',
+                  '24/7 uptime & server monitoring with incident alerts',
+                  'Regular security patches & dependency updates',
+                  'SEO performance, speed audits & Core Web Vitals',
+                  'Priority bug fixing & technical advisory',
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5 text-xs text-[#4b5563]">
+                    <FiCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="text-[11px] text-[#9ca3af] font-medium mb-3">Commitment: <b className="text-[#0f172a]">Flexible Monthly Support</b></div>
+              <button
+                type="button"
+                onClick={scrollToConsultation}
+                className="w-full py-3.5 px-4 rounded-xl border border-[#dfeafc] bg-[#f3f8ff] hover:bg-[#2563eb] hover:text-white hover:border-[#2563eb] text-[#0f172a] text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer group"
+              >
+                <span>Explore Retainer Plans</span>
+                <FiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Enterprise Commitments Strip */}
+        <div className="rounded-3xl bg-white border border-[#dfeafc] p-8 shadow-sm">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-[#edf4ff] text-[#2563eb] flex items-center justify-center shrink-0">
+                <FiShield className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-[#0f172a]">100% IP Ownership</h4>
+                <p className="text-[11px] text-[#6b7280] mt-0.5 leading-relaxed">
+                  All source code, repositories, and design assets belong to you from day one.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-[#edf4ff] text-[#2563eb] flex items-center justify-center shrink-0">
+                <FiClock className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-[#0f172a]">Milestone SLA Delivery</h4>
+                <p className="text-[11px] text-[#6b7280] mt-0.5 leading-relaxed">
+                  Guaranteed bi-weekly sprint deliverables with live private staging demos.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-[#edf4ff] text-[#2563eb] flex items-center justify-center shrink-0">
+                <FiLock className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-[#0f172a]">Strict NDAs & Security</h4>
+                <p className="text-[11px] text-[#6b7280] mt-0.5 leading-relaxed">
+                  Mutual NDAs signed before discovery with OWASP-compliant coding practices.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3.5">
+              <div className="w-10 h-10 rounded-xl bg-[#edf4ff] text-[#2563eb] flex items-center justify-center shrink-0">
+                <FiZap className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="text-xs font-bold text-[#0f172a]">Direct Tech Lead Access</h4>
+                <p className="text-[11px] text-[#6b7280] mt-0.5 leading-relaxed">
+                  Direct communication with lead engineers via Slack, WhatsApp, and Git.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
