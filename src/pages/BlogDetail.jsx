@@ -255,7 +255,7 @@ const BlogDetail = () => {
       <section className="pb-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-10">
           {post.image && (
-            <div className="overflow-hidden rounded-2xl sm:rounded-3xl border border-[#dfeafc] bg-white shadow-sm aspect-[16/9] w-full max-w-full">
+            <div className="overflow-hidden rounded-2xl sm:rounded-3xl border border-[#dfeafc] bg-white shadow-sm aspect-square w-full max-w-2xl mx-auto">
               <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
             </div>
           )}

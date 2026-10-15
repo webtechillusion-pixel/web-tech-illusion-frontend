@@ -208,7 +208,7 @@ const TeamDetail = () => {
                         className="group p-4 rounded-2xl border border-[#dfeafc] bg-[#f8fbff] hover:bg-white hover:border-[#2563eb] transition-all hover:shadow-md flex flex-col"
                       >
                         {post.image && (
-                          <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl mb-3 bg-slate-200">
+                          <div className="relative aspect-square w-full overflow-hidden rounded-xl mb-3 bg-slate-200">
                             <img
                               src={post.image}
                               alt={post.title}

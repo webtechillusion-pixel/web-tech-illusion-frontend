@@ -1073,7 +1073,7 @@ const Dashboard = () => {
                             <img 
                               src={blog.image} 
                               alt={blog.title} 
-                              className="w-16 h-12 object-cover rounded-lg mr-3 border border-gray-200"
+                              className="w-12 h-12 aspect-square object-cover rounded-lg mr-3 border border-gray-200"
                             />
                             <div className="max-w-xs">
                               <div className="text-sm font-semibold text-gray-900 line-clamp-1">{blog.title}</div>
@@ -1880,7 +1880,7 @@ const Dashboard = () => {
                     Featured Image URL
                   </label>
                   <span className="text-[11px] font-semibold text-blue-700 bg-blue-100/70 px-2.5 py-0.5 rounded-full border border-blue-200">
-                    Recommended: 16:9 Banner (1200×675px) • Direct URL or Cloudinary Upload
+                    Recommended: 1:1 Square (800×800px) • Direct URL or Cloudinary Upload
                   </span>
                 </div>
 
@@ -1906,7 +1906,7 @@ const Dashboard = () => {
                 </div>
 
                 {blogForm.image && (
-                  <div className="relative rounded-xl overflow-hidden border border-gray-200 aspect-[16/9] w-full max-w-lg bg-gray-100 flex items-center justify-center group">
+                  <div className="relative rounded-xl overflow-hidden border border-gray-200 aspect-square w-full max-w-xs bg-gray-100 flex items-center justify-center group">
                     <img src={blogForm.image} alt="Featured Preview" className="w-full h-full object-cover" />
                     <button
                       type="button"

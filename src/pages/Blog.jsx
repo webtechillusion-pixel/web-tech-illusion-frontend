@@ -159,7 +159,7 @@ const Blog = () => {
             {loading ? (
               [...Array(6)].map((_, i) => (
                 <div key={i} className="bg-white rounded-2xl overflow-hidden border border-[#dfeafc] animate-pulse">
-                  <div className="aspect-[16/9] w-full bg-[#edf4ff]"></div>
+                  <div className="aspect-square w-full bg-[#edf4ff]"></div>
                   <div className="p-6 space-y-3">
                     <div className="h-5 bg-[#edf4ff] rounded w-1/3"></div>
                     <div className="h-5 bg-[#edf4ff] rounded"></div>
@@ -175,7 +175,7 @@ const Blog = () => {
                     key={post._id}
                     className="group bg-white rounded-2xl overflow-hidden border border-[#dfeafc] hover:border-[#2563eb] hover:shadow-md transition-all duration-300 flex flex-col"
                   >
-                    <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#edf4ff]">
+                    <div className="relative aspect-square w-full overflow-hidden bg-[#edf4ff]">
                       <img
                         src={post.image}
                         alt={post.title}
